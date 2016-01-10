@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Nick Sutterer"]
   spec.email         = ["apotonick@gmail.com"]
 
-  spec.summary       = %q{Form builder written with Cells.}
+  spec.summary       = %q{Form builder based on Cells. Fast, Furious, and Framework-Agnostic.}
   spec.description   = %q{Customizable, fast form builder based on Cells. Framework-agnostic.}
   spec.homepage      = "http://trailblazer.to/gems/cells/formular.html"
   spec.license       = "MIT"

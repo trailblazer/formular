@@ -1,9 +1,13 @@
 New
 
-= form model do |f|
+= form action: "/posts", model: Struct.new(:replies).new([YieldTest::Reply.new]) do |f|
   | ID
-  = f.input :id
+  = f.input name: :id
 
-  = form Object.new do |f|
-    | Title
-    = f.input :title
+  = f.nested :replies do |r|
+    = r.input name: :email
+
+  = f.button value: "Submit"
+
+
+

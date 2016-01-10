@@ -1,17 +1,20 @@
 require "test_helper"
 require "cells-slim"
+require "cells-hamlit"
 
 module Comment
   class NewCell < Cell::ViewModel
     include Cell::Slim
+    # include Cell::Hamlit
+
     self.view_paths = ['test/fixtures']
 
     def show
       render
     end
 
-    def form(model, &block)
-      Form.new(model, block: block).to_s
+    def form(options, &block)
+      Form.new(nil, options.merge(block: block)).(:form)
     end
   end
 end
@@ -24,21 +27,9 @@ end
 
 class Cell::ViewModel
   module Capture
-    # this is capture copied from AV:::CaptureHelper without doing escaping.
+    # Only works with Slim, so far.
     def capture(*args)
-      value = nil
-      buffer = with_output_buffer { value = yield(*args) }
-
-      return buffer.to_s if buffer.size > 0
-      value # this applies for "Beachparty" string-only statements.
-    end
-
-    def with_output_buffer(block_buffer=OutputBuffer.new)
-      @output_buffer, old_buffer = block_buffer, @output_buffer
-      yield
-      @output_buffer = old_buffer
-
-      block_buffer
+      yield(*args)
     end
   end
 end
@@ -46,24 +37,65 @@ end
 
 class Form < Cell::ViewModel
   include Cell::Slim
+  # include Cell::Hamlit
 
 include Capture
 
-  def show
-    puts "@@@@@ Form:: #{output_buffer.object_id}"
-     content = capture(self, &options[:block])
+  def form
+    content = capture(self, &options[:block])
+# TODO: make that form(options) and not show.
 
-    "<form>
+    %{<form #{html_attrs(options)}>
 #{content}
-</form>"
+</form>}
   end
 
-  def input(name)
-    "<input #{name}>"
+  def nested(name, &block)
+    nested = options[:model].send(name)
+    # TODO: implement for collection, too. (magic or explicit collection: true?)
+    # TODO: handle nil/[]
+    # TODO: n-level nesting: path with local_path+
+    self.class.new(nil, model: nested, block: block, path: [name]).(:fieldset)
+  end
+
+  def input(options={})
+    options[:name] = ((@options[:path] || []) + [options[:name]]).join(".")
+
+    Element.new.input(options)
+  end
+
+  # Generic renderer functions without any state.
+  class Element
+    def input(options)
+      %{<input #{html_attrs(options)} />}
+    end
+
+    def html_attrs(options)
+      options.collect { |k,v| %{#{k}="#{v}"} }.join(" ")
+    end
+  end
+
+  def button(options={})
+    input({ type: :button }.merge(options))
+  end
+
+  def fieldset
+    content = options[:model].collect do |model|
+      options[:block].call(self) # FIXME: this should be a separate instance for every call? so we can use it for dynamic forms?
+    end.join("")
+
+    %{<fieldset>#{content}</fieldset>}
+  end
+
+private
+  def html_attrs(options)
+    options.collect { |k,v| %{#{k}="#{v}"} }.join(" ")
   end
 end
 
 class YieldTest < Minitest::Spec
+  Reply = Struct.new(:email)
+
   it { Comment::NewCell.new(nil).().must_equal "<New></New><form>
 ID<input id><form>
 Title<input title>
