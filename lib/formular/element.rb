@@ -12,5 +12,9 @@ module Formular
     def form(options)
       %{<form #{html_attrs(options[:attributes])}>#{options[:content]}</form>}
     end
+
+    def fieldset(attributes:{}, content:)
+      %{<fieldset>#{content}</fieldset>}
+    end
   end
 end

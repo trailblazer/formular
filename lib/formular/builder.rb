@@ -44,7 +44,7 @@ module Formular
         capture(self, &block) # FIXME: this should be a separate instance for every call? so we can use it for dynamic forms?
       end.join("")
 
-      %{<fieldset>#{content}</fieldset>}
+      @element.fieldset(content: content)
     end
   end
 end
