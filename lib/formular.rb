@@ -6,3 +6,4 @@ end
 
 require "formular/element"
 require "formular/builder"
+require "formular/control"

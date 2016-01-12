@@ -14,6 +14,13 @@ module Formular
       @path    = path # e.g. [replies, author]
       @model   = model
       @errors  = model.errors||{} # TODO: allow other ways to inject errors object.
+
+
+
+
+
+      @input    = self.class::Input.new(@element) # TODO: make this more explicit with container.
+      @textarea = self.class::Textarea.new(@element) # TODO: make this more explicit with container.
     end
 
     def form(**attributes, &block)
@@ -26,6 +33,7 @@ module Formular
       control(:input, name, attributes)
     end
 
+    # normalize generic options.
     private def control(tag, name, attributes, options={})
       options = options.merge(
         path:  path = @path + [name],
@@ -33,28 +41,31 @@ module Formular
         error: error = @errors[name]
       )
 
-      attributes = { name: form_encoded_name(path), type: :text }.merge(attributes)
+      attributes = { name: form_encoded_name(path), type: :text,
+        value: @model.send(name) }.merge(attributes)
       # TODO: test me: name from attributes has precedence. attributes is immutual. test :type overwrite
 
-      return render_input_error(attributes, options, tag) if error && error.any?
-      render_input(attributes, options, tag)
-    end
 
-    # DISCUSS: use proc/function here that can easily be replaced?
-    private def render_input(attributes, options, tag=:input)
-      @element.tag(tag, attributes: attributes, content: options[:content]) # DISCUSS: save hash lookup for :content?
-    end
+      if options[:bla]
+        return @textarea.error(attributes, options, tag) if error && error.any?
+        return @textarea.(attributes, options, tag)
+      end
 
-    private def render_input_error(attributes, options, tag=:input)
-      render_input(attributes, options, tag)
+      return @input.error(attributes, options, tag) if error && error.any?
+      return @input.(attributes, options, tag)
+
+      # return render_input_error(attributes, options, tag) if error && error.any?
+      # render_input(attributes, options, tag)
     end
 
     def textarea(name, attributes={})
-      control(:textarea, name, attributes, { content: "" })
+      control(:textarea, name, attributes, {bla: true})
     end
 
     def button(attributes={})
-      render_input({ type: :button }.merge(attributes), {})
+      # TODO: use control!
+      @element.tag(:input, attributes: { type: :button }.merge(attributes))
+      # input({ type: :button }.merge(attributes))
     end
 
     def nested(name, collection:false, &block)

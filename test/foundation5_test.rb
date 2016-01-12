@@ -78,9 +78,9 @@ class Foundation6Test < Minitest::Spec
 
     it { Comment::NewCell.new(model).().must_equal "<New></New>
 <form action=\"/posts\">ID
-<input name=\"id\" type=\"text\" />
-<textarea name=\"body\" type=\"text\"></textarea>
-<fieldset><input name=\"replies[email]\" type=\"text\" /></fieldset><input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" />
+<input name=\"id\" type=\"text\" value=\"1\" />
+<textarea name=\"body\" type=\"text\">Nice!</textarea>
+<fieldset><input name=\"replies[email]\" type=\"text\" value=\"\" /></fieldset><input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" />
 </form>".gsub("\n", "") }
   end
 
@@ -94,9 +94,10 @@ class Foundation6Test < Minitest::Spec
 
     it do
       Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID
-<input name=\"id\" type=\"text\" />
+<input name=\"id\" type=\"text\" value=\"\" />
 <label class=\"error\">
 <textarea class=\"error\" name=\"body\" type=\"text\">
+hang ten in east berlin
 </textarea>
 </label>
 <small class=\"error\">[\"body size cannot be greater than 10\"]</small>

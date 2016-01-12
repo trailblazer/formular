@@ -1,8 +1,16 @@
 # Formular
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/formular`. To experiment with that code, run `bin/console` for an interactive prompt.
+_Framework-Agnostic Form Renderer for Ruby._
 
-TODO: Delete this and the text above, and describe your gem
+## Overview
+
+Formular renders HTML forms in a similar fashion to [SimpleForm](https://github.com/plataformatec/simple_form) and other gems. It is lightning-fast, has zero coupling to any ORM or web framework, and makes no magical assumptions about the rendered form object.
+
+It works best if backed with a form object like [Reform](https://github.com/apotonick/reform).
+
+Formular's rendering is easily customizable. It provides support for Foundation 5, Foundation 6, Bootstrap 3, and ... # TODO.
+
+## Example
 
 ## API
 
