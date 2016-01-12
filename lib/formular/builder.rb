@@ -28,7 +28,7 @@ module Formular
       options[:model]  = @model
       options[:error]  = @errors[name] if @errors # FIXME!
 
-      name   = path[0].to_s+path[1..-1].collect { |segment| "[#{segment}]" }.join("")
+      name   = form_encoded_name(path)
 
       render_input(
         {name: name}.merge(attributes), # TODO: test me: name from attributes has precedence. attributes is immutual.
@@ -48,7 +48,7 @@ module Formular
       nested = @model.send(name)
       # TODO: implement for collection, too. (magic or explicit collection: true?)
       # TODO: handle nil/[]
-      # TODO: n-level nesting: path with local_path+
+      # TODO: n-level nesting: path with local_path+ AND INDEX FOR COLLECTIONS.
 
       # content
       content = nested.collect do |model|
@@ -62,6 +62,12 @@ module Formular
       content = capture(self, &block)
 
       @element.fieldset(content: content)
+    end
+
+  private
+    # [replies, email] => replies[email]
+    def form_encoded_name(path)
+      path[0].to_s + path[1..-1].collect { |segment| "[#{segment}]" }.join("")
     end
   end
 end
