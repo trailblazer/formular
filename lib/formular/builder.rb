@@ -13,7 +13,7 @@ module Formular
       @element = element
       @path    = path # e.g. [replies, author]
       @model   = model
-      @errors  = model.errors # TODO: allow other ways to inject errors object.
+      @errors  = model.errors||{} # TODO: allow other ways to inject errors object.
     end
 
     def form(**attributes, &block)
@@ -23,21 +23,25 @@ module Formular
     end
 
     def input(name, attributes={})
-      options = {}
-      options[:path] =path   = @path + [name]
-      options[:model]  = @model
-      options[:error]  = @errors[name] if @errors # FIXME!
+      options = {
+        path:  path = @path + [name],
+        model: @model,
+        error: error = @errors[name]
+      }
 
-      name   = form_encoded_name(path)
+      attributes = { name: form_encoded_name(path) }.merge(attributes) # TODO: test me: name from attributes has precedence. attributes is immutual.
 
-      render_input(
-        {name: name}.merge(attributes), # TODO: test me: name from attributes has precedence. attributes is immutual.
-        options)
+      return render_input_error(attributes, options) if error && error.any?
+      render_input(attributes, options)
     end
 
     # DISCUSS: use proc/function here that can easily be replaced?
     def render_input(attributes, options)
-      @element.input(attributes, options)
+      @element.tag(:input, attributes: attributes)
+    end
+
+    def render_input_error(attributes, options)
+      render_input(attributes, options)
     end
 
     def button(attributes={})

@@ -5,3 +5,7 @@ gemspec
 
 gem "cells", path: "../cells"
 gem "cells-slim", path: "../cells-slim"
+gem "cells-hamlit", path: "../cells-hamlit"
+
+gem "reform"
+gem "dry-validation"

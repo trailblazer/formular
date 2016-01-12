@@ -2,8 +2,11 @@ require "test_helper"
 require "cells-slim"
 require "cells-hamlit"
 
+require "formular/frontend/foundation6"
+
 require "reform"
 require "reform/form/dry"
+
 
 
 class Comment < Struct.new(:body, :replies, :uuid, :errors) # TODO: remove errors!
@@ -35,27 +38,10 @@ class Comment < Struct.new(:body, :replies, :uuid, :errors) # TODO: remove error
     end
 
     def form(model:nil, **options, &block)
-      Builder.new(model: model).form(options, &block)
+      Formular::Foundation6::Builder.new(model: model).form(options, &block)
     end
 
-    # <label class="error">Error
-    #   <input type="text" class="error" />
-    # </label>
-    # <small class="error">Invalid entry</small>
-    class Builder < Formular::Builder
-      def render_input(attributes, options)
-        return @element.tag(:input, attributes: attributes) unless options[:error]
 
-
-        shared = { class: [:error] }
-
-        input = @element.tag(:input, attributes: shared.merge(attributes))
-
-        @element.tag(:label, attributes: shared, content: input) +
-        @element.tag(:small, attributes: shared, content: options[:error])
-      end
-    end
-    # TODO: TEST that attributes hash is immutuable.
 
   end
 end
@@ -81,7 +67,7 @@ class Form < Cell::ViewModel
   # include Cell::Hamlit
 end
 
-class YieldTest < Minitest::Spec
+class Foundation6Test < Minitest::Spec
   Reply = Struct.new(:email, :errors)
 
   let (:model) { Comment.new("Nice!", [Reply.new]) }
@@ -97,7 +83,7 @@ class YieldTest < Minitest::Spec
     before { model.validate({}) }
 
     it do
-      Comment::NewCell.new(model).().must_equal ""
+      Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID<label class=\"error\"><input class=\"error\" name=\"body\" /><label/><small class=\"error\">[\"body must be filled\"]<small/><input type=\"button\" value=\"Submit\" /><input name=\"uuid\" value=\"0x\" /></form>"
     end
   end
 end
