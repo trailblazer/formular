@@ -6,10 +6,6 @@ module Formular
       %{<#{name} #{html_attrs(attributes)}>#{content}<#{name}/>}
     end
 
-    def input(attributes, options) # FIXME: do we need this?
-      tag(name: "input", attributes: attributes)
-    end
-
     def html_attrs(attributes)
       if class_attr = attributes[:class]
         attributes = attributes.merge(class: class_attr.join(" "))
