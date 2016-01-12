@@ -21,8 +21,20 @@ module Formular
       @element.form(attributes: attributes, content: content)
     end
 
+    Input = ->(options:, path:, element:) do
+      options[:name] = (path + [options[:name]]).join(".")
+      element.input(options)
+    end
+
     def input(options={})
+
       options[:name] = (@path + [options[:name]]).join(".")
+
+
+      return options[:renderer].(original: Input, options: options, path: @path, element: @element) if options[:renderer]
+
+      return Input.(options: options, path: @path, element: @element)
+
 
       @element.input(options)
     end
@@ -48,3 +60,10 @@ module Formular
     end
   end
 end
+
+# def input
+#   super(options.merge ...) + "bla"
+# end
+
+# # meaning 3 items pipeline: change options, run "super", run Input
+# Input -> { super.(options.merge ..) + "bla" }

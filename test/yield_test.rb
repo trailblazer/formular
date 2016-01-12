@@ -16,6 +16,10 @@ module Comment
     def form(model:nil, **options, &block)
       Formular::Builder.new(model: model).form(options, &block)
     end
+
+    def uuid_renderer
+      ->(original:, options:, **o) { %{<label>#{options[:name].upcase}#{original.({options: options}.merge(o))}</label>} }
+    end
   end
 end
 
