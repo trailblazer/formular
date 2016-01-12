@@ -3,7 +3,7 @@ module Formular
   class Element
     def tag(name, attributes:{}, content:nil, **)
       return %{<#{name} #{html_attrs(attributes)} />} unless content
-      %{<#{name} #{html_attrs(attributes)}>#{content}<#{name}/>}
+      %{<#{name} #{html_attrs(attributes)}>#{content}</#{name}>}
     end
 
     def html_attrs(attributes)

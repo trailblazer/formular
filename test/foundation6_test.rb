@@ -83,7 +83,12 @@ class Foundation6Test < Minitest::Spec
     before { model.validate({}) }
 
     it do
-      Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID<label class=\"error\"><input class=\"error\" name=\"body\" type=\"text\" /><label/><small class=\"error\">[\"body must be filled\"]<small/><input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" /></form>"
+      Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID
+<label class=\"error\">
+<input class=\"error\" name=\"body\" type=\"text\" />
+</label>
+<small class=\"error\">[\"body must be filled\"]</small>
+<input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" /></form>".gsub("\n", "")
     end
   end
 end
