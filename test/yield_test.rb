@@ -2,7 +2,28 @@ require "test_helper"
 require "cells-slim"
 require "cells-hamlit"
 
-module Comment
+require "reform"
+require "reform/form/dry"
+
+
+class Comment < Struct.new(:body, :replies, :uuid, :errors) # TODO: remove errors!
+  class Form < Reform::Form
+    include Dry::Validations
+
+    property :body
+
+    validation :default do
+      key(:body, &:filled?)
+    end
+
+    collection :replies do
+      property :email
+    end
+  end
+
+
+
+
   class NewCell < Cell::ViewModel
     include Cell::Slim
     # include Cell::Hamlit
@@ -22,13 +43,16 @@ module Comment
     # </label>
     # <small class="error">Invalid entry</small>
     class Builder < Formular::Builder
-      def input(options)
+      def render_input(attributes, options)
+        return @element.tag(:input, attributes: attributes) unless options[:error]
+
+
         shared = { class: [:error] }
 
-        input = @element.tag(:input, attributes: shared.merge(options))
+        input = @element.tag(:input, attributes: shared.merge(attributes))
 
         @element.tag(:label, attributes: shared, content: input) +
-        @element.tag(:small, attributes: shared, content: "Error here!")
+        @element.tag(:small, attributes: shared, content: options[:error])
       end
     end
     # TODO: TEST that attributes hash is immutuable.
@@ -58,7 +82,22 @@ class Form < Cell::ViewModel
 end
 
 class YieldTest < Minitest::Spec
-  Reply = Struct.new(:email)
+  Reply = Struct.new(:email, :errors)
 
-  it { Comment::NewCell.new(nil).().must_equal "<New></New><form action=\"/posts\">ID<input name=\"id\" /><fieldset><input name=\"replies.email\" /></fieldset><input type=\"button\" value=\"Submit\" name=\"\" /></form>" }
+  let (:model) { Comment.new("Nice!", [Reply.new]) }
+
+  it { Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID<input name=\"body\" /><fieldset><input name=\"replies[email]\" /></fieldset><input type=\"button\" value=\"Submit\" /><input name=\"uuid\" value=\"0x\" /></form>" }
+
+
+  describe "with errors" do
+    let (:model) do
+      Comment::Form.new(Comment.new(nil, []))
+    end
+
+    before { model.validate({}) }
+
+    it do
+      Comment::NewCell.new(model).().must_equal ""
+    end
+  end
 end

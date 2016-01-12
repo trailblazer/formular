@@ -6,8 +6,8 @@ module Formular
       %{<#{name} #{html_attrs(attributes)}>#{content}<#{name}/>}
     end
 
-    def input(options) # FIXME: do we need this?
-      tag(name: "input", attributes: options)
+    def input(attributes, options) # FIXME: do we need this?
+      tag(name: "input", attributes: attributes)
     end
 
     def html_attrs(attributes)

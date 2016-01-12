@@ -1,16 +1,12 @@
 New
 
-= form action: "/posts", model: Struct.new(:replies).new([YieldTest::Reply.new]) do |f|
+= form action: "/posts", model: model do |f|
   | ID
-  = f.input name: :id
+  = f.input :body
 
-  = f.nested :replies do |r|
-    = r.input name: :email
+  = f.nested :replies, collection: true do |r|
+    = r.input :email
 
   = f.button value: "Submit"
 
-  = f.input name: :uuid, value: "0x"
-
-
-
-
+  = f.input :uuid, value: "0x"

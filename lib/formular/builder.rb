@@ -13,6 +13,7 @@ module Formular
       @element = element
       @path    = path # e.g. [replies, author]
       @model   = model
+      @errors  = model.errors # TODO: allow other ways to inject errors object.
     end
 
     def form(**attributes, &block)
@@ -21,28 +22,44 @@ module Formular
       @element.form(attributes: attributes, content: content)
     end
 
-    def input(options={})
-      options[:name] = (@path + [options[:name]]).join(".")
+    def input(name, attributes={})
+      options = {}
+      options[:path] =path   = @path + [name]
+      options[:model]  = @model
+      options[:error]  = @errors[name] if @errors # FIXME!
 
-      @element.input(options)
+      name   = path[0].to_s+path[1..-1].collect { |segment| "[#{segment}]" }.join("")
+
+      render_input(
+        {name: name}.merge(attributes), # TODO: test me: name from attributes has precedence. attributes is immutual.
+        options)
     end
 
-    def button(options={})
-      input({ type: :button }.merge(options))
+    # DISCUSS: use proc/function here that can easily be replaced?
+    def render_input(attributes, options)
+      @element.input(attributes, options)
     end
 
-    def nested(name, &block)
+    def button(attributes={})
+      render_input({ type: :button }.merge(attributes), {})
+    end
+
+    def nested(name, collection:false, &block)
       nested = @model.send(name)
       # TODO: implement for collection, too. (magic or explicit collection: true?)
       # TODO: handle nil/[]
       # TODO: n-level nesting: path with local_path+
-      self.class.new(model: nested, path: [name], parent: self).fieldset(&block)
+
+      # content
+      content = nested.collect do |model|
+        self.class.new(model: model, path: [name], parent: self).fieldset(&block) # FIXME: fieldset is wrong, should be #call.
+      end.join("")
+
+
     end
 
-    def fieldset(&block)
-      content = @model.collect do |model|
-        capture(self, &block) # FIXME: this should be a separate instance for every call? so we can use it for dynamic forms?
-      end.join("")
+    def fieldset(&block) # TODO: merge with #form!
+      content = capture(self, &block)
 
       @element.fieldset(content: content)
     end
