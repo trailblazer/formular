@@ -14,12 +14,25 @@ module Comment
     end
 
     def form(model:nil, **options, &block)
-      Formular::Builder.new(model: model).form(options, &block)
+      Builder.new(model: model).form(options, &block)
     end
 
-    def uuid_renderer
-      ->(original:, options:, **o) { %{<label>#{options[:name].upcase}#{original.({options: options}.merge(o))}</label>} }
+    # <label class="error">Error
+    #   <input type="text" class="error" />
+    # </label>
+    # <small class="error">Invalid entry</small>
+    class Builder < Formular::Builder
+      def input(options)
+        shared = { class: [:error] }
+
+        input = @element.tag(:input, attributes: shared.merge(options))
+
+        @element.tag(:label, attributes: shared, content: input) +
+        @element.tag(:small, attributes: shared, content: "Error here!")
+      end
     end
+    # TODO: TEST that attributes hash is immutuable.
+
   end
 end
 
