@@ -14,10 +14,12 @@ class Comment < Struct.new(:id, :body, :replies, :uuid, :errors) # TODO: remove 
     include Dry::Validations
 
     property :id
+    property :uuid
     property :body
 
     validation :default do
-      key(:body, &:filled?)
+      key(:uuid) { |uuid| uuid.filled? }
+      key(:body) { |body| body.max_size?(10) }
     end
 
     collection :replies do
@@ -85,7 +87,7 @@ class Foundation6Test < Minitest::Spec
 
   describe "with errors" do
     let (:model) do
-      Comment::Form.new(Comment.new(nil, nil, []))
+      Comment::Form.new(Comment.new(nil, "hang ten in east berlin", []))
     end
 
     before { model.validate({}) }
@@ -94,10 +96,14 @@ class Foundation6Test < Minitest::Spec
       Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID
 <input name=\"id\" type=\"text\" />
 <label class=\"error\">
-<textarea class=\"error\" name=\"body\" type=\"text\"></textarea>
+<textarea class=\"error\" name=\"body\" type=\"text\">
+</textarea>
 </label>
-<small class=\"error\">[\"body must be filled\"]</small>
-<input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" /></form>".gsub("\n", "")
+<small class=\"error\">[\"body size cannot be greater than 10\"]</small>
+<input type=\"button\" value=\"Submit\" />
+<label class=\"error\">
+<input class=\"error\" name=\"uuid\" type=\"text\" value=\"0x\" /></label><small class=\"error\">[\"uuid must be filled\"]</small>
+</form>".gsub("\n", "")
     end
   end
 end
