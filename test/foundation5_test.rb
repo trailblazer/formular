@@ -9,10 +9,11 @@ require "reform/form/dry"
 
 
 
-class Comment < Struct.new(:body, :replies, :uuid, :errors) # TODO: remove errors!
+class Comment < Struct.new(:id, :body, :replies, :uuid, :errors) # TODO: remove errors!
   class Form < Reform::Form
     include Dry::Validations
 
+    property :id
     property :body
 
     validation :default do
@@ -38,7 +39,7 @@ class Comment < Struct.new(:body, :replies, :uuid, :errors) # TODO: remove error
     end
 
     def form(model:nil, **options, &block)
-      Formular::Foundation6::Builder.new(model: model).form(options, &block)
+      Formular::Foundation5::Builder.new(model: model).form(options, &block)
     end
 
 
@@ -70,22 +71,30 @@ end
 class Foundation6Test < Minitest::Spec
   Reply = Struct.new(:email, :errors)
 
-  let (:model) { Comment.new("Nice!", [Reply.new]) }
+  describe "valid, initial rendering" do
+    let (:model) { Comment.new(1, "Nice!", [Reply.new]) }
 
-  it { Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID<input name=\"body\" type=\"text\" /><fieldset><input name=\"replies[email]\" type=\"text\" /></fieldset><input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" /></form>" }
+    it { Comment::NewCell.new(model).().must_equal "<New></New>
+<form action=\"/posts\">ID
+<input name=\"id\" type=\"text\" />
+<textarea name=\"body\" type=\"text\"></textarea>
+<fieldset><input name=\"replies[email]\" type=\"text\" /></fieldset><input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" />
+</form>".gsub("\n", "") }
+  end
 
 
   describe "with errors" do
     let (:model) do
-      Comment::Form.new(Comment.new(nil, []))
+      Comment::Form.new(Comment.new(nil, nil, []))
     end
 
     before { model.validate({}) }
 
     it do
       Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID
+<input name=\"id\" type=\"text\" />
 <label class=\"error\">
-<input class=\"error\" name=\"body\" type=\"text\" />
+<textarea class=\"error\" name=\"body\" type=\"text\"></textarea>
 </label>
 <small class=\"error\">[\"body must be filled\"]</small>
 <input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" /></form>".gsub("\n", "")

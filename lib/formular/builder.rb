@@ -23,26 +23,34 @@ module Formular
     end
 
     def input(name, attributes={})
-      options = {
+      control(:input, name, attributes)
+    end
+
+    private def control(tag, name, attributes, options={})
+      options = options.merge(
         path:  path = @path + [name],
         model: @model,
         error: error = @errors[name]
-      }
+      )
 
       attributes = { name: form_encoded_name(path), type: :text }.merge(attributes)
       # TODO: test me: name from attributes has precedence. attributes is immutual. test :type overwrite
 
-      return render_input_error(attributes, options) if error && error.any?
-      render_input(attributes, options)
+      return render_input_error(attributes, options, tag) if error && error.any?
+      render_input(attributes, options, tag)
     end
 
     # DISCUSS: use proc/function here that can easily be replaced?
-    def render_input(attributes, options)
-      @element.tag(:input, attributes: attributes)
+    private def render_input(attributes, options, tag=:input)
+      @element.tag(tag, attributes: attributes, content: options[:content]) # DISCUSS: save hash lookup for :content?
     end
 
-    def render_input_error(attributes, options)
-      render_input(attributes, options)
+    private def render_input_error(attributes, options, tag=:input)
+      render_input(attributes, options, tag)
+    end
+
+    def textarea(name, attributes={})
+      control(:textarea, name, attributes, { content: "" })
     end
 
     def button(attributes={})
@@ -76,10 +84,3 @@ module Formular
     end
   end
 end
-
-# def input
-#   super(options.merge ...) + "bla"
-# end
-
-# # meaning 3 items pipeline: change options, run "super", run Input
-# Input -> { super.(options.merge ..) + "bla" }

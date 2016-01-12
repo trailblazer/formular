@@ -2,7 +2,8 @@ New
 
 = form action: "/posts", model: model do |f|
   | ID
-  = f.input :body
+  = f.input :id
+  = f.textarea :body
 
   = f.nested :replies, collection: true do |r|
     = r.input :email
@@ -10,3 +11,4 @@ New
   = f.button value: "Submit"
 
   = f.input :uuid, value: "0x"
+
