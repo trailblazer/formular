@@ -72,7 +72,7 @@ class Foundation6Test < Minitest::Spec
 
   let (:model) { Comment.new("Nice!", [Reply.new]) }
 
-  it { Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID<input name=\"body\" /><fieldset><input name=\"replies[email]\" /></fieldset><input type=\"button\" value=\"Submit\" /><input name=\"uuid\" value=\"0x\" /></form>" }
+  it { Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID<input name=\"body\" type=\"text\" /><fieldset><input name=\"replies[email]\" type=\"text\" /></fieldset><input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" /></form>" }
 
 
   describe "with errors" do
@@ -83,7 +83,7 @@ class Foundation6Test < Minitest::Spec
     before { model.validate({}) }
 
     it do
-      Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID<label class=\"error\"><input class=\"error\" name=\"body\" /><label/><small class=\"error\">[\"body must be filled\"]<small/><input type=\"button\" value=\"Submit\" /><input name=\"uuid\" value=\"0x\" /></form>"
+      Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID<label class=\"error\"><input class=\"error\" name=\"body\" type=\"text\" /><label/><small class=\"error\">[\"body must be filled\"]<small/><input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" /></form>"
     end
   end
 end

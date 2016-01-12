@@ -29,7 +29,8 @@ module Formular
         error: error = @errors[name]
       }
 
-      attributes = { name: form_encoded_name(path) }.merge(attributes) # TODO: test me: name from attributes has precedence. attributes is immutual.
+      attributes = { name: form_encoded_name(path), type: :text }.merge(attributes)
+      # TODO: test me: name from attributes has precedence. attributes is immutual. test :type overwrite
 
       return render_input_error(attributes, options) if error && error.any?
       render_input(attributes, options)
