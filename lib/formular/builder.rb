@@ -16,11 +16,10 @@ module Formular
       @errors  = model.errors||{} # TODO: allow other ways to inject errors object.
 
 
-
-
-
-      @input    = self.class::Input.new(@element) # TODO: make this more explicit with container.
-      @textarea = self.class::Textarea.new(@element) # TODO: make this more explicit with container.
+      @controls = {
+        input:    self.class::Input.new(@element), # TODO: make this more explicit with container.
+        textarea: self.class::Textarea.new(@element) # TODO: make this more explicit with container.
+      }
     end
 
     def form(**attributes, &block)
@@ -45,21 +44,13 @@ module Formular
         value: @model.send(name) }.merge(attributes)
       # TODO: test me: name from attributes has precedence. attributes is immutual. test :type overwrite
 
-
-      if options[:bla]
-        return @textarea.error(attributes, options, tag) if error && error.any?
-        return @textarea.(attributes, options, tag)
-      end
-
-      return @input.error(attributes, options, tag) if error && error.any?
-      return @input.(attributes, options, tag)
-
-      # return render_input_error(attributes, options, tag) if error && error.any?
-      # render_input(attributes, options, tag)
+      # render control.
+      return @controls[tag].error(attributes, options, tag) if error && error.any?
+      @controls[tag].(attributes, options, tag)
     end
 
     def textarea(name, attributes={})
-      control(:textarea, name, attributes, {bla: true})
+      control(:textarea, name, attributes)
     end
 
     def button(attributes={})

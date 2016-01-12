@@ -18,6 +18,7 @@ module Formular
       def call(attributes, options, tag=:textarea)
         attributes= attributes.dup
         content = attributes.delete(:value)
+
         @element.tag(:textarea, attributes: attributes, content: content) # DISCUSS: save hash lookup for :content?
       end
     end
