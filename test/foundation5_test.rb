@@ -2,7 +2,7 @@ require "test_helper"
 require "cells-slim"
 require "cells-hamlit"
 
-require "formular/frontend/foundation6"
+require "formular/frontend/foundation5"
 
 require "reform"
 require "reform/form/dry"
