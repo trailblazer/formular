@@ -81,6 +81,15 @@ class Foundation5Test < Minitest::Spec
       it { builder.input(:id, label: "Id").must_equal %{<label >Id<input class="error" name="id" type="text" value="" id="form_id" /></label><small class="error">["wrong!"]</small>} }
     end
   end
+
+  describe "#checkbox" do
+    it { builder.checkbox(:public, label: "Public?").must_equal %{<input name="public" type="checkbox" value="" id="form_public" /><label for="form_public">Public?</label>} }
+    it { builder.checkbox(:public).must_equal %{<input name="public" type="checkbox" value="" id="form_public" />} }
+
+    describe "with errors" do
+
+    end
+  end
 end
 
 class Foundation6Test < Minitest::Spec

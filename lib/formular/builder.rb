@@ -22,7 +22,8 @@ module Formular
 
       @controls = {
         input:    self.class::Input.new(@element), # TODO: make this more explicit with container.
-        textarea: self.class::Textarea.new(@element) # TODO: make this more explicit with container.
+        textarea: self.class::Textarea.new(@element), # TODO: make this more explicit with container.
+        checkbox: self.class::Checkbox.new(@element), # TODO: make this more explicit with container.
       }
     end
 
@@ -37,7 +38,7 @@ module Formular
     end
 
     # normalize generic options.
-    private def control(tag, name, attributes, options={})
+    private def control(tag, name, attributes, options={}) # TODO: rename tag to control_name
       options = options.merge(
         path:  path = @path + [name],
         model: @model,
@@ -56,8 +57,8 @@ module Formular
       # TODO: test me: name from attributes has precedence. attributes is immutual. test :type overwrite
 
       # render control.
-      return @controls[tag].error(attributes, options, tag) if error && error.any?
-      @controls[tag].(attributes, options, tag)
+      return @controls[tag].error(attributes, options) if error && error.any?
+      @controls[tag].(attributes, options)
     end
 
     def textarea(name, attributes={})
@@ -71,7 +72,7 @@ module Formular
     end
 
     def checkbox(name, attributes={})
-      control(:input, name, { type: :checkbox }.merge(attributes))
+      control(:checkbox, name, { type: :checkbox }.merge(attributes))
     end
 
     def nested(name, collection:false, &block)

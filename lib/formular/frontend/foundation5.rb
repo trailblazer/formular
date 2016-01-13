@@ -7,10 +7,10 @@ module Formular
     # <small class="error">Invalid entry</small>
     class Builder < Formular::Builder
       module ErrorWrap
-        def error(attributes, options, tag)
+        def error(attributes, options)
           shared = { class: [:error] }
 
-          input = super(shared.merge(attributes), options, tag )
+          input = super(shared.merge(attributes), options )
 
           input +
           # @element.tag(:label, attributes: shared, content: input) +
@@ -35,8 +35,11 @@ module Formular
       end
 
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
-      class Checkbox < Formular::Builder::Checkbox
-
+      class Checkbox < Formular::Builder::Input
+        def call(attributes, options, tag=:input)
+          return super unless options[:label]
+          super + @element.tag(:label, attributes: { for: attributes[:id] }, content: "#{options[:label]}")
+        end
       end
     end
     # TODO: TEST that attributes hash is immutuable.
