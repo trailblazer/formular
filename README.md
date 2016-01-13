@@ -16,6 +16,9 @@ Formular's rendering is easily customizable. It provides support for Foundation 
 
 The render API is highly inspired by the [SimpleForm](https://github.com/plataformatec/simple_form) gem.
 
+* `id: false` won't render an `id` attribute.
+* `id: "myID"` results in `id="myID"`.
+
 ## Key Features
 
 * Incredibly fast.

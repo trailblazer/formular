@@ -15,6 +15,8 @@ class FormularTest < Minitest::Spec
     it { builder.input(:id).must_equal %{<input name="id" type="text" value="" id="form_id" />} }
     # allow id off.
     it { builder.input(:id, id: false).must_equal %{<input name="id" type="text" value="" />} }
+    # allow manual id.
+    it { builder.input(:id, id: "false").must_equal %{<input name="id" type="text" value="" id="false" />} }
 
     it do
       builder.nested(:replies) do |f|

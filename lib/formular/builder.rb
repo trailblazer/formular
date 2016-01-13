@@ -45,14 +45,21 @@ module Formular
          }.merge(attributes)
 
       # optional
-      # TODO: allow manual id.
-      id = attributes.delete(:id) != false ? attributes[:id] = (@prefix+[name]).join("_") : nil # TODO: restructure.
+      id!(name, attributes)
 
       # TODO: test me: name from attributes has precedence. attributes is immutual. test :type overwrite
 
       # render control.
       return @controls[tag].error(attributes, options, tag) if error && error.any?
       @controls[tag].(attributes, options, tag)
+    end
+
+    # all private methods here will soon be extracted to Control.
+    private def id!(name, attributes)
+      id = attributes.delete(:id)
+      return if id == false
+      return attributes[:id] = id unless id.nil?
+      attributes[:id] = (@prefix+[name]).join("_")
     end
 
     def textarea(name, attributes={})
