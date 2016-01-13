@@ -1,5 +1,7 @@
 module Formular
   # http://foundation.zurb.com/sites/docs/v/5.5.3/components/forms.html
+
+  # TODO: switches, prefix actions
   module Foundation5
     # <label class="error">Error
     #   <input type="text" class="error" />
@@ -35,7 +37,7 @@ module Formular
       end
 
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
-      class Checkbox < Formular::Builder::Input
+      class Checkbox < Formular::Builder::Checkbox
         def call(attributes, options, tag=:input)
           return super unless options[:label]
           super + @element.tag(:label, attributes: { for: attributes[:id] }, content: "#{options[:label]}")

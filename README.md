@@ -19,6 +19,13 @@ The render API is highly inspired by the [SimpleForm](https://github.com/platafo
 * `id: false` won't render an `id` attribute.
 * `id: "myID"` results in `id="myID"`.
 
+## Checkbox
+
+= f.checkbox :is_public, label: "Public?"
+
+`value: 1` is automatic.
+
+
 ## Key Features
 
 * Incredibly fast.

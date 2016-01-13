@@ -83,8 +83,10 @@ class Foundation5Test < Minitest::Spec
   end
 
   describe "#checkbox" do
-    it { builder.checkbox(:public, label: "Public?").must_equal %{<input name="public" type="checkbox" value="" id="form_public" /><label for="form_public">Public?</label>} }
-    it { builder.checkbox(:public).must_equal %{<input name="public" type="checkbox" value="" id="form_public" />} }
+    describe "unchecked" do
+      it { builder.checkbox(:public, label: "Public?").must_equal %{<input name="public" type="checkbox" value="1" id="form_public" /><label for="form_public">Public?</label>} }
+      it { builder.checkbox(:public).must_equal %{<input name="public" type="checkbox" value="1" id="form_public" />} }
+    end
 
     describe "with errors" do
 
