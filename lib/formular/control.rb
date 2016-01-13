@@ -16,7 +16,7 @@ module Formular
 
     class Textarea < Input
       def call(attributes, options, tag=:textarea)
-        attributes= attributes.dup
+        attributes= attributes.dup # FIXME.
 
         content = attributes.delete(:value) || ""
 
@@ -26,12 +26,12 @@ module Formular
 
     class Checkbox < Input
       def call(attributes, options, *)
-        attributes= attributes.dup
+        attributes= attributes.dup # FIXME.
 
         attributes[:checked] = :checked if attributes[:value].to_s == toggles[:on].to_s
         attributes[:value]   = toggles[:on]
 
-        super
+        @element.tag(:input, attributes: { type: :hidden, value: toggles[:off], name: attributes[:name] }) + super
       end
 
     private
