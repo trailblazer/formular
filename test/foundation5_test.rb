@@ -9,7 +9,7 @@ require "reform/form/dry"
 
 
 
-class Comment < Struct.new(:id, :body, :replies, :uuid, :errors) # TODO: remove errors!
+class Comment < Struct.new(:id, :body, :replies, :uuid, :public, :errors) # TODO: remove errors!
   class Form < Reform::Form
     include Dry::Validations
 
@@ -78,9 +78,10 @@ class Foundation6Test < Minitest::Spec
 
     it { Comment::NewCell.new(model).().must_equal "<New></New>
 <form action=\"/posts\">ID
-<input name=\"id\" type=\"text\" value=\"1\" />
-<textarea name=\"body\" type=\"text\">Nice!</textarea>
-<fieldset><input name=\"replies[email]\" type=\"text\" value=\"\" /></fieldset><input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" />
+<input name=\"id\" type=\"text\" value=\"1\" id=\"form_id\" />
+<textarea name=\"body\" type=\"text\" id=\"form_body\">Nice!</textarea>
+<fieldset><input name=\"replies[email]\" type=\"text\" value=\"\" id=\"form_replies_email\" /></fieldset>
+<input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" id=\"form_uuid\" />
 </form>".gsub("\n", "") }
   end
 
@@ -94,16 +95,16 @@ class Foundation6Test < Minitest::Spec
 
     it do
       Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID
-<input name=\"id\" type=\"text\" value=\"\" />
+<input name=\"id\" type=\"text\" value=\"\" id=\"form_id\" />
 <label class=\"error\">
-<textarea class=\"error\" name=\"body\" type=\"text\">
+<textarea class=\"error\" name=\"body\" type=\"text\" id=\"form_body\">
 hang ten in east berlin
 </textarea>
 </label>
 <small class=\"error\">[\"body size cannot be greater than 10\"]</small>
 <input type=\"button\" value=\"Submit\" />
 <label class=\"error\">
-<input class=\"error\" name=\"uuid\" type=\"text\" value=\"0x\" /></label><small class=\"error\">[\"uuid must be filled\"]</small>
+<input class=\"error\" name=\"uuid\" type=\"text\" value=\"0x\" id=\"form_uuid\" /></label><small class=\"error\">[\"uuid must be filled\"]</small>
 </form>".gsub("\n", "")
     end
   end

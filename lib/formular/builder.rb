@@ -9,12 +9,12 @@ module Formular
     end
     include Capture
 
-    def initialize(element: Element.new, path: [], model:, parent:nil)
+    def initialize(element: Element.new, path: [], prefix: ["form"], model:, parent:nil)
       @element = element
       @path    = path # e.g. [replies, author]
       @model   = model
       @errors  = model.errors||{} # TODO: allow other ways to inject errors object.
-
+      @prefix  = prefix
 
       @controls = {
         input:    self.class::Input.new(@element), # TODO: make this more explicit with container.
@@ -37,11 +37,17 @@ module Formular
       options = options.merge(
         path:  path = @path + [name],
         model: @model,
-        error: error = @errors[name]
+        error: error = @errors[name],
       )
 
       attributes = { name: form_encoded_name(path), type: :text,
-        value: @model.send(name) }.merge(attributes)
+        value: @model.send(name),
+         }.merge(attributes)
+
+      # optional
+      # TODO: allow manual id.
+      id = attributes.delete(:id) != false ? attributes[:id] = (@prefix+[name]).join("_") : nil # TODO: restructure.
+
       # TODO: test me: name from attributes has precedence. attributes is immutual. test :type overwrite
 
       # render control.
@@ -59,6 +65,10 @@ module Formular
       # input({ type: :button }.merge(attributes))
     end
 
+    def checkbox(name, attributes={})
+      control(:input, name, { type: :checkbox }.merge(attributes))
+    end
+
     def nested(name, collection:false, &block)
       nested = @model.send(name)
       # TODO: implement for collection, too. (magic or explicit collection: true?)
@@ -67,7 +77,7 @@ module Formular
 
       # content
       content = nested.collect do |model|
-        self.class.new(model: model, path: [name], parent: self).fieldset(&block) # FIXME: fieldset is wrong, should be #call.
+        self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name]).fieldset(&block) # FIXME: fieldset is wrong, should be #call.
       end.join("")
 
 
