@@ -1,12 +1,6 @@
 require "test_helper"
 
-# require "reform"
-# require "reform/form/dry"
-
 class FormularTest < Minitest::Spec
-  Comment = Struct.new(:id, :body, :replies, :uuid, :public, :errors) # TODO: remove errors!
-  Reply   = Struct.new(:id, :errors)
-
   let (:model) { Comment.new(nil, nil, [Reply.new]) }
   let (:builder) { Formular::Builder.new(model: model) }
 

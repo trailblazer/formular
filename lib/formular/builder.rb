@@ -50,6 +50,7 @@ module Formular
 
       # optional
       id!(name, attributes)
+      # label! would compile the label string.
 
       # TODO: test me: name from attributes has precedence. attributes is immutual. test :type overwrite
 

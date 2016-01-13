@@ -9,7 +9,7 @@ require "reform/form/dry"
 
 
 
-class Comment < Struct.new(:id, :body, :replies, :uuid, :public, :errors) # TODO: remove errors!
+module F5
   class Form < Reform::Form
     include Dry::Validations
 
@@ -26,26 +26,22 @@ class Comment < Struct.new(:id, :body, :replies, :uuid, :public, :errors) # TODO
       property :email
     end
   end
+end
 
 
 
+class Comment::NewCell < Cell::ViewModel
+  include Cell::Slim
+  # include Cell::Hamlit
 
-  class NewCell < Cell::ViewModel
-    include Cell::Slim
-    # include Cell::Hamlit
+  self.view_paths = ['test/fixtures']
 
-    self.view_paths = ['test/fixtures']
+  def show
+    render
+  end
 
-    def show
-      render
-    end
-
-    def form(model:nil, **options, &block)
-      Formular::Foundation5::Builder.new(model: model).form(options, &block)
-    end
-
-
-
+  def form(model:nil, **options, &block)
+    Formular::Foundation5::Builder.new(model: model).form(options, &block)
   end
 end
 
@@ -88,7 +84,7 @@ class Foundation6Test < Minitest::Spec
 
   describe "with errors" do
     let (:model) do
-      Comment::Form.new(Comment.new(nil, "hang ten in east berlin", []))
+      F5::Form.new(Comment.new(nil, "hang ten in east berlin", []))
     end
 
     before { model.validate({}) }
