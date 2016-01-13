@@ -80,7 +80,7 @@ class Foundation6Test < Minitest::Spec
 <form action=\"/posts\">ID
 <input name=\"id\" type=\"text\" value=\"1\" id=\"form_id\" />
 <textarea name=\"body\" type=\"text\" id=\"form_body\">Nice!</textarea>
-<fieldset><input name=\"replies[email]\" type=\"text\" value=\"\" id=\"form_replies_email\" /></fieldset>
+<fieldset><input name=\"replies[email]\" type=\"text\" value=\"\" id=\"form_replies_0_email\" /></fieldset>
 <input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" id=\"form_uuid\" />
 </form>".gsub("\n", "") }
   end

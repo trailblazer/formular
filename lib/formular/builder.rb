@@ -9,6 +9,10 @@ module Formular
     end
     include Capture
 
+    def call(&block)
+      capture(self, &block)
+    end
+
     def initialize(element: Element.new, path: [], prefix: ["form"], model:, parent:nil)
       @element = element
       @path    = path # e.g. [replies, author]
@@ -54,14 +58,6 @@ module Formular
       @controls[tag].(attributes, options, tag)
     end
 
-    # all private methods here will soon be extracted to Control.
-    private def id!(name, attributes)
-      id = attributes.delete(:id)
-      return if id == false
-      return attributes[:id] = id unless id.nil?
-      attributes[:id] = (@prefix+[name]).join("_")
-    end
-
     def textarea(name, attributes={})
       control(:textarea, name, attributes)
     end
@@ -83,20 +79,28 @@ module Formular
       # TODO: n-level nesting: path with local_path+ AND INDEX FOR COLLECTIONS.
 
       # content
-      content = nested.collect do |model|
-        self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name]).fieldset(&block) # FIXME: fieldset is wrong, should be #call.
+      content = nested.each_with_index.collect do |model, i|
+        self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name, i]).(&block)
       end.join("")
 
-
+      fieldset { content }
     end
 
     def fieldset(&block) # TODO: merge with #form!
       content = capture(self, &block)
+      return if content == "" # DISCUSS: should that be here?
 
       @element.fieldset(content: content)
     end
 
   private
+    # all private methods here will soon be extracted to Control.
+    def id!(name, attributes)
+      id = attributes.delete(:id)
+      return if id == false
+      return attributes[:id] = id unless id.nil?
+      attributes[:id] = (@prefix+[name]).join("_")
+    end
     # [replies, email] => replies[email]
     def form_encoded_name(path)
       path[0].to_s + path[1..-1].collect { |segment| "[#{segment}]" }.join("")
