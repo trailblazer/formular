@@ -66,9 +66,24 @@ class Form < Cell::ViewModel
   # include Cell::Hamlit
 end
 
-class Foundation6Test < Minitest::Spec
-  Reply = Struct.new(:email, :errors)
+class Foundation5Test < Minitest::Spec
+  let (:model) { Comment.new(nil, nil, [Reply.new]) }
+  let (:builder) { Formular::Foundation5::Builder.new(model: model) }
 
+  describe "#input" do
+    it { builder.input(:id, label: "Id").must_equal %{<label >Id<input name="id" type="text" value="" id="form_id" /></label>} }
+    it { builder.input(:id).must_equal                        %{<input name="id" type="text" value="" id="form_id" />} }
+
+    describe "with errors" do
+      let (:model) { Comment.new(nil, nil, [Reply.new], nil, nil, {id: ["wrong!"]}) }
+
+      it { builder.input(:id).must_equal %{<input class="error" name="id" type="text" value="" id="form_id" /><small class="error">["wrong!"]</small>} }
+      it { builder.input(:id, label: "Id").must_equal %{<label >Id<input class="error" name="id" type="text" value="" id="form_id" /></label><small class="error">["wrong!"]</small>} }
+    end
+  end
+end
+
+class Foundation6Test < Minitest::Spec
   describe "valid, initial rendering" do
     let (:model) { Comment.new(1, "Nice!", [Reply.new]) }
 
@@ -92,15 +107,12 @@ class Foundation6Test < Minitest::Spec
     it do
       Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID
 <input name=\"id\" type=\"text\" value=\"\" id=\"form_id\" />
-<label class=\"error\">
 <textarea class=\"error\" name=\"body\" type=\"text\" id=\"form_body\">
 hang ten in east berlin
 </textarea>
-</label>
 <small class=\"error\">[\"body size cannot be greater than 10\"]</small>
 <input type=\"button\" value=\"Submit\" />
-<label class=\"error\">
-<input class=\"error\" name=\"uuid\" type=\"text\" value=\"0x\" id=\"form_uuid\" /></label><small class=\"error\">[\"uuid must be filled\"]</small>
+<input class=\"error\" name=\"uuid\" type=\"text\" value=\"0x\" id=\"form_uuid\" /><small class=\"error\">[\"uuid must be filled\"]</small>
 </form>".gsub("\n", "")
     end
   end

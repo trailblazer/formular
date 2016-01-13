@@ -22,5 +22,8 @@ module Formular
         @element.tag(:textarea, attributes: attributes, content: content) # DISCUSS: save hash lookup for :content?
       end
     end
+
+    class Checkbox < Input
+    end
   end
 end
