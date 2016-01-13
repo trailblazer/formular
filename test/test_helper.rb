@@ -5,4 +5,4 @@ require "minitest/autorun"
 require "cells-slim"
 
 Comment = Struct.new(:id, :body, :replies, :uuid, :public, :errors) # TODO: remove errors!
-Reply   = Struct.new(:id, :errors)
+Reply   = Struct.new(:id, :email, :errors)

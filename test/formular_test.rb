@@ -1,7 +1,7 @@
 require "test_helper"
 
 class FormularTest < Minitest::Spec
-  let (:model) { Comment.new(nil, nil, [Reply.new]) }
+  let (:model) { Comment.new(nil, "Amazing!", [Reply.new]) }
   let (:builder) { Formular::Builder.new(model: model) }
 
   describe "id" do
@@ -36,5 +36,11 @@ class FormularTest < Minitest::Spec
         end.must_equal nil
       end
     end
+  end
+
+  describe "#textarea" do
+    it { builder.textarea(:body).must_equal %{<textarea name="body" type="text" id="form_body">Amazing!</textarea>} }
+    # nil content still makes closing tag.
+    it { builder.textarea(:id).must_equal %{<textarea name="id" type="text" id="form_id"></textarea>} }
   end
 end
