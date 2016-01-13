@@ -31,10 +31,19 @@ module Formular
         attributes[:checked] = :checked if attributes[:value].to_s == toggles[:on].to_s
         attributes[:value]   = toggles[:on]
 
-        @element.tag(:input, attributes: { type: :hidden, value: toggles[:off], name: attributes[:name] }) + super
+        # DISCUSS: refactor to #render
+        @element.tag(:input, attributes: { type: :hidden, value: toggles[:off], name: attributes[:name] }) +
+          super +
+          label(attributes, options)
       end
 
     private
+    # DISCUSS: pass in content?
+      def label(attributes, options) # DISCUSS: should labels be part of a Control or a higher-level widget?
+        return "" unless options[:label]
+        @element.tag(:label, attributes: { for: attributes[:id] }, content: "#{options[:label]}")
+      end
+
       def toggles
         { on: 1, off: 0}
       end

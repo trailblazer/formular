@@ -54,5 +54,17 @@ class FormularTest < Minitest::Spec
       let (:model) { Comment.new(nil, nil, nil, nil, 1) }
       it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" value="1" id="form_public" checked="checked" />} }
     end
+
+    describe ":label" do
+      it { builder.checkbox(:public, label: "Public?").must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" value="1" id="form_public" /><label for="form_public">Public?</label>} }
+    end
+  end
+
+  describe "#radio" do
+
+  end
+
+  describe "#select" do
+
   end
 end

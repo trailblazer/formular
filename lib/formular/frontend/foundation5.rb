@@ -38,10 +38,6 @@ module Formular
 
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
       class Checkbox < Formular::Builder::Checkbox
-        def call(attributes, options, tag=:input)
-          return super unless options[:label]
-          super + @element.tag(:label, attributes: { for: attributes[:id] }, content: "#{options[:label]}")
-        end
       end
     end
     # TODO: TEST that attributes hash is immutuable.
