@@ -71,21 +71,21 @@ class Foundation5Test < Minitest::Spec
   let (:builder) { Formular::Foundation5::Builder.new(model: model) }
 
   describe "#input" do
-    it { builder.input(:id, label: "Id").must_equal %{<label >Id<input name="id" type="text" value="" id="form_id" /></label>} }
-    it { builder.input(:id).must_equal                        %{<input name="id" type="text" value="" id="form_id" />} }
+    it { builder.input(:id, label: "Id").must_equal %{<label >Id<input name="id" type="text" id="form_id" value="" /></label>} }
+    it { builder.input(:id).must_equal                        %{<input name="id" type="text" id="form_id" value="" />} }
 
     describe "with errors" do
       let (:model) { Comment.new(nil, nil, [Reply.new], nil, nil, {id: ["wrong!"]}) }
 
-      it { builder.input(:id).must_equal %{<input class="error" name="id" type="text" value="" id="form_id" /><small class="error">["wrong!"]</small>} }
-      it { builder.input(:id, label: "Id").must_equal %{<label >Id<input class="error" name="id" type="text" value="" id="form_id" /></label><small class="error">["wrong!"]</small>} }
+      it { builder.input(:id).must_equal %{<input class="error" name="id" type="text" id="form_id" value="" /><small class="error">["wrong!"]</small>} }
+      it { builder.input(:id, label: "Id").must_equal %{<label >Id<input class="error" name="id" type="text" id="form_id" value="" /></label><small class="error">["wrong!"]</small>} }
     end
   end
 
   describe "#checkbox" do
     describe "unchecked" do
-      it { builder.checkbox(:public, label: "Public?").must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" value="1" id="form_public" /><label for="form_public">Public?</label>} }
-      it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" value="1" id="form_public" />} }
+      it { builder.checkbox(:public, label: "Public?").must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public" value="1" /><label for="form_public">Public?</label>} }
+      it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public" value="1" />} }
     end
 
     describe "with errors" do
@@ -98,13 +98,13 @@ class Foundation6Test < Minitest::Spec
   describe "valid, initial rendering" do
     let (:model) { Comment.new(1, "Nice!", [Reply.new]) }
 
-    it { Comment::NewCell.new(model).().must_equal "<New></New>
-<form action=\"/posts\">ID
-<input name=\"id\" type=\"text\" value=\"1\" id=\"form_id\" />
-<textarea name=\"body\" type=\"text\" id=\"form_body\">Nice!</textarea>
-<fieldset><input name=\"replies[email]\" type=\"text\" value=\"\" id=\"form_replies_0_email\" /></fieldset>
-<input type=\"button\" value=\"Submit\" /><input name=\"uuid\" type=\"text\" value=\"0x\" id=\"form_uuid\" />
-</form>".gsub("\n", "") }
+    it { Comment::NewCell.new(model).().must_equal %{<New></New>
+<form action="/posts">ID
+<input name="id" type="text" id="form_id" value="1" />
+<textarea name="body" id="form_body">Nice!</textarea>
+<fieldset><input name="replies[email]" type="text" id="form_replies_0_email" value="" /></fieldset>
+<input type="button" value="Submit" /><input name="uuid" type="text" value="0x" id="form_uuid" />
+</form>}.gsub("\n", "") }
   end
 
 
@@ -116,15 +116,15 @@ class Foundation6Test < Minitest::Spec
     before { model.validate({}) }
 
     it do
-      Comment::NewCell.new(model).().must_equal "<New></New><form action=\"/posts\">ID
-<input name=\"id\" type=\"text\" value=\"\" id=\"form_id\" />
-<textarea class=\"error\" name=\"body\" type=\"text\" id=\"form_body\">
+      Comment::NewCell.new(model).().must_equal %{<New></New><form action="/posts">ID
+<input name="id" type="text" id="form_id" value="" />
+<textarea class="error" name="body" id="form_body">
 hang ten in east berlin
 </textarea>
-<small class=\"error\">[\"body size cannot be greater than 10\"]</small>
-<input type=\"button\" value=\"Submit\" />
-<input class=\"error\" name=\"uuid\" type=\"text\" value=\"0x\" id=\"form_uuid\" /><small class=\"error\">[\"uuid must be filled\"]</small>
-</form>".gsub("\n", "")
+<small class="error">["body size cannot be greater than 10"]</small>
+<input type="button" value="Submit" />
+<input class="error" name="uuid" type="text" value="0x" id="form_uuid" /><small class="error">["uuid must be filled"]</small>
+</form>}.gsub("\n", "")
     end
   end
 end

@@ -26,7 +26,6 @@ no guessing, so different public methods. can be abstracted to a "guessing layer
 = f.checkbox :is_public, label: "Public?"
 
 `value: 1` is automatic.
-checked_value
 unchecked_value
 
 

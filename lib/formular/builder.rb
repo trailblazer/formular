@@ -35,7 +35,7 @@ module Formular
     end
 
     def input(name, attributes={})
-      control(:input, name, attributes)
+      control(:input, name, { type: :text }.merge(attributes))
     end
 
     # normalize generic options.
@@ -54,9 +54,7 @@ module Formular
         reader_value: reader_value,
       )
 
-      attributes = { name: form_encoded_name(path), type: :text,
-        value: reader_value,
-         }.merge(attributes)
+      attributes = { name: form_encoded_name(path) }.merge(attributes)
 
       # optional
       id!(name, attributes)

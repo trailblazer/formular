@@ -14,6 +14,8 @@ module Formular
       end
 
       def call(attributes, options, tag=:input)
+        attributes[:value] ||= options[:reader_value]
+
         @element.tag(tag, attributes: attributes, content: options[:content]) # DISCUSS: save hash lookup for :content?
       end
 
@@ -24,7 +26,7 @@ module Formular
 
     class Textarea < Input
       def call(attributes, options, tag=:textarea)
-        attributes= attributes.dup # FIXME.
+        attributes[:value] ||= options[:reader_value] # FIXME.
 
         content = attributes.delete(:value) || ""
 
@@ -36,12 +38,13 @@ module Formular
     # value => actual state of model property. => model_value/reader_value
     class Checkbox < Input
       def call(attributes, options, *)
-        attributes= attributes.dup # FIXME.
+        # options = default_values.merge(options)
+        options[:unchecked_value] ||= default_values[:unchecked]
+puts "@@@@@ #{attributes.inspect}"
+        attributes[:value] ||= default_values[:value]
 
-        options = toggle_values.merge(options)
 
-        attributes[:checked] = :checked if attributes[:value].to_s == options[:checked_value].to_s
-        attributes[:value]   = options[:checked_value]
+        attributes[:checked] = :checked if attributes[:value].to_s == options[:reader_value].to_s
 
         # DISCUSS: refactor to #render
         @element.tag(:input, attributes: { type: :hidden, value: options[:unchecked_value], name: attributes[:name] }) +
@@ -52,14 +55,14 @@ module Formular
     private
       include Label
 
-      def toggle_values
-        { checked_value: 1, unchecked_value: 0}
+      def default_values
+        { value: 1, unchecked: 0}
       end
     end
 
     class Radio < Input
       def call(attributes, options, *)
-        attributes= attributes.dup # FIXME.
+        attributes[:value] ||= options[:reader_value] # FIXME.
 
         attributes[:id] += "_#{attributes[:value]}"
         attributes[:checked] = :checked if attributes[:value].to_s == options[:reader_value].to_s

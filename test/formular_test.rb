@@ -5,16 +5,16 @@ class FormularTest < Minitest::Spec
   let (:builder) { Formular::Builder.new(model: model) }
 
   describe "id" do
-    it { builder.input(:id).must_equal %{<input name="id" type="text" value="" id="form_id" />} }
+    it { builder.input(:id).must_equal %{<input name="id" type="text" id="form_id" value="" />} }
     # allow id off.
     it { builder.input(:id, id: false).must_equal %{<input name="id" type="text" value="" />} }
     # allow manual id.
-    it { builder.input(:id, id: "false").must_equal %{<input name="id" type="text" value="" id="false" />} }
+    it { builder.input(:id, id: "false").must_equal %{<input name="id" type="text" id="false" value="" />} }
 
     it do
       builder.nested(:replies) do |f|
         f.input(:id)
-      end.must_equal %{<fieldset><input name="replies[id]" type="text" value="" id="form_replies_0_id" /></fieldset>}
+      end.must_equal %{<fieldset><input name="replies[id]" type="text" id="form_replies_0_id" value="" /></fieldset>}
     end
   end
 
@@ -24,7 +24,7 @@ class FormularTest < Minitest::Spec
     it do
       builder.nested(:replies) do |f|
         f.input(:id)
-      end.must_equal %{<fieldset><input name="replies[id]" type="text" value="" id="form_replies_0_id" /><input name="replies[id]" type="text" value="" id="form_replies_1_id" /></fieldset>}
+      end.must_equal %{<fieldset><input name="replies[id]" type="text" id="form_replies_0_id" value="" /><input name="replies[id]" type="text" id="form_replies_1_id" value="" /></fieldset>}
     end
 
 
@@ -39,27 +39,27 @@ class FormularTest < Minitest::Spec
   end
 
   describe "#textarea" do
-    it { builder.textarea(:body).must_equal %{<textarea name="body" type="text" id="form_body">Amazing!</textarea>} }
+    it { builder.textarea(:body).must_equal %{<textarea name="body" id="form_body">Amazing!</textarea>} }
     # nil content still makes closing tag.
-    it { builder.textarea(:id).must_equal %{<textarea name="id" type="text" id="form_id"></textarea>} }
+    it { builder.textarea(:id).must_equal %{<textarea name="id" id="form_id"></textarea>} }
   end
 
   describe "#checkbox" do
     describe "unchecked" do
-      it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" value="1" id="form_public" />} }
+      it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public" value="1" />} }
     end
 
     describe "checked!" do
       let (:model) { Comment.new(nil, nil, nil, nil, 1) }
-      it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" value="1" id="form_public" checked="checked" />} }
+      it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public" value="1" checked="checked" />} }
     end
 
     describe ":label" do
-      it { builder.checkbox(:public, label: "Public?").must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" value="1" id="form_public" /><label for="form_public">Public?</label>} }
+      it { builder.checkbox(:public, label: "Public?").must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public" value="1" /><label for="form_public">Public?</label>} }
     end
 
     describe ":checked_value/:unchecked_value" do
-      it { builder.checkbox(:public, checked_value: 2, unchecked_value: 3,).must_equal %{<input type="hidden" value="3" name="public" /><input name="public" type="checkbox" value="2" id="form_public" />} }
+      it { builder.checkbox(:public, value: 2, unchecked_value: 3).must_equal %{<input type="hidden" value="3" name="public" /><input name="public" type="checkbox" value="2" id="form_public" />} }
     end
   end
 
