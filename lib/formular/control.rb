@@ -1,3 +1,4 @@
+# Controls treat attributes as mutuable.
 module Formular
   class Builder # i hate that, please, give use namespace Builder
     module Label # i choose not to make this a separate class on purpose.
@@ -5,6 +6,17 @@ module Formular
       def label(attributes, options) # DISCUSS: should labels be part of a Control or a higher-level widget?
         return "" unless options[:label]
         @element.tag(:label, attributes: { for: attributes[:id] }, content: "#{options[:label]}")
+      end
+    end
+
+    module Checked
+      def checked!(attributes, options)
+        if attributes.has_key?(:checked)
+          attributes.delete(:checked) if !attributes[:checked]
+          return
+        end
+
+        attributes[:checked] = :checked if attributes[:value].to_s == options[:reader_value].to_s
       end
     end
 
@@ -34,29 +46,37 @@ module Formular
       end
     end
 
-    # checked_value = rendered_value
-    # value => actual state of model property. => model_value/reader_value
+    # value = rendered value
+    # options[:reader_value]
+    # Stand-alone checkbox a la "Accept our terms: []".
     class Checkbox < Input
       def call(attributes, options, *)
-        # options = default_values.merge(options)
         options[:unchecked_value] ||= default_values[:unchecked]
-puts "@@@@@ #{attributes.inspect}"
+
         attributes[:value] ||= default_values[:value]
 
-
-        attributes[:checked] = :checked if attributes[:value].to_s == options[:reader_value].to_s
+        # FIXME: Merge with Radio.
+        attributes[:id] += "_#{attributes[:value]}"
+        checked!(attributes, options)
 
         # DISCUSS: refactor to #render
-        @element.tag(:input, attributes: { type: :hidden, value: options[:unchecked_value], name: attributes[:name] }) +
-          super +
-          label(attributes, options)
+        html = ""
+        html << render_hidden(attributes, options) unless options[:skip_hidden]
+        html << super
+        html << label(attributes, options)
       end
 
     private
       include Label
+      include Checked
 
       def default_values
         { value: 1, unchecked: 0}
+      end
+
+      # <input type="hidden" value="0" name="public" />
+      def render_hidden(attributes, options)
+        @element.tag(:input, attributes: { type: :hidden, value: options[:unchecked_value], name: attributes[:name] })
       end
     end
 
@@ -65,7 +85,8 @@ puts "@@@@@ #{attributes.inspect}"
         attributes[:value] ||= options[:reader_value] # FIXME.
 
         attributes[:id] += "_#{attributes[:value]}"
-        attributes[:checked] = :checked if attributes[:value].to_s == options[:reader_value].to_s
+
+        checked!(attributes, options)
 
         super +
           label(attributes, options)
@@ -74,6 +95,7 @@ puts "@@@@@ #{attributes.inspect}"
       # TODO: move label to Input.
     private
       include Label
+      include Checked
     end
   end
 end

@@ -46,20 +46,27 @@ class FormularTest < Minitest::Spec
 
   describe "#checkbox" do
     describe "unchecked" do
-      it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public" value="1" />} }
+      it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public_1" value="1" />} }
     end
 
-    describe "checked!" do
+    describe "implicitly checked" do
       let (:model) { Comment.new(nil, nil, nil, nil, 1) }
-      it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public" value="1" checked="checked" />} }
+      it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public_1" value="1" checked="checked" />} }
+    end
+
+    describe "explicitly :checked" do
+      it { builder.checkbox(:public, checked: true).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" checked="true" id="form_public_1" value="1" />} }
+      # false/nil will NOT render the checked attribute.
+      it { builder.checkbox(:public, checked: false).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public_1" value="1" />} }
+      it { builder.checkbox(:public, checked: nil).must_equal   %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public_1" value="1" />} }
     end
 
     describe ":label" do
-      it { builder.checkbox(:public, label: "Public?").must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public" value="1" /><label for="form_public">Public?</label>} }
+      it { builder.checkbox(:public, label: "Public?").must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public_1" value="1" /><label for="form_public_1">Public?</label>} }
     end
 
-    describe ":checked_value/:unchecked_value" do
-      it { builder.checkbox(:public, value: 2, unchecked_value: 3).must_equal %{<input type="hidden" value="3" name="public" /><input name="public" type="checkbox" value="2" id="form_public" />} }
+    describe ":value/:unchecked_value" do
+      it { builder.checkbox(:public, value: 2, unchecked_value: 3).must_equal %{<input type="hidden" value="3" name="public" /><input name="public" type="checkbox" value="2" id="form_public_2" />} }
     end
   end
 
@@ -68,9 +75,16 @@ class FormularTest < Minitest::Spec
       it { builder.radio(:public, value: 9).must_equal %{<input name="public" type="radio" value="9" id="form_public_9" />} }
     end
 
-    describe "checked!" do
+    describe "implicitly checked" do
       let (:model) { Comment.new(nil, nil, nil, nil, 9) }
       it { builder.radio(:public, value: 9).must_equal %{<input name="public" type="radio" value="9" id="form_public_9" checked="checked" />} }
+    end
+
+    describe "explicitly checked" do
+      let (:model) { Comment.new(nil, nil, nil, nil, 1) }
+      it { builder.radio(:public, value: 1, checked: true).must_equal  %{<input name="public" type="radio" value="1" checked="true" id="form_public_1" />} }
+      it { builder.radio(:public, value: 2, checked: true).must_equal  %{<input name="public" type="radio" value="2" checked="true" id="form_public_2" />} }
+      it { builder.radio(:public, value: 1, checked: false).must_equal %{<input name="public" type="radio" value="1" id="form_public_1" />} }
     end
 
     describe ":label" do
@@ -86,8 +100,11 @@ class FormularTest < Minitest::Spec
       it do
         # DISCUSS: allow checked: 1 here as well?
         builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, mdl|
-          r.radio(:public, value: mdl.last, label: mdl.first)
-        end.must_equal %{<input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label><input name="public" type="radio" value="2" id="form_public_2" /><label for="form_public_2">Two</label><input name="public" type="radio" value="3" id="form_public_3" checked="checked" /><label for="form_public_3">Three</label>}
+          r.radio(:public, value: mdl.last, label: mdl.first, checked: (mdl==2))
+        end.must_equal %{
+<input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label>
+<input name="public" type="radio" value="2" id="form_public_2" checked="checked" /><label for="form_public_2">Two</label>
+<input name="public" type="radio" value="3" id="form_public_3" /><label for="form_public_3">Three</label>}.gsub("\n", "")
       end
     end
 
@@ -99,9 +116,12 @@ class FormularTest < Minitest::Spec
       # end
 
       it do
-        builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]], checked: [2,3] do |r, mdl|
-          r.checkbox(:public, value: mdl.last, label: mdl.first)
-        end.must_equal %{<input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label><input name="public" type="radio" value="2" id="form_public_2" /><label for="form_public_2">Two</label><input name="public" type="radio" value="3" id="form_public_3" checked="checked" /><label for="form_public_3">Three</label>}
+        builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, mdl|
+          r.checkbox(:public, value: mdl.last, label: mdl.first, checked: (mdl == 2 or mdl == 3), skip_hidden: true)
+        end.must_equal %{
+<input name="public" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
+<input name="public" type="checkbox" value="2" id="form_public_2" checked="checked" /><label for="form_public_2">Two</label>
+<input name="public" type="checkbox" value="3" id="form_public_3" checked="checked" /><label for="form_public_3">Three</label>}.gsub("\n", "")
       end
     end
   end

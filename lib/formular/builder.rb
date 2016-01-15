@@ -39,6 +39,9 @@ module Formular
     end
 
     # normalize generic options.
+    # provides
+    #  attributes:
+    #  options: :id
     private def control(tag, name, attributes, options={}) # TODO: rename tag to control_name
       reader_value = @model.send(name)
 
@@ -79,7 +82,8 @@ module Formular
     end
 
     def checkbox(name, attributes={})
-      control(:checkbox, name, { type: :checkbox }.merge(attributes), { private_options: [:checked_value, :unchecked_value] })
+      control(:checkbox, name, { type: :checkbox }.merge(attributes),
+        { private_options: [:checked_value, :unchecked_value, :skip_hidden] })
     end
 
     def radio(name, attributes={})

@@ -27,6 +27,8 @@ no guessing, so different public methods. can be abstracted to a "guessing layer
 
 `value: 1` is automatic.
 unchecked_value
+checked: "checked" in attributes
+checked: false/nil => *no* `checked` attribute.
 
 
 ## Key Features
