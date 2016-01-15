@@ -42,6 +42,11 @@ module Formular
     private def control(tag, name, attributes, options={}) # TODO: rename tag to control_name
       reader_value = @model.send(name)
 
+      attributes = attributes.dup
+
+      # TODO: move outside.
+      (options[:private_options] || []).each { |k| options[k] = attributes.delete(k) if attributes.has_key?(k) }
+
       options = options.merge(
         path:         path = @path + [name],
         model:        @model,
@@ -76,7 +81,7 @@ module Formular
     end
 
     def checkbox(name, attributes={})
-      control(:checkbox, name, { type: :checkbox }.merge(attributes))
+      control(:checkbox, name, { type: :checkbox }.merge(attributes), { private_options: [:checked_value, :unchecked_value] })
     end
 
     def radio(name, attributes={})

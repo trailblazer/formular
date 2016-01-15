@@ -57,6 +57,10 @@ class FormularTest < Minitest::Spec
     describe ":label" do
       it { builder.checkbox(:public, label: "Public?").must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" value="1" id="form_public" /><label for="form_public">Public?</label>} }
     end
+
+    describe ":checked_value/:unchecked_value" do
+      it { builder.checkbox(:public, checked_value: 2, unchecked_value: 3,).must_equal %{<input type="hidden" value="3" name="public" /><input name="public" type="checkbox" value="2" id="form_public" />} }
+    end
   end
 
   describe "#radio" do
@@ -77,10 +81,28 @@ class FormularTest < Minitest::Spec
   describe "#collection" do
     let (:model) { Comment.new(nil, nil, nil, nil, 3) }
 
-    it do
-      builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, mdl|
-        r.radio(:public, value: mdl.last, label: mdl.first)
-      end.must_equal %{<input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label><input name="public" type="radio" value="2" id="form_public_2" /><label for="form_public_2">Two</label><input name="public" type="radio" value="3" id="form_public_3" checked="checked" /><label for="form_public_3">Three</label>}
+    describe "with radio" do
+      # with last item "checked".
+      it do
+        # DISCUSS: allow checked: 1 here as well?
+        builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, mdl|
+          r.radio(:public, value: mdl.last, label: mdl.first)
+        end.must_equal %{<input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label><input name="public" type="radio" value="2" id="form_public_2" /><label for="form_public_2">Two</label><input name="public" type="radio" value="3" id="form_public_3" checked="checked" /><label for="form_public_3">Three</label>}
+      end
+    end
+
+    describe "with checkbox" do
+      # it do
+      #   builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]], checked: [2,3] do |r, mdl|
+      #     r.checkbox(:public, value: mdl.last, label: mdl.first)
+      #   end.must_equal %{<input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label><input name="public" type="radio" value="2" id="form_public_2" /><label for="form_public_2">Two</label><input name="public" type="radio" value="3" id="form_public_3" checked="checked" /><label for="form_public_3">Three</label>}
+      # end
+
+      it do
+        builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]], checked: [2,3] do |r, mdl|
+          r.checkbox(:public, value: mdl.last, label: mdl.first)
+        end.must_equal %{<input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label><input name="public" type="radio" value="2" id="form_public_2" /><label for="form_public_2">Two</label><input name="public" type="radio" value="3" id="form_public_3" checked="checked" /><label for="form_public_3">Three</label>}
+      end
     end
   end
 

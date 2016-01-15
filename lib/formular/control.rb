@@ -32,15 +32,19 @@ module Formular
       end
     end
 
+    # checked_value = rendered_value
+    # value => actual state of model property. => model_value/reader_value
     class Checkbox < Input
       def call(attributes, options, *)
         attributes= attributes.dup # FIXME.
 
-        attributes[:checked] = :checked if attributes[:value].to_s == toggles[:on].to_s
-        attributes[:value]   = toggles[:on]
+        options = toggle_values.merge(options)
+
+        attributes[:checked] = :checked if attributes[:value].to_s == options[:checked_value].to_s
+        attributes[:value]   = options[:checked_value]
 
         # DISCUSS: refactor to #render
-        @element.tag(:input, attributes: { type: :hidden, value: toggles[:off], name: attributes[:name] }) +
+        @element.tag(:input, attributes: { type: :hidden, value: options[:unchecked_value], name: attributes[:name] }) +
           super +
           label(attributes, options)
       end
@@ -48,8 +52,8 @@ module Formular
     private
       include Label
 
-      def toggles
-        { on: 1, off: 0}
+      def toggle_values
+        { checked_value: 1, unchecked_value: 0}
       end
     end
 
