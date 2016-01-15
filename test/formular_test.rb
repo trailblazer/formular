@@ -117,11 +117,11 @@ class FormularTest < Minitest::Spec
 
       it do
         builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, mdl|
-          r.checkbox(:public, value: mdl.last, label: mdl.first, checked: (mdl == 2 or mdl == 3), skip_hidden: true)
+          r.checkbox(:public, value: mdl.last, label: mdl.first, checked: (mdl.last == 2 or mdl.last == 3), skip_hidden: true)
         end.must_equal %{
 <input name="public" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
-<input name="public" type="checkbox" value="2" id="form_public_2" checked="checked" /><label for="form_public_2">Two</label>
-<input name="public" type="checkbox" value="3" id="form_public_3" checked="checked" /><label for="form_public_3">Three</label>}.gsub("\n", "")
+<input name="public" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
+<input name="public" type="checkbox" value="3" checked="true" id="form_public_3" /><label for="form_public_3">Three</label>}.gsub("\n", "")
       end
     end
   end
