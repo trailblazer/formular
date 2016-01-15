@@ -25,6 +25,7 @@ module Formular
         textarea: self.class::Textarea.new(@element), # TODO: make this more explicit with container.
         checkbox: self.class::Checkbox.new(@element), # TODO: make this more explicit with container.
         radio:    self.class::Radio.new(@element), # TODO: make this more explicit with container.
+        select:   self.class::Select.new(@element), # TODO: make this more explicit with container.
       }
     end
 
@@ -118,6 +119,10 @@ module Formular
       return if content == "" # DISCUSS: should that be here?
 
       @element.fieldset(content: content)
+    end
+
+    def select(name, collection, *, &block) # FIXME: merge with nested.
+      control(:select, name, { collection: collection, block: block, builder: self }, private_options: [:collection, :block, :builder])
     end
 
   private

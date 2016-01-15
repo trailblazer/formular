@@ -88,8 +88,9 @@ module Formular
 
         checked!(attributes, options)
 
-        super +
-          label(attributes, options)
+        html = ""
+        html << super
+        html << label(attributes, options)
       end
 
       # TODO: move label to Input.
@@ -97,5 +98,23 @@ module Formular
       include Label
       include Checked
     end
+
+    class Select < Input
+      def call(attributes, options, *)
+        content = options[:collection].each_with_index.collect do |cfg, i|
+          options[:block].call self, cfg
+        end.join("")
+
+        html = ""
+        html << @element.tag(:select, attributes: attributes, content: content)
+      end
+
+      # TODO: do we really *need* this DSL method?
+      def option(content, attributes)
+        @element.tag(:option, content: content, attributes: attributes)
+      end
+    end
   end
 end
+
+# DISCUSS: use kw args instead of private_options?

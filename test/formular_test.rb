@@ -99,8 +99,8 @@ class FormularTest < Minitest::Spec
       # with last item "checked".
       it do
         # DISCUSS: allow checked: 1 here as well?
-        builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, mdl|
-          r.radio(:public, value: mdl.last, label: mdl.first, checked: (mdl.last==2))
+        builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, tpl|
+          r.radio(:public, value: tpl.last, label: tpl.first, checked: (tpl.last==2))
         end.must_equal %{
 <input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label>
 <input name="public" type="radio" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
@@ -110,14 +110,14 @@ class FormularTest < Minitest::Spec
 
     describe "with checkbox" do
       # it do
-      #   builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]], checked: [2,3] do |r, mdl|
-      #     r.checkbox(:public, value: mdl.last, label: mdl.first)
+      #   builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]], checked: [2,3] do |r, tpl|
+      #     r.checkbox(:public, value: tpl.last, label: tpl.first)
       #   end.must_equal %{<input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label><input name="public" type="radio" value="2" id="form_public_2" /><label for="form_public_2">Two</label><input name="public" type="radio" value="3" id="form_public_3" checked="checked" /><label for="form_public_3">Three</label>}
       # end
 
       it do
-        builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, mdl|
-          r.checkbox(:public, value: mdl.last, label: mdl.first, checked: (mdl.last == 2 or mdl.last == 3), skip_hidden: true)
+        builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, tpl|
+          r.checkbox(:public, value: tpl.last, label: tpl.first, checked: (tpl.last == 2 or tpl.last == 3), skip_hidden: true)
         end.must_equal %{
 <input name="public" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
 <input name="public" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
@@ -127,6 +127,15 @@ class FormularTest < Minitest::Spec
   end
 
   describe "#select" do
-
+    it do
+      builder.select :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, tpl|
+        r.option(tpl.first, value: tpl.last) # TODO: alias to label.
+      end.must_equal %{
+<select name="public" id="form_public">
+<option value="1">One</option>
+<option value="2">Two</option>
+<option value="3">Three</option>
+</select>}.gsub("\n", "")
+    end
   end
 end
