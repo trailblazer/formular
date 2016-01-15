@@ -100,10 +100,10 @@ class FormularTest < Minitest::Spec
       it do
         # DISCUSS: allow checked: 1 here as well?
         builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, mdl|
-          r.radio(:public, value: mdl.last, label: mdl.first, checked: (mdl==2))
+          r.radio(:public, value: mdl.last, label: mdl.first, checked: (mdl.last==2))
         end.must_equal %{
 <input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label>
-<input name="public" type="radio" value="2" id="form_public_2" checked="checked" /><label for="form_public_2">Two</label>
+<input name="public" type="radio" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
 <input name="public" type="radio" value="3" id="form_public_3" /><label for="form_public_3">Three</label>}.gsub("\n", "")
       end
     end
