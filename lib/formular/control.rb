@@ -1,5 +1,13 @@
 module Formular
   class Builder # i hate that, please, give use namespace Builder
+    module Label # i choose not to make this a separate class on purpose.
+      # DISCUSS: pass in content?
+      def label(attributes, options) # DISCUSS: should labels be part of a Control or a higher-level widget?
+        return "" unless options[:label]
+        @element.tag(:label, attributes: { for: attributes[:id] }, content: "#{options[:label]}")
+      end
+    end
+
     class Input
       def initialize(element)
         @element = element
@@ -38,15 +46,27 @@ module Formular
       end
 
     private
-    # DISCUSS: pass in content?
-      def label(attributes, options) # DISCUSS: should labels be part of a Control or a higher-level widget?
-        return "" unless options[:label]
-        @element.tag(:label, attributes: { for: attributes[:id] }, content: "#{options[:label]}")
-      end
+      include Label
 
       def toggles
         { on: 1, off: 0}
       end
+    end
+
+    class Radio < Input
+      def call(attributes, options, *)
+        attributes= attributes.dup # FIXME.
+
+        attributes[:id] += "_#{attributes[:value]}"
+        attributes[:checked] = :checked if attributes[:value].to_s == options[:reader_value].to_s
+
+        super +
+          label(attributes, options)
+      end
+
+      # TODO: move label to Input.
+    private
+      include Label
     end
   end
 end

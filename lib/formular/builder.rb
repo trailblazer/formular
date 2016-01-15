@@ -24,6 +24,7 @@ module Formular
         input:    self.class::Input.new(@element), # TODO: make this more explicit with container.
         textarea: self.class::Textarea.new(@element), # TODO: make this more explicit with container.
         checkbox: self.class::Checkbox.new(@element), # TODO: make this more explicit with container.
+        radio:    self.class::Radio.new(@element), # TODO: make this more explicit with container.
       }
     end
 
@@ -39,14 +40,17 @@ module Formular
 
     # normalize generic options.
     private def control(tag, name, attributes, options={}) # TODO: rename tag to control_name
+      reader_value = @model.send(name)
+
       options = options.merge(
-        path:  path = @path + [name],
-        model: @model,
-        error: error = @errors[name],
+        path:         path = @path + [name],
+        model:        @model,
+        error:        error = @errors[name],
+        reader_value: reader_value,
       )
 
       attributes = { name: form_encoded_name(path), type: :text,
-        value: @model.send(name),
+        value: reader_value,
          }.merge(attributes)
 
       # optional
@@ -75,6 +79,10 @@ module Formular
       control(:checkbox, name, { type: :checkbox }.merge(attributes))
     end
 
+    def radio(name, attributes={})
+      control(:radio, name, { type: :radio }.merge(attributes))
+    end
+
     def nested(name, collection:false, &block)
       nested = @model.send(name)
       # TODO: implement for collection, too. (magic or explicit collection: true?)
@@ -87,6 +95,15 @@ module Formular
       end.join("")
 
       fieldset { content }
+    end
+    def collection(name, collection, *) # FIXME: merge with nested.
+      collection.each_with_index.collect do |cfg, i|
+        # label, model = cfg
+        # DISCUSS: could we use call here somehow?
+        # self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name, i]).(&block)
+        # yield self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name, i]).(&block), model
+        yield self, cfg
+      end.join("")
     end
 
     def fieldset(&block) # TODO: merge with #form!

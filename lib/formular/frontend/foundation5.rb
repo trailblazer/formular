@@ -16,7 +16,7 @@ module Formular
 
           input +
           # @element.tag(:label, attributes: shared, content: input) +
-          @element.tag(:small, attributes: shared, content: options[:error])
+            @element.tag(:small, attributes: shared, content: options[:error])
         end
       end
 
