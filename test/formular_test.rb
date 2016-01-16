@@ -137,5 +137,17 @@ class FormularTest < Minitest::Spec
 <option value="3">Three</option>
 </select>}.gsub("\n", "")
     end
+
+    # selected explicitly.
+    it do
+      builder.select :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, tpl|
+        r.option(tpl.first, value: tpl.last, selected: (tpl.last == 2)) # TODO: alias to label.
+      end.must_equal %{
+<select name="public" id="form_public">
+<option value="1">One</option>
+<option value="2" selected="true">Two</option>
+<option value="3">Three</option>
+</select>}.gsub("\n", "")
+    end
   end
 end

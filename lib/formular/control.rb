@@ -10,13 +10,13 @@ module Formular
     end
 
     module Checked
-      def checked!(attributes, options)
-        if attributes.has_key?(:checked)
-          attributes.delete(:checked) if !attributes[:checked]
+      def checked!(attributes, options, option_name=:checked)
+        if attributes.has_key?(option_name)
+          attributes.delete(option_name) if !attributes[option_name]
           return
         end
 
-        attributes[:checked] = :checked if attributes[:value].to_s == options[:reader_value].to_s
+        attributes[option_name] = :checked if attributes[:value].to_s == options[:reader_value].to_s
       end
     end
 
@@ -105,14 +105,19 @@ module Formular
           options[:block].call self, cfg
         end.join("")
 
+
         html = ""
         html << @element.tag(:select, attributes: attributes, content: content)
       end
 
       # TODO: do we really *need* this DSL method?
       def option(content, attributes)
+        checked!(attributes, {}, :selected)
         @element.tag(:option, content: content, attributes: attributes)
       end
+
+    private
+      include Checked
     end
   end
 end
