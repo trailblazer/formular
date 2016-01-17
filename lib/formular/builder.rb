@@ -118,7 +118,7 @@ module Formular
       content = capture(self, &block)
       return if content == "" # DISCUSS: should that be here?
 
-      @element.fieldset(content: content)
+      @element.tag(:fieldset, content: content)
     end
 
     def select(name, collection, *, &block) # FIXME: merge with nested.

@@ -14,9 +14,5 @@ module Formular
 
       attributes.collect { |k,v| %{#{k}="#{v}"} }.join(" ")
     end
-
-    def fieldset(attributes:{}, content:)
-      %{<fieldset>#{content}</fieldset>}
-    end
   end
 end
