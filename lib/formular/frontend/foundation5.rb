@@ -16,7 +16,7 @@ module Formular
 
           input +
           # @element.tag(:label, attributes: shared, content: input) +
-            @element.tag(:small, attributes: shared, content: options[:error])
+            @tag.(:small, attributes: shared, content: options[:error])
         end
       end
 
@@ -28,7 +28,7 @@ module Formular
 
         def call(attributes, options, tag=:input)
           return super unless options[:label]
-          @element.tag(:label, attributes: {}, content: "#{options[:label]}#{super}")
+          @tag.(:label, attributes: {}, content: "#{options[:label]}#{super}")
         end
       end
 

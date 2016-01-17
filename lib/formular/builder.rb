@@ -13,26 +13,26 @@ module Formular
       capture(self, &block)
     end
 
-    def initialize(element: Element.new, path: [], prefix: ["form"], model:, parent:nil)
-      @element = element
+    def initialize(tag: Tag.new, path: [], prefix: ["form"], model:, parent:nil)
+      @tag     = tag
       @path    = path # e.g. [replies, author]
       @model   = model
       @errors  = model.errors||{} # TODO: allow other ways to inject errors object.
       @prefix  = prefix
 
       @controls = {
-        input:    self.class::Input.new(@element),
-        textarea: self.class::Textarea.new(@element),
-        checkbox: self.class::Checkbox.new(@element),
-        radio:    self.class::Radio.new(@element),
-        select:   self.class::Select.new(@element),
+        input:    self.class::Input.new(@tag),
+        textarea: self.class::Textarea.new(@tag),
+        checkbox: self.class::Checkbox.new(@tag),
+        radio:    self.class::Radio.new(@tag),
+        select:   self.class::Select.new(@tag),
       }
     end
 
     def form(**attributes, &block)
       content = capture(self, &block)
 
-      @element.tag(:form, attributes: attributes, content: content)
+      @tag.(:form, attributes: attributes, content: content)
     end
 
     def input(name, attributes={})
@@ -78,7 +78,7 @@ module Formular
 
     def button(attributes={})
       # TODO: use control!
-      @element.tag(:input, attributes: { type: :button }.merge(attributes))
+      @tag.(:input, attributes: { type: :button }.merge(attributes))
       # input({ type: :button }.merge(attributes))
     end
 
@@ -118,7 +118,7 @@ module Formular
       content = capture(self, &block)
       return if content == "" # DISCUSS: should that be here?
 
-      @element.tag(:fieldset, content: content)
+      @tag.(:fieldset, content: content)
     end
 
     def select(name, collection, *, &block) # FIXME: merge with nested.

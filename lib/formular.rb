@@ -4,6 +4,6 @@ module Formular
   # Your code goes here...
 end
 
-require "formular/element"
+require "formular/tag"
 require "formular/builder"
 require "formular/control"

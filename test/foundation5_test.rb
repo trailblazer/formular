@@ -102,7 +102,7 @@ class Foundation6Test < Minitest::Spec
 <form action="/posts">ID
 <input name="id" type="text" id="form_id" value="1" />
 <textarea name="body" id="form_body">Nice!</textarea>
-<fieldset><input name="replies[email]" type="text" id="form_replies_0_email" value="" /></fieldset>
+<fieldset ><input name="replies[email]" type="text" id="form_replies_0_email" value="" /></fieldset>
 <input type="button" value="Submit" /><input name="uuid" type="text" value="0x" id="form_uuid" />
 </form>}.gsub("\n", "") }
   end

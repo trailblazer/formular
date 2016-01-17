@@ -5,7 +5,7 @@ module Formular
       # DISCUSS: pass in content?
       def label(attributes, options) # DISCUSS: should labels be part of a Control or a higher-level widget?
         return "" unless options[:label]
-        @element.tag(:label, attributes: { for: attributes[:id] }, content: "#{options[:label]}")
+        @tag.(:label, attributes: { for: attributes[:id] }, content: "#{options[:label]}")
       end
     end
 
@@ -21,14 +21,14 @@ module Formular
     end
 
     class Input
-      def initialize(element)
-        @element = element
+      def initialize(tag)
+        @tag = tag
       end
 
       def call(attributes, options, tag=:input)
         attributes[:value] ||= options[:reader_value]
 
-        @element.tag(tag, attributes: attributes, content: options[:content]) # DISCUSS: save hash lookup for :content?
+        @tag.(tag, attributes: attributes, content: options[:content]) # DISCUSS: save hash lookup for :content?
       end
 
       def error(attributes, options, tag=:input)
@@ -42,7 +42,7 @@ module Formular
 
         content = attributes.delete(:value) || ""
 
-        @element.tag(:textarea, attributes: attributes, content: content) # DISCUSS: save hash lookup for :content?
+        @tag.(:textarea, attributes: attributes, content: content) # DISCUSS: save hash lookup for :content?
       end
     end
 
@@ -76,7 +76,7 @@ module Formular
 
       # <input type="hidden" value="0" name="public" />
       def render_hidden(attributes, options)
-        @element.tag(:input, attributes: { type: :hidden, value: options[:unchecked_value], name: attributes[:name] })
+        @tag.(:input, attributes: { type: :hidden, value: options[:unchecked_value], name: attributes[:name] })
       end
     end
 
@@ -107,13 +107,13 @@ module Formular
 
 
         html = ""
-        html << @element.tag(:select, attributes: attributes, content: content)
+        html << @tag.(:select, attributes: attributes, content: content)
       end
 
       # TODO: do we really *need* this DSL method?
       def option(content, attributes)
         checked!(attributes, {}, :selected)
-        @element.tag(:option, content: content, attributes: attributes)
+        @tag.(:option, content: content, attributes: attributes)
       end
 
     private
