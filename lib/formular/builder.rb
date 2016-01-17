@@ -123,9 +123,9 @@ module Formular
       @tag.(:fieldset, content: content)
     end
 
-    def select(name, collection, *, &block) # FIXME: merge with nested.
+    def select(name, collection, attributes={}, &block) # FIXME: merge with nested.
       # FIXME: make kw args in controls!
-      control(:select, name, { collection: collection, block: block }, private_options: [:collection, :block, :builder, :builder], builder: self)
+      control(:select, name, attributes.merge(collection: collection, block: block), private_options: [:collection, :block, :selected], builder: self)
     end
 
   private

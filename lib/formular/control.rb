@@ -102,15 +102,17 @@ module Formular
     class Select < Input
       def call(attributes, options)
         content = options[:collection].each_with_index.collect do |cfg, i|
-          options[:block].call self, cfg
-        end.join("")
+          name, value = cfg
 
+          options[:block] ?
+            options[:block].call(self, cfg) :                   # user leverages DSL.
+            option(name, value: value, selected: options[:selected].include?(value)) # automatically create <option>.
+        end.join("")
 
         html = ""
         html << @tag.(:select, attributes: attributes, content: content)
       end
 
-      # TODO: do we really *need* this DSL method?
       def option(content, attributes)
         checked!(attributes, {}, :selected)
         @tag.(:option, content: content, attributes: attributes)
