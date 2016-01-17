@@ -25,19 +25,19 @@ module Formular
         @tag = tag
       end
 
-      def call(attributes, options, tag=:input)
+      def call(attributes, options)
         attributes[:value] ||= options[:reader_value]
 
-        @tag.(tag, attributes: attributes, content: options[:content]) # DISCUSS: save hash lookup for :content?
+        @tag.(:input, attributes: attributes, content: options[:content]) # DISCUSS: save hash lookup for :content?
       end
 
-      def error(attributes, options, tag=:input)
-        call(attributes, options, tag)
+      def error(attributes, options)
+        call(attributes, options)
       end
     end
 
     class Textarea < Input
-      def call(attributes, options, tag=:textarea)
+      def call(attributes, options)
         attributes[:value] ||= options[:reader_value] # FIXME.
 
         content = attributes.delete(:value) || ""
@@ -50,7 +50,7 @@ module Formular
     # options[:reader_value]
     # Stand-alone checkbox a la "Accept our terms: []".
     class Checkbox < Input
-      def call(attributes, options, *)
+      def call(attributes, options)
         options[:unchecked_value] ||= default_values[:unchecked]
 
         attributes[:value] ||= default_values[:value]
@@ -81,7 +81,7 @@ module Formular
     end
 
     class Radio < Input
-      def call(attributes, options, *)
+      def call(attributes, options)
         attributes[:value] ||= options[:reader_value] # FIXME.
 
         attributes[:id] += "_#{attributes[:value]}"
@@ -100,7 +100,7 @@ module Formular
     end
 
     class Select < Input
-      def call(attributes, options, *)
+      def call(attributes, options)
         content = options[:collection].each_with_index.collect do |cfg, i|
           options[:block].call self, cfg
         end.join("")

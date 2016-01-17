@@ -26,7 +26,7 @@ module Formular
       class Input < Formular::Builder::Input # TODO: fuck inheritance.
         include ErrorWrap
 
-        def call(attributes, options, tag=:input)
+        def call(attributes, options)
           return super unless options[:label]
           @tag.(:label, attributes: {}, content: "#{options[:label]}#{super}")
         end
