@@ -15,10 +15,6 @@ module Formular
       attributes.collect { |k,v| %{#{k}="#{v}"} }.join(" ")
     end
 
-    def form(options)
-      %{<form #{html_attrs(options[:attributes])}>#{options[:content]}</form>}
-    end
-
     def fieldset(attributes:{}, content:)
       %{<fieldset>#{content}</fieldset>}
     end

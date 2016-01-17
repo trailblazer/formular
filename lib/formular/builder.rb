@@ -21,18 +21,18 @@ module Formular
       @prefix  = prefix
 
       @controls = {
-        input:    self.class::Input.new(@element), # TODO: make this more explicit with container.
-        textarea: self.class::Textarea.new(@element), # TODO: make this more explicit with container.
-        checkbox: self.class::Checkbox.new(@element), # TODO: make this more explicit with container.
-        radio:    self.class::Radio.new(@element), # TODO: make this more explicit with container.
-        select:   self.class::Select.new(@element), # TODO: make this more explicit with container.
+        input:    self.class::Input.new(@element),
+        textarea: self.class::Textarea.new(@element),
+        checkbox: self.class::Checkbox.new(@element),
+        radio:    self.class::Radio.new(@element),
+        select:   self.class::Select.new(@element),
       }
     end
 
     def form(**attributes, &block)
       content = capture(self, &block)
 
-      @element.form(attributes: attributes, content: content)
+      @element.tag(:form, attributes: attributes, content: content)
     end
 
     def input(name, attributes={})
