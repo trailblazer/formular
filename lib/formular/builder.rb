@@ -13,12 +13,13 @@ module Formular
       capture(self, &block)
     end
 
-    def initialize(tag: Tag.new, path: [], prefix: ["form"], model:, parent:nil)
-      @tag     = tag
-      @path    = path # e.g. [replies, author]
-      @model   = model
-      @errors  = model.errors||{} # TODO: allow other ways to inject errors object.
-      @prefix  = prefix
+    def initialize(tag: Tag.new, path: [], prefix: ["form"], model:, parent:nil, defaults:{})
+      @tag      = tag
+      @path     = path # e.g. [replies, author]
+      @model    = model
+      @errors   = model.errors||{} # TODO: allow other ways to inject errors object.
+      @prefix   = prefix
+      @defaults = defaults
 
       @controls = {
         input:    self.class::Input.new(@tag),
@@ -46,9 +47,10 @@ module Formular
     private def control(tag, name, attributes, options={}) # TODO: rename tag to control_name
       reader_value = @model.send(name)
 
-      attributes = attributes.dup
+      # TODO: test me: name from attributes has precedence. attributes is immutual.
+      attributes = defaults_for(name, attributes)
 
-      # TODO: move outside.
+      # TODO: move outside. kw args
       (options[:private_options] || []).each { |k| options[k] = attributes.delete(k) if attributes.has_key?(k) }
 
       options = options.merge(
@@ -56,6 +58,7 @@ module Formular
         model:        @model,
         error:        error = @errors[name],
         reader_value: reader_value,
+        builder:      self,
       )
 
       attributes = { name: form_encoded_name(path) }.merge(attributes)
@@ -65,7 +68,6 @@ module Formular
       options[:label] = attributes.delete(:label) # TODO: yepp, prototyping.
       # label! would compile the label string.
 
-      # TODO: test me: name from attributes has precedence. attributes is immutual. test :type overwrite
 
       # render control.
       return @controls[tag].error(attributes, options) if error && error.any?
@@ -122,7 +124,8 @@ module Formular
     end
 
     def select(name, collection, *, &block) # FIXME: merge with nested.
-      control(:select, name, { collection: collection, block: block, builder: self }, private_options: [:collection, :block, :builder])
+      # FIXME: make kw args in controls!
+      control(:select, name, { collection: collection, block: block }, private_options: [:collection, :block, :builder, :builder], builder: self)
     end
 
   private
@@ -136,6 +139,11 @@ module Formular
     # [replies, email] => replies[email]
     def form_encoded_name(path)
       path[0].to_s + path[1..-1].collect { |segment| "[#{segment}]" }.join("")
+    end
+
+    # TODO: id! etc. is just another default! step.
+    def defaults_for(name, attributes)
+      @defaults.merge(attributes)
     end
   end
 end

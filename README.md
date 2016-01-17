@@ -38,6 +38,10 @@ checked: false/nil => *no* `checked` attribute.
 * No magic. No `respond_to?`, no guessing, no hidden semantics.
 * A well-designed API instead of a configuration DSL. If you need to change behavior, program it.
 
+## Limitations
+
+* Currently, nested hashes aren't suffixed with `_attributes`, as it's usually done in ActiveRecord.
+
 ## Installation
 
 Add this line to your application's Gemfile:
