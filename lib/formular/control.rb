@@ -56,7 +56,7 @@ module Formular
         attributes[:value] ||= default_values[:value]
 
         # FIXME: Merge with Radio.
-        attributes[:id]   += "_#{attributes[:value]}"
+        attributes[:id]   += "_#{attributes[:value]}" unless options[:skip_suffix]
         attributes[:name] += "[]" if options[:append_brackets]
         checked!(attributes, options)
 

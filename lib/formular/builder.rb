@@ -13,6 +13,21 @@ module Formular
       capture(self, &block)
     end
 
+    module Id
+      def id_for(name, prefix:, suffix:[], **)
+        (prefix+[name]+suffix).join("_")
+      end
+
+      def id!(name, attributes, options)
+        id = attributes.delete(:id)
+        return if id == false
+        return attributes[:id] = id unless id.nil?
+
+        attributes[:id] = id_for(name, options)
+      end
+    end
+    include Id
+
     def initialize(tag: Tag.new, path: [], prefix: ["form"], model:, parent:nil, defaults:{})
       @tag      = tag
       @path     = path # e.g. [replies, author]
@@ -64,7 +79,7 @@ module Formular
       attributes = { name: form_encoded_name(path) }.merge(attributes)
 
       # optional
-      id!(name, attributes)
+      id!(name, attributes, prefix: @prefix)
       options[:label] = attributes.delete(:label) # TODO: yepp, prototyping.
       # label! would compile the label string.
 
@@ -91,7 +106,7 @@ module Formular
     def checkbox(name, attributes={})
       # return Collection::Checkbox[*]
       control(:checkbox, name, { type: :checkbox }.merge(attributes),
-        { private_options: [:checked_value, :unchecked_value, :skip_hidden, :append_brackets] })
+        { private_options: [:checked_value, :unchecked_value, :skip_hidden, :append_brackets, :skip_suffix] })
     end
 
     def radio(name, attributes={})
@@ -124,31 +139,35 @@ module Formular
 
     def checkbox_collection(name, collection, options={}, &block)
       blk = block || ->(options:, **) { checkbox(name, options) }
-      Collection::Checkbox[*collection].(options, &blk)
+      Collection::Checkbox[*collection].(options, {name: name, prefix: @prefix}, &blk)
     end
 
     # TODO: checkbox group where every second item has different class?
 
     class Collection < Array # TODO: Control interface.
-      def call(options={}, html="", &block)
-        each_with_index { |model, i| html << item(model, i, options, &block) }
+      def call(options={}, bla={}, html="", &block)
+        each_with_index { |model, i| html << item(model, i, options, bla, &block) }
         html
       end
 
     private
-      def item(model, i, options, &block)
+      def item(model, i, options, bla, &block)
         yield(model: model, index: i)
       end
 
       class Checkbox < Collection
+        include Id
+
         # Invoked per item.
-        def item(model, i, options, &block)
+        def item(model, i, options, bla, &block)
           item_options = {
             value: value = model.last,
             label: model.first,
             append_brackets: true,
             checked: options[:checked].include?(value),
-            skip_hidden: i == size-1 ? false : true
+            skip_hidden: i == size-1 ? false : true,
+            id: id_for(bla[:name], bla.merge(suffix: [value])),
+            skip_suffix: true,
           }
 
           yield(model: model, options: item_options, index: i) # usually checkbox(options) or something.
@@ -170,12 +189,7 @@ module Formular
 
   private
     # all private methods here will soon be extracted to Control.
-    def id!(name, attributes)
-      id = attributes.delete(:id)
-      return if id == false
-      return attributes[:id] = id unless id.nil?
-      attributes[:id] = (@prefix+[name]).join("_")
-    end
+
     # [replies, email] => replies[email]
     def form_encoded_name(path)
       path[0].to_s + path[1..-1].collect { |segment| "[#{segment}]" }.join("")
