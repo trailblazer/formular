@@ -84,10 +84,13 @@ module Formular
       options[:label] = attributes.delete(:label) # TODO: yepp, prototyping.
       # label! would compile the label string.
 
-
       # render control.
-      return @controls[tag].error(attributes, options) if error && error.any?
-      @controls[tag].(attributes, options)
+      render_control(tag, attributes, options, error && error.any?)
+    end
+
+    private def render_control(tag, attributes, options, error, &block)
+      return @controls[tag].error(attributes, options, &block) if error
+      @controls[tag].(attributes, options, &block)
     end
 
     def textarea(name, attributes={})
@@ -141,7 +144,8 @@ module Formular
 
     def checkbox_collection(name, collection, options={}, &block)
       blk = block || ->(options:, **) { checkbox(name, options) }
-      @controls[:checkbox_collection].(options.merge(collection: collection), {name: name, prefix: @prefix}, &blk)
+
+      render_control(:checkbox_collection, options.merge(collection: collection), {name: name, prefix: @prefix}, @errors, &blk)
     end
 
 

@@ -39,6 +39,18 @@ module Formular
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
       class Checkbox < Formular::Builder::Checkbox
       end
+
+      class Collection
+      # <label>Check these out</label>
+      # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
+      # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
+        class Checkbox < Formular::Builder::Collection::Checkbox
+          def call(options={}, bla={}, html="", &block)
+            @tag.(:label, attributes: {}, content: options[:label]) +  # TODO: allow attributes.
+              super
+          end
+        end
+      end
     end
     # TODO: TEST that attributes hash is immutuable.
   end

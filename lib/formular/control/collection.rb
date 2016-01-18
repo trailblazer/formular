@@ -6,6 +6,10 @@ module Formular
         html
       end
 
+      def error(*args, &block)
+        call(*args, &block)
+      end
+
     private
       def item(model, i, options, bla, &block)
         yield(model: model, index: i)
