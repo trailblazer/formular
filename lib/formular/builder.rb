@@ -110,7 +110,7 @@ module Formular
     end
     def collection(name, collection, options={}) # FIXME: merge with nested.
       if options[:checkbox]
-        return Collection::Checkbox[*collection].() { |model, options| checkbox(name, options) }
+        return checkbox_collection(name, collection, options)
       end
 
       Collection[*collection].() do |cfg, i|
@@ -118,30 +118,35 @@ module Formular
       end
     end
 
+    def checkbox_collection(name, collection, options={})
+      Collection::Checkbox[*collection].(options) { |model, item_options| checkbox(name, item_options) }
+    end
+
     # TODO: checkbox group where every second item has different class?
 
-    class Collection < Array
-      def call(html="", &block)
-        each_with_index { |model, i| html << item(model, i, &block) }
+    class Collection < Array # TODO: Control interface.
+      def call(options={}, html="", &block)
+        each_with_index { |model, i| html << item(model, i, options, &block) }
         html
       end
 
     private
-      def item(model, i, &block)
+      def item(model, i, options, &block)
         yield model, i
       end
 
       class Checkbox < Collection
         # Invoked per item.
-        def item(model, i, &block)
-          options = {
-            value: model.last,
+        def item(model, i, options, &block)
+          item_options = {
+            value: value = model.last,
             label: model.first,
             append_brackets: true,
+            checked: options[:checked].include?(value),
             skip_hidden: i == size-1 ? false : true
           }
 
-          yield(model, options, i) # usually checkbox(options) or something.
+          yield(model, item_options, i) # usually checkbox(options) or something.
         end
       end
     end
