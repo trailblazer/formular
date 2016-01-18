@@ -103,8 +103,8 @@ class FormularTest < Minitest::Spec
       # with last item "checked".
       it do
         # DISCUSS: allow checked: 1 here as well?
-        builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, tpl|
-          r.radio(:public, value: tpl.last, label: tpl.first, checked: (tpl.last==2))
+        builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |model:, **|
+          builder.radio(:public, value: model.last, label: model.first, checked: (model.last==2))
         end.must_equal %{
 <input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label>
 <input name="public" type="radio" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
@@ -120,8 +120,8 @@ class FormularTest < Minitest::Spec
       # end
 
       it do
-        builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, tpl|
-          r.checkbox(:public, value: tpl.last, label: tpl.first, checked: (tpl.last == 2 or tpl.last == 3), skip_hidden: true)
+        builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |model:, **|
+          builder.checkbox(:public, value: model.last, label: model.first, checked: (model.last == 2 or model.last == 3), skip_hidden: true)
         end.must_equal %{
 <input name="public" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
 <input name="public" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
@@ -141,8 +141,11 @@ class FormularTest < Minitest::Spec
 
     describe "checkbox with block" do
       it do
-        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], checkbox: true, checked: [2,3]) do |ary, options, i|
-          builder.checkbox(:public, options.merge(label: false, class: [(i%2 ? :even : :odd)])) + "LABEL"
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], checkbox: true, checked: [2,3]) do |model:, options:, index:, **|
+          puts options.inspect
+
+          builder.checkbox(:public, options.merge(label: false, class: [(index % 2 ? :even : :odd)])) +
+            builder.label(model.first, for: options[:id], "data-action": :create)
 
         end.must_equal %{
 <input name="public[]" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>

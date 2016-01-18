@@ -84,6 +84,10 @@ module Formular
       # input({ type: :button }.merge(attributes))
     end
 
+    def label(content, attributes)
+      @tag.(:label, attributes: { content: content }.merge(attributes))
+    end
+
     def checkbox(name, attributes={})
       # return Collection::Checkbox[*]
       control(:checkbox, name, { type: :checkbox }.merge(attributes),
@@ -102,8 +106,8 @@ module Formular
 
       # content
       # content = nested.each_with_index.collect do |model, i|
-      content = Collection[*nested].() do |model, i|
-        self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name, i]).(&block)
+      content = Collection[*nested].() do |model:, index:, **|
+        self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name, index]).(&block)
       end
 
       fieldset { content }
@@ -119,7 +123,7 @@ module Formular
     end
 
     def checkbox_collection(name, collection, options={}, &block)
-      blk = block || ->(model, item_options, i) { checkbox(name, item_options) }
+      blk = block || ->(options:, **) { checkbox(name, options) }
       Collection::Checkbox[*collection].(options, &blk)
     end
 
@@ -133,7 +137,7 @@ module Formular
 
     private
       def item(model, i, options, &block)
-        yield model, i
+        yield(model: model, index: i)
       end
 
       class Checkbox < Collection
@@ -147,7 +151,7 @@ module Formular
             skip_hidden: i == size-1 ? false : true
           }
 
-          yield(model, item_options, i) # usually checkbox(options) or something.
+          yield(model: model, options: item_options, index: i) # usually checkbox(options) or something.
         end
       end
     end
