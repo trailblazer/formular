@@ -23,7 +23,7 @@ module Formular
       # <label>Input Label
       #   <input type="text" placeholder="large-4.columns" />
       # </label>
-      class Input < Formular::Builder::Input # TODO: fuck inheritance.
+      class Input < Formular::Builder::Input
         include ErrorWrap
 
         def call(attributes, options)
@@ -49,6 +49,8 @@ module Formular
             @tag.(:label, attributes: {}, content: options[:label]) +  # TODO: allow attributes.
               super
           end
+
+          include ErrorWrap
         end
       end
     end

@@ -1,8 +1,8 @@
 module Formular
   class Builder
     class Collection < Input
-      def call(options={}, bla={}, html="", &block)
-        options[:collection].each_with_index { |model, i| html << item(model, i, options, bla, &block) }
+      def call(attributes, options={}, html="", &block)
+        options[:collection].each_with_index { |model, i| html << item(model, i, attributes, options, &block) }
         html
       end
 
@@ -11,7 +11,7 @@ module Formular
       end
 
     private
-      def item(model, i, options, bla, &block)
+      def item(model, i, attributes, options, &block)
         yield(model: model, index: i)
       end
 
@@ -19,14 +19,14 @@ module Formular
         include Id
 
         # Invoked per item.
-        def item(model, i, options, bla, &block)
+        def item(model, i, attributes, options, &block)
           item_options = {
             value: value = model.last,
             label: model.first,
             append_brackets: true,
             checked: options[:checked].include?(value),
             skip_hidden: i < options[:collection].size-1,
-            id: id_for(bla[:name], bla.merge(suffix: [value])),
+            id: id_for(options[:name], options.merge(suffix: [value])),
             skip_suffix: true,
           }
 

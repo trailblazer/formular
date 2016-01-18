@@ -64,20 +64,13 @@ module Formular
       reader_value = @model.send(name)
 
       # TODO: test me: name from attributes has precedence. attributes is immutual.
-      attributes = defaults_for(name, attributes)
+      # attributes = defaults_for(name, attributes)
 
       # TODO: move outside. kw args
-      (options[:private_options] || []).each { |k| options[k] = attributes.delete(k) if attributes.has_key?(k) }
 
-      options = options.merge(
-        path:         path = @path + [name],
-        model:        @model,
-        error:        error = @errors[name],
-        reader_value: reader_value,
-        builder:      self,
-      )
+      options = normalize_options!(name, attributes, options, reader_value)
 
-      attributes = { name: form_encoded_name(path) }.merge(attributes)
+      attributes = { name: form_encoded_name(options[:path]) }.merge(attributes)
 
       # optional
       id!(name, attributes, prefix: @prefix)
@@ -85,12 +78,24 @@ module Formular
       # label! would compile the label string.
 
       # render control.
-      render_control(tag, attributes, options, error && error.any?)
+      render_control(tag, attributes, options)
     end
 
-    private def render_control(tag, attributes, options, error, &block)
-      return @controls[tag].error(attributes, options, &block) if error
+    private def render_control(tag, attributes, options, &block)
+      return @controls[tag].error(attributes, options, &block) if options[:error] && options[:error].any?
       @controls[tag].(attributes, options, &block)
+    end
+
+    private def normalize_options!(name, attributes, options, reader_value) # FIXME: do reader_value somewhre else
+      (options[:private_options] || []).each { |k| options[k] = attributes.delete(k) if attributes.has_key?(k) }
+
+      options = options.merge(
+        path:         @path + [name],
+        model:        @model,
+        error:        @errors[name],
+        reader_value: reader_value,
+        builder:      self,
+      )
     end
 
     def textarea(name, attributes={})
@@ -142,10 +147,16 @@ module Formular
       end
     end
 
-    def checkbox_collection(name, collection, options={}, &block)
+    def checkbox_collection(name, collection, attributes={}, &block)
       blk = block || ->(options:, **) { checkbox(name, options) }
 
-      render_control(:checkbox_collection, options.merge(collection: collection), {name: name, prefix: @prefix}, @errors, &blk)
+        # FIXME: merge with #control:
+      options = normalize_options!(name, attributes, {
+        collection: collection, name: name, prefix: @prefix, error: @errors[:name],
+        private_options: [:checkbox, :checked, ]
+        }, nil )
+
+      render_control(:checkbox_collection, attributes, options, &blk)
     end
 
 
