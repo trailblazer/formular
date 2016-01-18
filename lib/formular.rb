@@ -7,3 +7,4 @@ end
 require "formular/tag"
 require "formular/builder"
 require "formular/control"
+require "formular/control/collection"

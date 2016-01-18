@@ -42,6 +42,7 @@ module Formular
         checkbox: self.class::Checkbox.new(@tag),
         radio:    self.class::Radio.new(@tag),
         select:   self.class::Select.new(@tag),
+        checkbox_collection: self.class::Collection::Checkbox.new(@tag),
       }
     end
 
@@ -100,7 +101,7 @@ module Formular
     end
 
     def label(content, attributes)
-      @tag.(:label, attributes: { content: content }.merge(attributes))
+      @tag.(:label, attributes: attributes, content: content )
     end
 
     def checkbox(name, attributes={})
@@ -120,10 +121,10 @@ module Formular
       # TODO: n-level nesting: path with local_path+ AND INDEX FOR COLLECTIONS.
 
       # content
-      # content = nested.each_with_index.collect do |model, i|
-      content = Collection[*nested].() do |model:, index:, **|
+      content = nested.each_with_index.collect do |model, index|
+      # content = Collection[*nested].() do |model:, index:, **|
         self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name, index]).(&block)
-      end
+      end.join("")
 
       fieldset { content }
     end
@@ -140,41 +141,9 @@ module Formular
 
     def checkbox_collection(name, collection, options={}, &block)
       blk = block || ->(options:, **) { checkbox(name, options) }
-      Collection::Checkbox[*collection].(options, {name: name, prefix: @prefix}, &blk)
+      @controls[:checkbox_collection].(options.merge(collection: collection), {name: name, prefix: @prefix}, &blk)
     end
 
-    # TODO: checkbox group where every second item has different class?
-
-    class Collection < Array # TODO: Control interface.
-      def call(options={}, bla={}, html="", &block)
-        each_with_index { |model, i| html << item(model, i, options, bla, &block) }
-        html
-      end
-
-    private
-      def item(model, i, options, bla, &block)
-        yield(model: model, index: i)
-      end
-
-      class Checkbox < Collection
-        include Id
-
-        # Invoked per item.
-        def item(model, i, options, bla, &block)
-          item_options = {
-            value: value = model.last,
-            label: model.first,
-            append_brackets: true,
-            checked: options[:checked].include?(value),
-            skip_hidden: i < size-1,
-            id: id_for(bla[:name], bla.merge(suffix: [value])),
-            skip_suffix: true,
-          }
-
-          yield(model: model, options: item_options, index: i) # usually checkbox(options) or something.
-        end
-      end
-    end
 
     def fieldset(&block) # TODO: merge with #form!
       content = capture(self, &block)

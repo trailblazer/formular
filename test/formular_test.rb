@@ -147,10 +147,10 @@ class FormularTest < Minitest::Spec
             builder.label(model.first, for: options[:id], "data-action": :create)
 
         end.must_equal %{
-<input name="public[]" type="checkbox" value="1" class="even" id="form_public_1" /><label content="One" for="form_public_1" data-action="create" />
-<input name="public[]" type="checkbox" value="2" checked="true" class="odd" id="form_public_2" /><label content="Two" for="form_public_2" data-action="create" />
+<input name="public[]" type="checkbox" value="1" class="even" id="form_public_1" /><label for="form_public_1" data-action="create">One</label>
+<input name="public[]" type="checkbox" value="2" checked="true" class="odd" id="form_public_2" /><label for="form_public_2" data-action="create">Two</label>
 <input type="hidden" value="0" name="public[]" />
-<input name="public[]" type="checkbox" value="3" checked="true" class="even" id="form_public_3" /><label content="Three" for="form_public_3" data-action="create" />}.gsub("\n", "")
+<input name="public[]" type="checkbox" value="3" checked="true" class="even" id="form_public_3" /><label for="form_public_3" data-action="create">Three</label>}.gsub("\n", "")
       end
     end
   end
