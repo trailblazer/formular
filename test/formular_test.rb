@@ -128,6 +128,22 @@ class FormularTest < Minitest::Spec
 <input name="public" type="checkbox" value="3" checked="true" id="form_public_3" /><label for="form_public_3">Three</label>}.gsub("\n", "")
       end
     end
+
+    describe "checkbox" do
+      # it do
+      #   builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]], checked: [2,3] do |r, tpl|
+      #     r.checkbox(:public, value: tpl.last, label: tpl.first)
+      #   end.must_equal %{<input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label><input name="public" type="radio" value="2" id="form_public_2" /><label for="form_public_2">Two</label><input name="public" type="radio" value="3" id="form_public_3" checked="checked" /><label for="form_public_3">Three</label>}
+      # end
+
+      it do
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], checkbox: true, checked: [2,3]).must_equal %{
+<input name="public[]" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
+<input name="public[]" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
+<input name="public[]" type="checkbox" value="3" checked="true" id="form_public_3" /><label for="form_public_3">Three</label>
+<input type="hidden">}.gsub("\n", "")
+      end
+    end
   end
 
   describe "#select" do
@@ -156,9 +172,9 @@ class FormularTest < Minitest::Spec
 
     # selected as DSL.
     it do
-      builder.select(:public, [[:One, 1],[:Two, 2],[:Three, 3]], selected: [2]).must_equal %{
+      builder.select(:public, [[:One, 1],[:Two, 2],[:Three, 3]], selected: [2, 1]).must_equal %{
 <select name="public" id="form_public">
-<option value="1">One</option>
+<option value="1" selected="true">One</option>
 <option value="2" selected="true">Two</option>
 <option value="3">Three</option>
 </select>}.gsub("\n", "")

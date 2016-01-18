@@ -85,8 +85,9 @@ module Formular
     end
 
     def checkbox(name, attributes={})
+      # return Collection::Checkbox[*]
       control(:checkbox, name, { type: :checkbox }.merge(attributes),
-        { private_options: [:checked_value, :unchecked_value, :skip_hidden] })
+        { private_options: [:checked_value, :unchecked_value, :skip_hidden, :append_brackets] })
     end
 
     def radio(name, attributes={})
@@ -100,20 +101,49 @@ module Formular
       # TODO: n-level nesting: path with local_path+ AND INDEX FOR COLLECTIONS.
 
       # content
-      content = nested.each_with_index.collect do |model, i|
+      # content = nested.each_with_index.collect do |model, i|
+      content = Collection[*nested].() do |model, i|
         self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name, i]).(&block)
-      end.join("")
+      end
 
       fieldset { content }
     end
-    def collection(name, collection, *) # FIXME: merge with nested.
-      collection.each_with_index.collect do |cfg, i|
-        # label, model = cfg
-        # DISCUSS: could we use call here somehow?
-        # self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name, i]).(&block)
-        # yield self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name, i]).(&block), model
+    def collection(name, collection, options={}) # FIXME: merge with nested.
+      if options[:checkbox]
+        return Collection::Checkbox[*collection].() { |model, options| checkbox(name, options) }
+      end
+
+      Collection[*collection].() do |cfg, i|
         yield self, cfg
-      end.join("")
+      end
+    end
+
+    # TODO: checkbox group where every second item has different class?
+
+    class Collection < Array
+      def call(html="", &block)
+        each_with_index { |model, i| html << item(model, i, &block) }
+        html
+      end
+
+    private
+      def item(model, i, &block)
+        yield model, i
+      end
+
+      class Checkbox < Collection
+        # Invoked per item.
+        def item(model, i, &block)
+          options = {
+            value: model.last,
+            label: model.first,
+            append_brackets: true,
+            skip_hidden: i == size-1 ? false : true
+          }
+
+          yield(model, options, i) # usually checkbox(options) or something.
+        end
+      end
     end
 
     def fieldset(&block) # TODO: merge with #form!
