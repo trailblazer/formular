@@ -108,9 +108,9 @@ module Formular
 
       fieldset { content }
     end
-    def collection(name, collection, options={}) # FIXME: merge with nested.
+    def collection(name, collection, options={}, &block) # FIXME: merge with nested.
       if options[:checkbox]
-        return checkbox_collection(name, collection, options)
+        return checkbox_collection(name, collection, options, &block)
       end
 
       Collection[*collection].() do |cfg, i|
@@ -118,8 +118,9 @@ module Formular
       end
     end
 
-    def checkbox_collection(name, collection, options={})
-      Collection::Checkbox[*collection].(options) { |model, item_options| checkbox(name, item_options) }
+    def checkbox_collection(name, collection, options={}, &block)
+      blk = block || ->(model, item_options, i) { checkbox(name, item_options) }
+      Collection::Checkbox[*collection].(options, &blk)
     end
 
     # TODO: checkbox group where every second item has different class?

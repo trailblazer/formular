@@ -138,6 +138,19 @@ class FormularTest < Minitest::Spec
 <input name="public[]" type="checkbox" value="3" checked="true" id="form_public_3" /><label for="form_public_3">Three</label>}.gsub("\n", "")
       end
     end
+
+    describe "checkbox with block" do
+      it do
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], checkbox: true, checked: [2,3]) do |ary, options, i|
+          builder.checkbox(:public, options.merge(label: false, class: [(i%2 ? :even : :odd)])) + "LABEL"
+
+        end.must_equal %{
+<input name="public[]" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
+<input name="public[]" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
+<input type="hidden" value="0" name="public[]" />
+<input name="public[]" type="checkbox" value="3" checked="true" id="form_public_3" />LABEL<label for="form_public_3">Three</label>}.gsub("\n", "")
+      end
+    end
   end
 
   describe "#select" do
