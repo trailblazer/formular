@@ -143,14 +143,14 @@ class FormularTest < Minitest::Spec
       it do
         # TODO: allow merging :class!
         builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], checkbox: true, checked: [2,3]) do |model:, options:, index:, **|
-          builder.checkbox(:public, options.merge(label: false, class: [(index % 2 != 0 ? :even : :odd)])) +
+          builder.checkbox(:public, options.merge(label: false, class: [(index.even? ? :even : :odd)])) +
             builder.label(model.first, for: options[:id], "data-action": :create)
 
         end.must_equal %{
-<input name="public[]" type="checkbox" value="1" class="odd" id="form_public_1" /><label content="One" for="form_public_1" data-action="create" />
-<input name="public[]" type="checkbox" value="2" checked="true" class="even" id="form_public_2" /><label content="Two" for="form_public_2" data-action="create" />
+<input name="public[]" type="checkbox" value="1" class="even" id="form_public_1" /><label content="One" for="form_public_1" data-action="create" />
+<input name="public[]" type="checkbox" value="2" checked="true" class="odd" id="form_public_2" /><label content="Two" for="form_public_2" data-action="create" />
 <input type="hidden" value="0" name="public[]" />
-<input name="public[]" type="checkbox" value="3" checked="true" class="odd" id="form_public_3" /><label content="Three" for="form_public_3" data-action="create" />}.gsub("\n", "")
+<input name="public[]" type="checkbox" value="3" checked="true" class="even" id="form_public_3" /><label content="Three" for="form_public_3" data-action="create" />}.gsub("\n", "")
       end
     end
   end

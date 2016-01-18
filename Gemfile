@@ -9,3 +9,5 @@ gem "cells-hamlit", path: "../cells-hamlit"
 
 gem "reform"
 gem "dry-validation"
+
+gem "minitest-line"

@@ -127,11 +127,12 @@ module Formular
 
       fieldset { content }
     end
-    def collection(name, collection, options={}, &block) # FIXME: merge with nested.
+    def collection(name, collection, options={}, &block)
       if options[:checkbox]
         return checkbox_collection(name, collection, options, &block)
       end
 
+      # TODO: do we really need this?
       Collection[*collection].() do |cfg, i|
         yield self, cfg
       end
@@ -165,7 +166,7 @@ module Formular
             label: model.first,
             append_brackets: true,
             checked: options[:checked].include?(value),
-            skip_hidden: i == size-1 ? false : true,
+            skip_hidden: i < size-1,
             id: id_for(bla[:name], bla.merge(suffix: [value])),
             skip_suffix: true,
           }
