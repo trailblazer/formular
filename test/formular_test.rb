@@ -129,19 +129,13 @@ class FormularTest < Minitest::Spec
       end
     end
 
-    describe "checkbox" do
-      # it do
-      #   builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]], checked: [2,3] do |r, tpl|
-      #     r.checkbox(:public, value: tpl.last, label: tpl.first)
-      #   end.must_equal %{<input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label><input name="public" type="radio" value="2" id="form_public_2" /><label for="form_public_2">Two</label><input name="public" type="radio" value="3" id="form_public_3" checked="checked" /><label for="form_public_3">Three</label>}
-      # end
-
+    describe "checkbox, no block" do
       it do
         builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], checkbox: true, checked: [2,3]).must_equal %{
-<input name="public" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
-<input name="public" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
-<input type="hidden" value="0" name="public" />
-<input name="public" type="checkbox" value="3" checked="true" id="form_public_3" /><label for="form_public_3">Three</label>}.gsub("\n", "")
+<input name="public[]" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
+<input name="public[]" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
+<input type="hidden" value="0" name="public[]" />
+<input name="public[]" type="checkbox" value="3" checked="true" id="form_public_3" /><label for="form_public_3">Three</label>}.gsub("\n", "")
       end
     end
   end

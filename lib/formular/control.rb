@@ -57,6 +57,7 @@ module Formular
 
         # FIXME: Merge with Radio.
         attributes[:id] += "_#{attributes[:value]}"
+        attributes[:name] += "[]" if options[:append_brackets]
         checked!(attributes, options)
 
         # DISCUSS: refactor to #render
