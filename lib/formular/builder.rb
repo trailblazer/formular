@@ -144,11 +144,11 @@ module Formular
       fieldset { content }
     end
     def collection(name, collection, options={}, &block)
-      if options[:checkbox]
+      if options[:type] == :checkbox
         return checkbox_collection(name, collection, options, &block)
       end
 
-      if options[:radio]
+      if options[:type] == :radio
         return radio_collection(name, collection, options, &block)
       end
 
@@ -165,7 +165,7 @@ module Formular
         # FIXME: merge with #control:
       options = normalize_options!(name, attributes, {
         collection: collection,
-        private_options: [:checkbox, :checked]
+        private_options: [:type, :checked]
       }, nil )
 
       render_control(:checkbox_collection, attributes, options, &blk)
@@ -177,7 +177,7 @@ module Formular
         # FIXME: merge with #control:
       options = normalize_options!(name, attributes, {
         collection: collection,
-        private_options: [:radio, :checked]
+        private_options: [:type, :checked]
       }, nil )
 
       render_control(:radio_collection, attributes, options, &blk)

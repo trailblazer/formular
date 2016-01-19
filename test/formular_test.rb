@@ -124,7 +124,7 @@ class FormularTest < Minitest::Spec
       end
 
       it "radio, no block" do
-        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], radio: true, checked: [2]).must_equal %{
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :radio, checked: [2]).must_equal %{
 <input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label>
 <input name="public" type="radio" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
 <input name="public" type="radio" value="3" id="form_public_3" /><label for="form_public_3">Three</label>
@@ -151,7 +151,7 @@ class FormularTest < Minitest::Spec
 
     describe "checkbox, no block" do
       it do
-        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], checkbox: true, checked: [2,3]).must_equal %{
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3]).must_equal %{
 <input name="public[]" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
 <input name="public[]" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
 <input type="hidden" value="0" name="public[]" />
@@ -162,7 +162,7 @@ class FormularTest < Minitest::Spec
     describe "checkbox with block" do
       it do
         # TODO: allow merging :class!
-        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], checkbox: true, checked: [2,3]) do |model:, options:, index:, **|
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3]) do |model:, options:, index:, **|
           builder.checkbox(:public, options.merge(label: false, class: [(index.even? ? :even : :odd)])) +
             builder.label(model.first, for: options[:id], "data-action": :create)
 

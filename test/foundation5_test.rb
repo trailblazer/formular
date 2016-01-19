@@ -96,7 +96,7 @@ class Foundation5Test < Minitest::Spec
   describe "#checkbox_collection" do
     it do
       # TODO: allow merging :class!
-      builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], checkbox: true, checked: [2,3], label: "One!").must_equal %{
+      builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!").must_equal %{
 <label >One!</label>
 <input name=\"public[]\" type=\"checkbox\" value=\"1\" id=\"form_public_1\" /><label for=\"form_public_1\">One</label>
 <input name=\"public[]\" type=\"checkbox\" value=\"2\" checked=\"true\" id=\"form_public_2\" /><label for=\"form_public_2\">Two</label>
@@ -108,7 +108,7 @@ class Foundation5Test < Minitest::Spec
       let (:model) { Comment.new(nil, nil, [], nil, nil, {public: ["wrong!"]}) }
 
       it do
-        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], checkbox: true, checked: [2,3], label: "One!").must_equal %{
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!").must_equal %{
 <label >One!</label>
 <input name="public[]" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
 <input name="public[]" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
@@ -122,7 +122,7 @@ class Foundation5Test < Minitest::Spec
 
 #   it do
 #     # TODO: allow merging :class!
-#     builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], checkbox: true, checked: [2,3]) do |model:, options:, index:, **|
+#     builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3]) do |model:, options:, index:, **|
 #       builder.checkbox(:public, options.merge(label: false, class: [(index.even? ? :even : :odd)])) +
 #         builder.label(model.first, for: options[:id], "data-action": :create)
 
