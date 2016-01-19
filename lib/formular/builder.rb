@@ -89,6 +89,8 @@ module Formular
         error:        @errors[name],
         reader_value: reader_value,
         builder:      self,
+        name:         name,
+        prefix:       @prefix,
       )
     end
 
@@ -97,7 +99,7 @@ module Formular
       [:label]
     end
 
-    def normalize_attributes!(name, attributes, options)
+    private def normalize_attributes!(name, attributes, options)
       { name: form_encoded_name(options[:path]) }.merge(attributes)
     end
 
@@ -156,13 +158,12 @@ module Formular
 
         # FIXME: merge with #control:
       options = normalize_options!(name, attributes, {
-        collection: collection, name: name, prefix: @prefix, error: @errors[:name],
-        private_options: [:checkbox, :checked, ]
-        }, nil )
+        collection: collection,
+        private_options: [:checkbox, :checked]
+      }, nil )
 
       render_control(:checkbox_collection, attributes, options, &blk)
     end
-
 
     def fieldset(&block) # TODO: merge with #form!
       content = capture(self, &block)
@@ -182,11 +183,6 @@ module Formular
     # [replies, email] => replies[email]
     def form_encoded_name(path)
       path[0].to_s + path[1..-1].collect { |segment| "[#{segment}]" }.join("")
-    end
-
-    # TODO: id! etc. is just another default! step.
-    def defaults_for(name, attributes)
-      @defaults.merge(attributes)
     end
   end
 end
