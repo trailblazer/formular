@@ -52,6 +52,9 @@ module Formular
 
           include ErrorWrap
         end
+
+        class Radio < Checkbox
+        end
       end
     end
     # TODO: TEST that attributes hash is immutuable.

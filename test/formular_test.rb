@@ -72,6 +72,14 @@ class FormularTest < Minitest::Spec
     describe ":value/:unchecked_value" do
       it { builder.checkbox(:public, value: 2, unchecked_value: 3).must_equal %{<input type="hidden" value="3" name="public" /><input name="public" type="checkbox" value="2" id="form_public_2" />} }
     end
+
+    describe ":skip_suffix" do
+      it { builder.checkbox(:public, skip_suffix: true).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public" value="1" />} }
+    end
+
+    describe ":skip_hidden" do
+      it { builder.checkbox(:public, skip_hidden: true).must_equal %{<input name="public" type="checkbox" id="form_public_1" value="1" />} }
+    end
   end
 
   describe "#radio" do
@@ -94,6 +102,10 @@ class FormularTest < Minitest::Spec
     describe ":label" do
       it { builder.radio(:public, value: 9, label: "Public?").must_equal %{<input name="public" type="radio" value="9" id="form_public_9" /><label for="form_public_9">Public?</label>} }
     end
+
+    describe ":skip_suffix" do
+      it { builder.radio(:public, skip_suffix: true, value: 1).must_equal %{<input name="public" type="radio" value="1" id="form_public" />} }
+    end
   end
 
   describe "#collection" do
@@ -109,6 +121,14 @@ class FormularTest < Minitest::Spec
 <input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label>
 <input name="public" type="radio" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
 <input name="public" type="radio" value="3" id="form_public_3" /><label for="form_public_3">Three</label>}.gsub("\n", "")
+      end
+
+      it "radio, no block" do
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], radio: true, checked: [2]).must_equal %{
+<input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label>
+<input name="public" type="radio" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
+<input name="public" type="radio" value="3" id="form_public_3" /><label for="form_public_3">Three</label>
+}.gsub("\n", "")
       end
     end
 

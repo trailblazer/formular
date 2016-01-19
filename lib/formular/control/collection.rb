@@ -36,6 +36,21 @@ module Formular
           yield(model: model, options: item_options, index: i) # usually checkbox(options) or something.
         end
       end
+
+      class Radio < Checkbox # FIXME. yeah, i know, this should be the other way round.
+        # Invoked per item.
+        def item(model, i, attributes, options, &block)
+          item_options = {
+            value: value = model.last,
+            label: model.first,
+            checked: options[:checked].include?(value),
+            id: id_for(options[:name], options.merge(suffix: [value])),
+            skip_suffix: true,
+          }
+
+          yield(model: model, options: item_options, index: i) # usually checkbox(options) or something.
+        end
+      end
     end
   end
 end

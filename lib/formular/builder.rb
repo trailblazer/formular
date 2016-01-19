@@ -43,6 +43,7 @@ module Formular
         radio:    self.class::Radio.new(@tag),
         select:   self.class::Select.new(@tag),
         checkbox_collection: self.class::Collection::Checkbox.new(@tag),
+        radio_collection: self.class::Collection::Radio.new(@tag),
       }
     end
 
@@ -124,7 +125,8 @@ module Formular
     end
 
     def radio(name, attributes={})
-      control(:radio, name, { type: :radio }.merge(attributes))
+      control(:radio, name, { type: :radio }.merge(attributes),
+        { private_options: [:skip_suffix] })
     end
 
     def nested(name, collection:false, &block)
@@ -146,6 +148,10 @@ module Formular
         return checkbox_collection(name, collection, options, &block)
       end
 
+      if options[:radio]
+        return radio_collection(name, collection, options, &block)
+      end
+
       # TODO: do we really need this?
       Collection[*collection].() do |cfg, i|
         yield self, cfg
@@ -163,6 +169,18 @@ module Formular
       }, nil )
 
       render_control(:checkbox_collection, attributes, options, &blk)
+    end
+
+    def radio_collection(name, collection, attributes={}, &block)
+      blk = block || ->(options:, **) { radio(name, options) }
+
+        # FIXME: merge with #control:
+      options = normalize_options!(name, attributes, {
+        collection: collection,
+        private_options: [:radio, :checked]
+      }, nil )
+
+      render_control(:radio_collection, attributes, options, &blk)
     end
 
     def fieldset(&block) # TODO: merge with #form!
