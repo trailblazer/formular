@@ -2,7 +2,10 @@ module Formular
   class Builder
     class Collection < Input
       def call(attributes, options={}, html="", &block)
-        options[:collection].each_with_index { |model, i| html << item(model, i, attributes, options, &block) }
+        options[:collection].each_with_index do |model, i|
+          html << item(model, i, attributes, options, &block)
+        end
+
         html
       end
 

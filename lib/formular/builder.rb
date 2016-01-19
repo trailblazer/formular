@@ -68,9 +68,8 @@ module Formular
 
       # TODO: move outside. kw args
 
-      options = normalize_options!(name, attributes, options, reader_value)
-
-      attributes = { name: form_encoded_name(options[:path]) }.merge(attributes)
+      options    = normalize_options!(name, attributes, options, reader_value)
+      attributes = normalize_attributes!(name, attributes, options)
 
       # optional
       id!(name, attributes, prefix: @prefix)
@@ -89,13 +88,17 @@ module Formular
     private def normalize_options!(name, attributes, options, reader_value) # FIXME: do reader_value somewhre else
       (options[:private_options] || []).each { |k| options[k] = attributes.delete(k) if attributes.has_key?(k) }
 
-      options = options.merge(
+      options.merge(
         path:         @path + [name],
         model:        @model,
         error:        @errors[name],
         reader_value: reader_value,
         builder:      self,
       )
+    end
+
+    def normalize_attributes!(name, attributes, options)
+      { name: form_encoded_name(options[:path]) }.merge(attributes)
     end
 
     def textarea(name, attributes={})
@@ -147,6 +150,7 @@ module Formular
       end
     end
 
+    # default (no block): invoke `checkbox(name, ..)`.
     def checkbox_collection(name, collection, attributes={}, &block)
       blk = block || ->(options:, **) { checkbox(name, options) }
 
