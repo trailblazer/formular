@@ -46,7 +46,7 @@ module Formular
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
         class Checkbox < Formular::Builder::Collection::Checkbox
           def call(options={}, bla={}, html="", &block)
-            @tag.(:label, attributes: {}, content: options[:label]) +  # TODO: allow attributes.
+            @tag.(:label, attributes: {}, content: bla[:label]) +  # TODO: allow attributes.
               super
           end
 

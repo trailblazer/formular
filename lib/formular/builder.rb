@@ -64,17 +64,12 @@ module Formular
       reader_value = @model.send(name)
 
       # TODO: test me: name from attributes has precedence. attributes is immutual.
-      # attributes = defaults_for(name, attributes)
-
-      # TODO: move outside. kw args
 
       options    = normalize_options!(name, attributes, options, reader_value)
       attributes = normalize_attributes!(name, attributes, options)
 
       # optional
       id!(name, attributes, prefix: @prefix)
-      options[:label] = attributes.delete(:label) # TODO: yepp, prototyping.
-      # label! would compile the label string.
 
       # render control.
       render_control(tag, attributes, options)
@@ -86,7 +81,7 @@ module Formular
     end
 
     private def normalize_options!(name, attributes, options, reader_value) # FIXME: do reader_value somewhre else
-      (options[:private_options] || []).each { |k| options[k] = attributes.delete(k) if attributes.has_key?(k) }
+      private_options_for(options).each { |k| options[k] = attributes.delete(k) if attributes.has_key?(k) }
 
       options.merge(
         path:         @path + [name],
@@ -95,6 +90,11 @@ module Formular
         reader_value: reader_value,
         builder:      self,
       )
+    end
+
+    private def private_options_for(options)
+      return options[:private_options] + [:label] if options[:private_options]
+      [:label]
     end
 
     def normalize_attributes!(name, attributes, options)
