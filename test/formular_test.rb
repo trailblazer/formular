@@ -133,12 +133,6 @@ class FormularTest < Minitest::Spec
     end
 
     describe "with checkbox" do
-      # it do
-      #   builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]], checked: [2,3] do |r, tpl|
-      #     r.checkbox(:public, value: tpl.last, label: tpl.first)
-      #   end.must_equal %{<input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label><input name="public" type="radio" value="2" id="form_public_2" /><label for="form_public_2">Two</label><input name="public" type="radio" value="3" id="form_public_3" checked="checked" /><label for="form_public_3">Three</label>}
-      # end
-
       it do
         builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |model:, **|
           builder.checkbox(:public, value: model.last, label: model.first, checked: (model.last == 2 or model.last == 3), skip_hidden: true)

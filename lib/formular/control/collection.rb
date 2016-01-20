@@ -37,7 +37,9 @@ module Formular
         end
       end
 
-      class Radio < Checkbox # FIXME. yeah, i know, this should be the other way round.
+      class Radio < Collection
+        include Id
+
         # Invoked per item.
         def item(model, i, attributes, options, &block)
           item_options = {
