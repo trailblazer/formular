@@ -62,7 +62,7 @@ module Formular
     # provides
     #  attributes:
     #  options: :id
-    private def control(tag, name, attributes, options={}) # TODO: rename tag to control_name
+    private def control(tag, name, attributes, options={}, &block) # TODO: rename tag to control_name
       reader_value = @model.send(name)
 
       # TODO: test me: name from attributes has precedence. attributes is immutual.
@@ -74,7 +74,7 @@ module Formular
       id!(name, attributes, prefix: @prefix)
 
       # render control.
-      render_control(tag, attributes, options)
+      render_control(tag, attributes, options, &block)
     end
 
     private def render_control(tag, attributes, options, &block)
@@ -144,6 +144,7 @@ module Formular
 
       fieldset { content }
     end
+
     def collection(name, collection, type:nil, **attributes, &block)
       default_block = {
         radio:    ->(options:, **) { radio(name, options) },
@@ -171,8 +172,7 @@ module Formular
     end
 
     def select(name, collection, attributes={}, &block) # FIXME: merge with nested.
-      # FIXME: make kw args in controls!
-      control(:select, name, attributes.merge(collection: collection, block: block), private_options: [:collection, :block, :selected], builder: self)
+      control(:select, name, attributes.merge(collection: collection), private_options: [:collection, :selected], &block)
     end
 
   private

@@ -101,9 +101,9 @@ module Formular
     end
 
     class Select < Input
-      def call(attributes, options)
+      def call(attributes, options, &block)
         content = options[:collection].each_with_index.collect do |cfg, i|
-          render_option(cfg, i, options)
+          render_option(cfg, i, options, &block)
         end.join("")
 
         html = ""
@@ -121,8 +121,8 @@ module Formular
       def render_option(cfg, i, options)
         name, value = cfg
 
-        options[:block] ?
-          options[:block].call(self, cfg) :                                        # user leverages DSL.
+        block_given? ?
+          yield(self, cfg) :                                        # user leverages DSL.
           option(name, value: value, selected: options[:selected].include?(value)) # automatically create <option>.
       end
     end
