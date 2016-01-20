@@ -42,8 +42,9 @@ module Formular
         checkbox: self.class::Checkbox.new(@tag),
         radio:    self.class::Radio.new(@tag),
         select:   self.class::Select.new(@tag),
-        checkbox_collection: self.class::Collection::Checkbox.new(@tag),
-        radio_collection: self.class::Collection::Radio.new(@tag),
+        collection_checkbox: self.class::Collection::Checkbox.new(@tag),
+        collection_radio:    self.class::Collection::Radio.new(@tag),
+        collection:    self.class::Collection.new(@tag),
       }
     end
 
@@ -143,44 +144,23 @@ module Formular
 
       fieldset { content }
     end
-    def collection(name, collection, options={}, &block)
-      if options[:type] == :checkbox
-        return checkbox_collection(name, collection, options, &block)
-      end
+    def collection(name, collection, type:nil, **attributes, &block)
+      default_block = {
+        radio:    ->(options:, **) { radio(name, options) },
+        checkbox: ->(options:, **) { checkbox(name, options) }
+      }
 
-      if options[:type] == :radio
-        return radio_collection(name, collection, options, &block)
-      end
+      blk  = block || default_block[type]
 
-      # TODO: do we really need this?
-      Collection[*collection].() do |cfg, i|
-        yield self, cfg
-      end
-    end
-
-    # default (no block): invoke `checkbox(name, ..)`.
-    def checkbox_collection(name, collection, attributes={}, &block)
-      blk = block || ->(options:, **) { checkbox(name, options) }
-
-        # FIXME: merge with #control:
+      # TODO: merge with #control.
       options = normalize_options!(name, attributes, {
         collection: collection,
-        private_options: [:type, :checked]
+        private_options: [:checked]
       }, nil )
 
-      render_control(:checkbox_collection, attributes, options, &blk)
-    end
-
-    def radio_collection(name, collection, attributes={}, &block)
-      blk = block || ->(options:, **) { radio(name, options) }
-
-        # FIXME: merge with #control:
-      options = normalize_options!(name, attributes, {
-        collection: collection,
-        private_options: [:type, :checked]
-      }, nil )
-
-      render_control(:radio_collection, attributes, options, &blk)
+      control = "collection"
+      control << "_#{type}" if type
+      render_control(control.to_sym, attributes, options, &blk) # TODO: dislike to_sym.
     end
 
     def fieldset(&block) # TODO: merge with #form!

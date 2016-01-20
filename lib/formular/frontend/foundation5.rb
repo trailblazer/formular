@@ -40,7 +40,7 @@ module Formular
       class Checkbox < Formular::Builder::Checkbox
       end
 
-      class Collection
+      class Collection < Formular::Builder::Collection
       # <label>Check these out</label>
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
