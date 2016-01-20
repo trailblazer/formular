@@ -171,7 +171,7 @@ module Formular
       @tag.(:fieldset, content: content)
     end
 
-    def select(name, collection, attributes={}, &block) # FIXME: merge with nested.
+    def select(name, collection, attributes={}, &block) # DISCUSS: can we merge that with #collection?
       control(:select, name, attributes.merge(collection: collection), private_options: [:collection, :selected], &block)
     end
 

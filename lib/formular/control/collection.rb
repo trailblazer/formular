@@ -54,5 +54,26 @@ module Formular
         end
       end
     end
+
+    class Select < Collection
+      def call(attributes, options, &block)
+        @tag.(:select, attributes: attributes, content: super)
+      end
+
+      def option(content, attributes)
+        checked!(attributes, {}, :selected)
+        @tag.(:option, content: content, attributes: attributes)
+      end
+
+    private
+      include Checked
+
+      # def render_option(cfg, i, options)
+      def item(item, i, attributes, options, &block)
+        block_given? ?
+          yield(self, model: item, index: i) :                                        # user leverages DSL.
+          option(item.first, value: item.last, selected: options[:selected].include?(item.last)) # automatically create <option>.
+      end
+    end
   end
 end

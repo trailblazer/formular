@@ -171,8 +171,8 @@ class FormularTest < Minitest::Spec
 
   describe "#select" do
     it do
-      builder.select :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, tpl|
-        r.option(tpl.first, value: tpl.last) # TODO: alias to label.
+      builder.select :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, model:, **|
+        r.option(model.first, value: model.last) # TODO: alias to label.
       end.must_equal %{
 <select name="public" id="form_public">
 <option value="1">One</option>
@@ -183,8 +183,8 @@ class FormularTest < Minitest::Spec
 
     # selected explicitly.
     it do
-      builder.select :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, tpl|
-        r.option(tpl.first, value: tpl.last, selected: (tpl.last == 2)) # TODO: alias to label.
+      builder.select :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, model:, **|
+        r.option(model.first, value: model.last, selected: (model.last == 2)) # TODO: alias to label.
       end.must_equal %{
 <select name="public" id="form_public">
 <option value="1">One</option>
