@@ -62,20 +62,16 @@ module Formular
     #  attributes:
     #  options: :id
     private def control(tag, name, attributes, options={}, exclude=[], &block) # TODO: rename tag to control_name
-      extras = {
-        # reader_value: @model.send(name)
-      }
+      # TODO: make that extras stuff nicer.
+      extras = {}
       extras[:reader_value] = @model.send(name) unless exclude.include?(:reader_value)
+      id!(name, attributes, prefix: @prefix) unless exclude.include?(:id)
 
       # TODO: test me: name from attributes has precedence. attributes is immutual.
 
       options    = normalize_options!(name, attributes, options.merge(extras))
       attributes = normalize_attributes!(name, attributes, options)
 
-      # optional
-      id!(name, attributes, prefix: @prefix)
-
-      # render control.
       render_control(tag, attributes, options, &block)
     end
 
