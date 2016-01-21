@@ -1,5 +1,6 @@
 module Formular
   class Builder
+    # A Collection represents the widget for <checkbox and <radio groups, and <select.
     class Collection < Input
       def call(attributes, options={}, html="", &block)
         options[:collection].each_with_index do |model, i|

@@ -28,13 +28,12 @@ module Formular
     end
     include Id
 
-    def initialize(tag: Tag.new, path: [], prefix: ["form"], model:, parent:nil, defaults:{})
+    def initialize(tag: Tag.new, path: [], prefix: ["form"], model:, parent:nil, errors:nil)
       @tag      = tag
       @path     = path # e.g. [replies, author]
       @model    = model
-      @errors   = model.errors||{} # TODO: allow other ways to inject errors object.
+      @errors   = errors || model.errors||{} # TODO: allow other ways to inject errors object.
       @prefix   = prefix
-      @defaults = defaults
 
       @controls = {
         input:    self.class::Input.new(@tag),
@@ -101,7 +100,7 @@ module Formular
       [:label]
     end
 
-    private def normalize_attributes!(name, attributes, options)
+    private def normalize_attributes !(name, attributes, options)
       { name: form_encoded_name(options[:path]) }.merge(attributes)
     end
 
@@ -148,7 +147,11 @@ module Formular
     def collection(name, collection, type:nil, **attributes, &block)
       default_block = {
         radio:    ->(options:, **) { radio(name, options) },
-        checkbox: ->(options:, **) { checkbox(name, options) }
+        checkbox: ->(options:, **) {
+          #puts "@@@@@xxx #{checkbox(name, options).inspect}";checkbox(name, options)
+          # puts "@@@@@ #{options.inspect}"
+          render_control(:checkbox, {name: name.to_s, type: :checkbox, value: options[:value], checked: options[:checked], id: options[:id]}, options)
+        }
       }
 
       blk  = block || default_block[type]
@@ -163,6 +166,7 @@ module Formular
       control << "_#{type}" if type
       render_control(control.to_sym, attributes, options, &blk) # TODO: dislike to_sym.
     end
+    # new API for controls: (checked:, special:, config:, **attributes)
 
     def fieldset(&block) # TODO: merge with #form!
       content = capture(self, &block)

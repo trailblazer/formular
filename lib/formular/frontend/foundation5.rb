@@ -9,10 +9,10 @@ module Formular
     # <small class="error">Invalid entry</small>
     class Builder < Formular::Builder
       module ErrorWrap
-        def error(attributes, options)
+        def error(attributes, options, &block)
           shared = { class: [:error] }
 
-          input = super(shared.merge(attributes), options )
+          input = call(shared.merge(attributes), options, &block)
 
           input +
           # @element.tag(:label, attributes: shared, content: input) +

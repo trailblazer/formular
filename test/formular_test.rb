@@ -4,8 +4,12 @@ class FormularTest < Minitest::Spec
   let (:model) { Comment.new(nil, "Amazing!", [Reply.new]) }
   let (:builder) { Formular::Builder.new(model: model) }
 
-  describe "defaults" do
+  describe ":errors" do
+    let (:builder) { Formular::Builder.new(model: model, errors: {id: ["too easy!"]}) }
 
+    it do
+      builder.input(:id).must_equal %{<input name="id" type="text" id="form_id" value="" /><span class="error">["too easy!"]</span>}
+    end
   end
 
   describe "id" do

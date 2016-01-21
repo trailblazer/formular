@@ -32,7 +32,7 @@ module Formular
       end
 
       def error(attributes, options)
-        call(attributes, options)
+        call(attributes, options) + @tag.(:span, attributes: {class: [:error]}, content: options[:error])
       end
     end
 
