@@ -138,12 +138,23 @@ class FormularTest < Minitest::Spec
 <input name="public" type="radio" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
 <input name="public" type="radio" value="3" id="form_public_3" /><label for="form_public_3">Three</label>}.gsub("\n", "")
       end
+    end
 
-      it "radio, no block" do
+    describe "type: :radio, no block" do
+      it do
         builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :radio, checked: [2]).must_equal %{
 <input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label>
 <input name="public" type="radio" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
 <input name="public" type="radio" value="3" id="form_public_3" /><label for="form_public_3">Three</label>
+}.gsub("\n", "")
+      end
+
+      it "error:" do
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :radio, checked: [2], error: ["yes!"]).must_equal %{
+<input name="public" type="radio" value="1" id="form_public_1" /><label for="form_public_1">One</label>
+<input name="public" type="radio" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
+<input name="public" type="radio" value="3" id="form_public_3" /><label for="form_public_3">Three</label>
+<span class="error">["yes!"]</span>
 }.gsub("\n", "")
       end
     end
