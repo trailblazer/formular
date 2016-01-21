@@ -61,12 +61,15 @@ module Formular
     # provides
     #  attributes:
     #  options: :id
-    private def control(tag, name, attributes, options={}, &block) # TODO: rename tag to control_name
-      reader_value = @model.send(name)
+    private def control(tag, name, attributes, options={}, exclude=[], &block) # TODO: rename tag to control_name
+      extras = {
+        # reader_value: @model.send(name)
+      }
+      extras[:reader_value] = @model.send(name) unless exclude.include?(:reader_value)
 
       # TODO: test me: name from attributes has precedence. attributes is immutual.
 
-      options    = normalize_options!(name, attributes, options, reader_value)
+      options    = normalize_options!(name, attributes, options.merge(extras))
       attributes = normalize_attributes!(name, attributes, options)
 
       # optional
@@ -80,14 +83,13 @@ module Formular
       @controls[tag].(attributes, options, options[:error] && options[:error].any?, &block)
     end
 
-    private def normalize_options!(name, attributes, options, reader_value) # FIXME: do reader_value somewhre else
+    private def normalize_options!(name, attributes, options)
       private_options_for(options).each { |k| options[k] = attributes.delete(k) if attributes.has_key?(k) }
 
       options.merge(
         path:         @path + [name],
         model:        @model,
         error:        @errors[name],
-        reader_value: reader_value,
         builder:      self,
         name:         name,
         prefix:       @prefix,
@@ -155,15 +157,13 @@ module Formular
 
       blk  = block || default_block[type]
 
-      # TODO: merge with #control.
-      options = normalize_options!(name, attributes, {
-        collection: collection,
-        private_options: [:checked]
-      }, nil )
-
       control = "collection"
       control << "_#{type}" if type
-      render_control(control.to_sym, attributes, options, &blk) # TODO: dislike to_sym.
+
+      control(control.to_sym, name, attributes, {
+        collection: collection,
+        private_options: [:checked]
+      }, [:reader_value], &blk) # FIXME: to_sym sucks.
     end
     # new API for controls: (checked:, special:, config:, **attributes)
 
