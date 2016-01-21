@@ -25,19 +25,25 @@ module Formular
         @tag = tag
       end
 
-      def call(attributes, options)
+      def call(attributes, options, is_error, &block)
+        is_error ?
+          error(attributes, options, &block) :
+          render(attributes, options, &block)
+      end
+
+      def render(attributes, options)
         attributes[:value] ||= options[:reader_value]
 
         @tag.(:input, attributes: attributes, content: options[:content]) # DISCUSS: save hash lookup for :content?
       end
 
       def error(attributes, options)
-        call(attributes, options) + @tag.(:span, attributes: {class: [:error]}, content: options[:error])
+        render(attributes, options) + @tag.(:span, attributes: {class: [:error]}, content: options[:error])
       end
     end
 
     class Textarea < Input
-      def call(attributes, options)
+      def render(attributes, options)
         attributes[:value] ||= options[:reader_value] # FIXME.
 
         content = attributes.delete(:value) || ""
@@ -50,7 +56,7 @@ module Formular
     # options[:reader_value]
     # Stand-alone checkbox a la "Accept our terms: []".
     class Checkbox < Input
-      def call(attributes, options)
+      def render(attributes, options)
         options[:unchecked_value] ||= default_values[:unchecked]
 
         attributes[:value] ||= default_values[:value]
@@ -82,7 +88,7 @@ module Formular
     end
 
     class Radio < Input
-      def call(attributes, options)
+      def render(attributes, options)
         attributes[:value] ||= options[:reader_value] # FIXME.
 
         attributes[:id] += "_#{attributes[:value]}" unless options[:skip_suffix]

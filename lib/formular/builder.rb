@@ -77,8 +77,7 @@ module Formular
     end
 
     private def render_control(tag, attributes, options, &block)
-      return @controls[tag].error(attributes, options, &block) if options[:error] && options[:error].any?
-      @controls[tag].(attributes, options, &block)
+      @controls[tag].(attributes, options, options[:error] && options[:error].any?, &block)
     end
 
     private def normalize_options!(name, attributes, options, reader_value) # FIXME: do reader_value somewhre else
@@ -100,7 +99,7 @@ module Formular
       [:label]
     end
 
-    private def normalize_attributes !(name, attributes, options)
+    private def normalize_attributes!(name, attributes, options)
       { name: form_encoded_name(options[:path]) }.merge(attributes)
     end
 

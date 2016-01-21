@@ -12,7 +12,7 @@ module Formular
         def error(attributes, options, &block)
           shared = { class: [:error] }
 
-          input = call(shared.merge(attributes), options, &block)
+          input = render(shared.merge(attributes), options, &block)
 
           input +
           # @element.tag(:label, attributes: shared, content: input) +
@@ -26,7 +26,7 @@ module Formular
       class Input < Formular::Builder::Input
         include ErrorWrap
 
-        def call(attributes, options)
+        def render(attributes, options)
           return super unless options[:label]
           @tag.(:label, attributes: {}, content: "#{options[:label]}#{super}")
         end
@@ -45,7 +45,7 @@ module Formular
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
         class Checkbox < Formular::Builder::Collection::Checkbox
-          def call(attributes={}, options={}, html="", &block)
+          def render(attributes={}, options={}, html="", &block)
             @tag.(:label, attributes: {}, content: options[:label]) +  # TODO: allow attributes.
               super
           end
