@@ -4,6 +4,7 @@ class FormularTest < Minitest::Spec
   let (:model) { Comment.new(nil, "Amazing!", [Reply.new]) }
   let (:builder) { Formular::Builder.new(model: model) }
 
+  # Builder-wide
   describe ":errors" do
     let (:builder) { Formular::Builder.new(model: model, errors: {id: ["too easy!"]}) }
 
@@ -12,7 +13,8 @@ class FormularTest < Minitest::Spec
     end
   end
 
-  describe "id" do
+
+  describe ":id" do
     it { builder.input(:id).must_equal %{<input name="id" type="text" id="form_id" value="" />} }
     # allow id off.
     it { builder.input(:id, id: false).must_equal %{<input name="id" type="text" value="" />} }
@@ -23,6 +25,16 @@ class FormularTest < Minitest::Spec
       builder.nested(:replies) do |f|
         f.input(:id)
       end.must_equal %{<fieldset ><input name="replies[id]" type="text" id="form_replies_0_id" value="" /></fieldset>}
+    end
+  end
+
+  describe ":error" do
+    it { builder.input(:id, error: ["no!"]).must_equal %{<input name="id" type="text" id="form_id" value="" /><span class="error">["no!"]</span>} }
+    it { builder.input(:id, error: false).must_equal %{<input name="id" type="text" id="form_id" value="" />} }
+
+    describe "overwrites Builder#errors" do
+      let (:builder) { Formular::Builder.new(model: model, errors: {id: ["too easy!"]}) }
+      it { builder.input(:id, error: false).must_equal %{<input name="id" type="text" id="form_id" value="" />} }
     end
   end
 
@@ -136,7 +148,7 @@ class FormularTest < Minitest::Spec
       end
     end
 
-    describe "with checkbox" do
+    describe "manual #checkbox" do
       it do
         builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |model:, **|
           builder.checkbox(:public, value: model.last, label: model.first, checked: (model.last == 2 or model.last == 3), skip_hidden: true)
@@ -147,7 +159,7 @@ class FormularTest < Minitest::Spec
       end
     end
 
-    describe "checkbox, no block" do
+    describe "type: :checkbox, no block" do
       it do
         builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3]).must_equal %{
 <input name="public[]" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
@@ -155,9 +167,18 @@ class FormularTest < Minitest::Spec
 <input type="hidden" value="0" name="public[]" />
 <input name="public[]" type="checkbox" value="3" checked="true" id="form_public_3" /><label for="form_public_3">Three</label>}.gsub("\n", "")
       end
+
+      it "error:" do
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], error: ["no!"]).must_equal %{
+<input name="public[]" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
+<input name="public[]" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
+<input type="hidden" value="0" name="public[]" />
+<input name="public[]" type="checkbox" value="3" checked="true" id="form_public_3" /><label for="form_public_3">Three</label>
+<span class="error">["no!"]</span>}.gsub("\n", "")
+      end
     end
 
-    describe "checkbox with block" do
+    describe "type: :checkbox with block" do
       it do
         # TODO: allow merging :class!
         builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3]) do |model:, options:, index:, **|

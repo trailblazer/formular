@@ -43,8 +43,8 @@ module Formular
         @tag.(:input, attributes: attributes, content: options[:content]) # DISCUSS: save hash lookup for :content?
       end
 
-      def error(attributes, options)
-        render(attributes, options) + @tag.(:span, attributes: {class: [:error]}, content: options[:error])
+      def error(attributes, options, &block)
+        render(attributes, options, &block) + @tag.(:span, attributes: {class: [:error]}, content: options[:error])
       end
     end
 

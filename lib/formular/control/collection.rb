@@ -10,9 +10,9 @@ module Formular
         html
       end
 
-      def error(*args, &block)
-        render(*args, &block)
-      end
+      # def error(*args, &block)
+      #   render(*args, &block)
+      # end
 
     private
       def item(model, i, attributes, options, &block)

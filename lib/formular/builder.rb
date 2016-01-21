@@ -89,12 +89,12 @@ module Formular
         builder:      self,
         name:         name,
         prefix:       @prefix,
-      )
+      ) { |k, v, n| v }
     end
 
-    private def private_options_for(options)
-      return options[:private_options] + [:label] if options[:private_options]
-      [:label]
+    private def private_options_for(options, default_options = [:label, :error])
+      return options[:private_options] + default_options if options[:private_options]
+      default_options
     end
 
     private def normalize_attributes!(name, attributes, options)
@@ -144,11 +144,7 @@ module Formular
     def collection(name, collection, type:nil, **attributes, &block)
       default_block = {
         radio:    ->(options:, **) { radio(name, options) },
-        checkbox: ->(options:, **) {
-          #puts "@@@@@xxx #{checkbox(name, options).inspect}";checkbox(name, options)
-          # puts "@@@@@ #{options.inspect}"
-          render_control(:checkbox, {name: name.to_s, type: :checkbox, value: options[:value], checked: options[:checked], id: options[:id]}, options)
-        }
+        checkbox: ->(options:, **) { checkbox(name, options.merge(error: false)) }
       }
 
       blk  = block || default_block[type]
