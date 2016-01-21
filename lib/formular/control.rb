@@ -20,6 +20,12 @@ module Formular
       end
     end
 
+    # Controls have two states implemented with
+    # * #render (valid or fresh input field)
+    # * #error (invalid input field)
+    #
+    # The only public method #call dispatches to the respective state method by
+    # respecting the is_error argument.
     class Input
       def initialize(tag)
         @tag = tag
