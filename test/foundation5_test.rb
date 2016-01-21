@@ -1,7 +1,4 @@
 require "test_helper"
-require "cells-slim"
-require "cells-hamlit"
-
 require "formular/frontend/foundation5"
 
 class Foundation5Test < Minitest::Spec

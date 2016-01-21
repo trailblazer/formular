@@ -1,4 +1,5 @@
 require "test_helper"
+require "cell/slim"
 
 class Comment::NewCell < Cell::ViewModel
   include Cell::Slim

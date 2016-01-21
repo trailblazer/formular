@@ -1,4 +1,5 @@
 require "test_helper"
+require "cell/hamlit"
 
 class Comment::EditCell < Cell::ViewModel
   include Cell::Hamlit
