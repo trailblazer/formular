@@ -73,25 +73,44 @@ module Formular
           div({ class: div_class }, options, html)
         end
       end
+      class Radio < Formular::Builder::Radio # FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+        include Div
+
+        def render(attributes, div_class:["radio"], **options)
+          html = radio(attributes, options.merge(label: false))
+          html = @tag.(:label, attributes: {}, content: "#{html}#{options[:label]}")
+
+          div({ class: div_class }, options, html)
+        end
+      end
 
       class Collection < Formular::Builder::Collection
       # <label>Check these out</label>
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
-        class Checkbox < Formular::Builder::Collection::Checkbox
-          include Div
-
+        module Render
           def render(attributes={}, options={}, html="", &block)
             html = @tag.(:label, attributes: {}, content: options[:label]) +  # TODO: allow attributes.
               super
 
             div({ class: ["form-group"] }, options, html)
           end
+        end
+
+        class Checkbox < Formular::Builder::Collection::Checkbox
+          include Div
+
+          include Render
 
           include ErrorWrap
         end
 
-        class Radio < Checkbox
+        class Radio < Formular::Builder::Collection::Radio
+          include Div
+
+          include Render
+
+          include ErrorWrap
         end
       end
     end

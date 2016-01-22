@@ -106,6 +106,10 @@ module Formular
 
     class Radio < Input
       def render(attributes, options)
+        radio(attributes, options)
+      end
+
+      def radio(attributes, options)
         attributes[:value] ||= options[:reader_value] # FIXME.
 
         attributes[:id] += "_#{attributes[:value]}" unless options[:skip_suffix]
@@ -113,7 +117,7 @@ module Formular
         checked!(attributes, options)
 
         html = ""
-        html << super
+        html << input(attributes, options)
         html << label(attributes, options)
       end
 

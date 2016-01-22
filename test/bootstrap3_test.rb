@@ -76,6 +76,21 @@ Public?
     end
   end
 
+  describe "#radio" do
+    describe "stacked (default)" do
+      it { builder.radio(:public, label: "Public?", value: 1).must_eq %{
+<div class="radio">
+<label >
+<input name="public" type="radio" value="1" id="form_public_1" />
+Public?
+</label>
+</div>
+}
+      }
+    end
+  end
+
+
   describe "collection type: :checkbox" do
     it do
       # TODO: allow merging :class!
@@ -105,6 +120,20 @@ Public?
 <small class="error">["wrong!"]</small>
 }
       end
+    end
+  end
+
+  describe "collection type: :radio" do
+    it do
+      # TODO: allow merging :class!
+      builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :radio, checked: [2,3], label: "One!").must_eq %{
+<div class="form-group">
+<label >One!</label>
+<div class="radio"><label ><input name="public" type="radio" value="1" id="form_public_1" />One</label></div>
+<div class="radio"><label ><input name="public" type="radio" value="2" checked="true" id="form_public_2" />Two</label></div>
+<div class="radio"><label ><input name="public" type="radio" value="3" checked="true" id="form_public_3" />Three</label></div>
+</div>
+}
     end
   end
 end
