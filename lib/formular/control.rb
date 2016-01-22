@@ -70,6 +70,10 @@ module Formular
     # Stand-alone checkbox a la "Accept our terms: []".
     class Checkbox < Input
       def render(attributes, options)
+        checkbox(attributes, options)
+      end
+
+      def checkbox(attributes, options)
         options[:unchecked_value] ||= default_values[:unchecked]
 
         attributes[:value] ||= default_values[:value]
@@ -82,7 +86,7 @@ module Formular
         # DISCUSS: refactor to #render
         html = ""
         html << render_hidden(attributes, options) unless options[:skip_hidden]
-        html << super
+        html << input(attributes, options)
         html << label(attributes, options)
       end
 

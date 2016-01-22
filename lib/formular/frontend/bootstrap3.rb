@@ -22,6 +22,12 @@ module Formular
         end
       end
 
+      module Div
+        def div(attributes, options, content)
+          @tag.(:div, attributes: attributes, content: content)
+        end
+      end
+
       # <div class="form-group">
       #   <label for="exampleInputEmail1">Email address</label>
       #   <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
@@ -30,9 +36,9 @@ module Formular
         include ErrorWrap
         include Formular::Builder::Label
 
-        def render(attributes, options)
+        def render(attributes, div_class:["form-group"], **options)
           html = group_content(attributes, options)
-          div({ class: ["form-group"] }, options, html)
+          div({ class: div_class }, options, html)
         end
 
       private
@@ -44,17 +50,34 @@ module Formular
           html << input(attributes, options) # <input>
         end
 
-        def div(attributes, options, content)
-          @tag.(:div, attributes: attributes, content: content)
-        end
+        include Div
       end
 
       class Textarea < Formular::Builder::Textarea
         include ErrorWrap
       end
 
-      # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
-      class Checkbox < Formular::Builder::Checkbox
+      # <div class="checkbox">
+      #   <label>
+      #     <input type="checkbox" value="">
+      #     Option one is this and that&mdash;be sure to include why it's great
+      #   </label>
+      # </div>
+      class Checkbox < Formular::Builder::Checkbox # do we need this?
+        include Div
+
+        def render(attributes, div_class:["checkbox"], **options)
+          html = checkbox(attributes, options.merge(label: false))
+          html = @tag.(:label, attributes: {}, content: "#{html}#{options[:label]}")
+
+          div({ class: div_class }, options, html)
+        end
+
+        # def group_content(attributes, options)
+        #   input = input(attributes, options)
+
+
+        # end
       end
 
       class Collection < Formular::Builder::Collection

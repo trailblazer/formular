@@ -37,7 +37,35 @@ class Bootstrap3Test < Minitest::Spec
     end
   end
 
+# <div class="checkbox">
+#   <label>
+#     <input type="checkbox" value="">
+#     Option one is this and that&mdash;be sure to include why it's great
+#   </label>
+# </div>
+
   describe "#checkbox" do
+    describe "stacked (default)" do
+      it { builder.checkbox(:public, label: "Public?").must_eq %{
+<div class="checkbox">
+<label >
+<input type="hidden" value="0" name="public" />
+<input name="public" type="checkbox" id="form_public_1" value="1" />
+Public?
+</label>
+</div>
+}
+      }
+
+      # TODO: more classes
+      # <div class="checkbox disabled">
+      #   <label>
+      #     <input type="checkbox" value="" disabled>
+      #     Option two is disabled
+      #   </label>
+      # </div>
+    end
+
     describe "unchecked" do
       it { builder.checkbox(:public, label: "Public?").must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public_1" value="1" /><label for="form_public_1">Public?</label>} }
       it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public_1" value="1" />} }
