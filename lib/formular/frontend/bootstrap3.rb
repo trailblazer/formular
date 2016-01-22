@@ -3,10 +3,11 @@ module Formular
 
   # TODO: switches, prefix actions
   module Bootstrap3
-    # <label class="error">Error
-    #   <input type="text" class="error" />
-    # </label>
-    # <small class="error">Invalid entry</small>
+#     <div class="form-group has-error">
+#   <label class="control-label" for="inputerror1">Input with success</label>
+#   <input type="text" class="form-control" id="inputSuccess1" aria-describedby="helpBlock2">
+#   <span id="helpBlock2" class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+# </div>
     class Builder < Formular::Builder
       module ErrorWrap
         def error(attributes, options, &block)
@@ -30,7 +31,7 @@ module Formular
 
         def render(attributes, options)
           attributes[:class] ||= [] # FIXME: implement in Builder as default arg.
-          attributes[:class] << "form-group"
+          attributes[:class] << "form-control"
 
           html = label(attributes, options)
           html << super # <input>

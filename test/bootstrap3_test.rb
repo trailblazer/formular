@@ -9,7 +9,7 @@ class Bootstrap3Test < Minitest::Spec
     it { builder.input(:id, label: "Id").gsub("\n", "").must_equal %{
 <div class="form-group">
 <label for="form_id">Id</label>
-<input name="id" type="text" id="form_id" class="form-group" value="" />
+<input name="id" type="text" id="form_id" class="form-control" value="" />
 </div>}.gsub("\n", "") }
 
     it { builder.input(:id).must_equal                        %{<input name="id" type="text" id="form_id" value="" />} }
