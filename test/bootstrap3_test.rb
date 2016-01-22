@@ -37,6 +37,10 @@ class Bootstrap3Test < Minitest::Spec
     end
   end
 
+  describe "#textarea" do
+    it { builder.textarea(:public, rows: 3).must_eq %{<textarea name="public" rows="3" id="form_public" class="form-control"></textarea>} }
+  end
+
 # <div class="checkbox">
 #   <label>
 #     <input type="checkbox" value="">

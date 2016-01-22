@@ -54,6 +54,9 @@ module Formular
       end
 
       class Textarea < Formular::Builder::Textarea
+        def render(attributes, options)
+          super(attributes.merge(class: ["form-control"]), options) # FIXME.
+        end
         include ErrorWrap
       end
 
