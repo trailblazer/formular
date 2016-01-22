@@ -157,6 +157,13 @@ class FormularTest < Minitest::Spec
 <span class="error">["yes!"]</span>
 }
       end
+
+      it "checked: with string and integer" do
+        builder.collection(:public, [[:One, 1],[:Two, 2]], type: :radio, checked: ["1",2]).must_eq %{
+<input name="public" type="radio" value="1" checked="true" id="form_public_1" /><label for="form_public_1">One</label>
+<input name="public" type="radio" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
+}
+      end
     end
 
     describe "manual #checkbox" do
@@ -186,6 +193,14 @@ class FormularTest < Minitest::Spec
 <input type="hidden" value="0" name="public[]" />
 <input name="public[]" type="checkbox" value="3" checked="true" id="form_public_3" /><label for="form_public_3">Three</label>
 <span class="error">["no!"]</span>}
+      end
+
+      it "checked: with integer and string" do
+        builder.collection(:public, [[:One, 1],[:Two, 2]], type: :checkbox, checked: [1, "2"]).must_eq %{
+<input name="public[]" type="checkbox" value="1" checked="true" id="form_public_1" /><label for="form_public_1">One</label>
+<input type="hidden" value="0" name="public[]" />
+<input name="public[]" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
+}
       end
     end
 

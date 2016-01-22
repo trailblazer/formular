@@ -19,6 +19,11 @@ module Formular
         yield(model: model, index: i)
       end
 
+      # We check for #to_s equality on every item in `:checked`.
+      def checked?(value, options)
+        options[:checked].map(&:to_s).include?(value.to_s)
+      end
+
       class Checkbox < Collection
         include Id
 
@@ -28,7 +33,7 @@ module Formular
             value: value = model.last,
             label: model.first,
             append_brackets: true,
-            checked: options[:checked].include?(value),
+            checked: checked?(value, options),
             skip_hidden: i < options[:collection].size-1,
             id: id_for(options[:name], options.merge(suffix: [value])),
             skip_suffix: true,
@@ -46,7 +51,7 @@ module Formular
           item_options = {
             value: value = model.last,
             label: model.first,
-            checked: options[:checked].include?(value),
+            checked: checked?(value, options),
             id: id_for(options[:name], options.merge(suffix: [value])),
             skip_suffix: true,
           }
