@@ -19,12 +19,12 @@ class HamlitTest < Minitest::Spec
   describe "valid, initial rendering" do
     let (:model) { Comment.new(1, "Nice!", [Reply.new]) }
 
-    it { Comment::EditCell.new(model).().gsub("\n", "").must_equal %{Edit
+    it { Comment::EditCell.new(model).().must_eq %{Edit
 <form action="/posts">ID
 <input name="id" type="text" id="form_id" value="1" />
 <textarea name="body" id="form_body">Nice!</textarea>
 <fieldset ><input name="replies[email]" type="text" id="form_replies_0_email" value="" /></fieldset>
 <input type="button" value="Submit" /><input name="uuid" type="text" value="0x" id="form_uuid" />
-</form>}.gsub("\n", "") }
+</form>} }
   end
 end

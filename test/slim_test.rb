@@ -35,13 +35,13 @@ class SlimTest < Minitest::Spec
   describe "valid, initial rendering" do
     let (:model) { Comment.new(1, "Nice!", [Reply.new]) }
 
-    it { Comment::NewCell.new(model).().must_equal %{<New></New>
+    it { Comment::NewCell.new(model).().must_eq %{<New></New>
 <form action="/posts">ID
 <input name="id" type="text" id="form_id" value="1" />
 <textarea name="body" id="form_body">Nice!</textarea>
 <fieldset ><input name="replies[email]" type="text" id="form_replies_0_email" value="" /></fieldset>
 <input type="button" value="Submit" /><input name="uuid" type="text" value="0x" id="form_uuid" />
-</form>}.gsub("\n", "") }
+</form>} }
   end
 
 
@@ -53,7 +53,7 @@ class SlimTest < Minitest::Spec
     before { model.validate({}) }
 
     it do
-      Comment::NewCell.new(model).().must_equal %{<New></New><form action="/posts">ID
+      Comment::NewCell.new(model).().must_eq %{<New></New><form action="/posts">ID
 <input name="id" type="text" id="form_id" value="" />
 <textarea class="error" name="body" id="form_body">
 hang ten in east berlin
@@ -61,7 +61,7 @@ hang ten in east berlin
 <small class="error">["body size cannot be greater than 10"]</small>
 <input type="button" value="Submit" />
 <input class="error" name="uuid" type="text" value="0x" id="form_uuid" /><small class="error">["uuid must be filled"]</small>
-</form>}.gsub("\n", "")
+</form>}
     end
   end
 end

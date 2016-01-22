@@ -29,3 +29,11 @@ module F5
     end
   end
 end
+
+module Minitest::Assertions
+  def assert_eq(expected, text)
+    assert expected.gsub("\n", "").eql?(text.gsub("\n", "")), "Expected #{expected} to == #{text}"
+  end
+end
+
+String.infect_an_assertion :assert_eq, :must_eq, :only_one_argument

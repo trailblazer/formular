@@ -31,26 +31,26 @@ class Foundation5Test < Minitest::Spec
   describe "collection type: :collection" do
     it do
       # TODO: allow merging :class!
-      builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!").must_equal %{
+      builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!").must_eq %{
 <label >One!</label>
 <input name=\"public[]\" type=\"checkbox\" value=\"1\" id=\"form_public_1\" /><label for=\"form_public_1\">One</label>
 <input name=\"public[]\" type=\"checkbox\" value=\"2\" checked=\"true\" id=\"form_public_2\" /><label for=\"form_public_2\">Two</label>
 <input type=\"hidden\" value=\"0\" name=\"public[]\" />
-<input name=\"public[]\" type=\"checkbox\" value=\"3\" checked=\"true\" id=\"form_public_3\" /><label for=\"form_public_3\">Three</label>}.gsub("\n", "")
+<input name=\"public[]\" type=\"checkbox\" value=\"3\" checked=\"true\" id=\"form_public_3\" /><label for=\"form_public_3\">Three</label>}
     end
 
     describe "with errors" do
       let (:model) { Comment.new(nil, nil, [], nil, nil, {public: ["wrong!"]}) }
 
       it do
-        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!").must_equal %{
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!").must_eq %{
 <label >One!</label>
 <input name="public[]" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
 <input name="public[]" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
 <input type="hidden" value="0" name="public[]" />
 <input name="public[]" type="checkbox" value="3" checked="true" id="form_public_3" /><label for="form_public_3">Three</label>
 <small class="error">["wrong!"]</small>
-}.gsub("\n", "")
+}
       end
     end
   end
@@ -65,7 +65,7 @@ class Foundation5Test < Minitest::Spec
 # <input name="public[]" type="checkbox" value="1" class="even" id="form_public_1" /><label content="One" for="form_public_1" data-action="create" />
 # <input name="public[]" type="checkbox" value="2" checked="true" class="odd" id="form_public_2" /><label content="Two" for="form_public_2" data-action="create" />
 # <input type="hidden" value="0" name="public[]" />
-# <input name="public[]" type="checkbox" value="3" checked="true" class="even" id="form_public_3" /><label content="Three" for="form_public_3" data-action="create" />}.gsub("\n", "")
+# <input name="public[]" type="checkbox" value="3" checked="true" class="even" id="form_public_3" /><label content="Three" for="form_public_3" data-action="create" />}
 #     end
 #   end
 end
