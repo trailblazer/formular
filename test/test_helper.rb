@@ -32,7 +32,10 @@ end
 
 module Minitest::Assertions
   def assert_eq(expected, text)
-    assert expected.gsub("\n", "").eql?(text.gsub("\n", "")), "Expected #{expected} to == #{text}"
+    expected = expected.gsub("\n", "")
+    text     = text.gsub("\n", "")
+
+    assert expected.eql?(text), "Expected\n#{text}\n  to == \n#{expected}"
   end
 end
 
