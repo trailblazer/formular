@@ -22,8 +22,18 @@ class Bootstrap3Test < Minitest::Spec
     describe "with errors" do
       let (:model) { Comment.new(nil, nil, [Reply.new], nil, nil, {id: ["wrong!"]}) }
 
-      it { builder.input(:id).must_equal %{<div class="form-group has-error"><input name="id" type="text" id="form_id" class="form-control" value="" /><span class="help-block">[\"wrong!\"]</span></div>} }
-      it { builder.input(:id, label: "Id").must_equal %{<label >Id<input class="error" name="id" type="text" id="form_id" value="" /></label><small class="error">["wrong!"]</small>} }
+      it { builder.input(:id).must_eq %{
+<div class="form-group has-error">
+<input name="id" type="text" id="form_id" class="form-control" value="" />
+<span class="help-block">[\"wrong!\"]</span>
+</div>} }
+      it { builder.input(:id, label: "Id").must_eq %{
+<div class="form-group has-error">
+<label for="form_id">Id</label>
+<input name="id" type="text" id="form_id" class="form-control" value="" />
+<span class="help-block">[\"wrong!\"]</span>
+</div>
+} }
     end
   end
 
