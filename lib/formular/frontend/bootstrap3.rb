@@ -66,13 +66,19 @@ module Formular
       #     Option one is this and that&mdash;be sure to include why it's great
       #   </label>
       # </div>
+      # TODO: add private_option :inline.
       class Checkbox < Formular::Builder::Checkbox # do we need this?
         include Div
 
-        def render(attributes, div_class:["checkbox"], **options)
+        def render(attributes, div_class:["checkbox"], inline:nil, **options)
           html = checkbox(attributes, options.merge(label: false))
-          html = @tag.(:label, attributes: {}, content: "#{html}#{options[:label]}")
 
+          label_attrs = {}
+          label_attrs[:class] = ["checkbox-inline"] if inline
+
+          html = @tag.(:label, attributes: label_attrs, content: "#{html}#{options[:label]}")
+
+          return html if inline
           div({ class: div_class }, options, html)
         end
       end
@@ -93,8 +99,11 @@ module Formular
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
         module Render
           def render(attributes={}, options={}, html="", &block)
-            html = @tag.(:label, attributes: {}, content: options[:label]) +  # TODO: allow attributes.
-              super
+
+            html = @tag.(:label, attributes: {}, content: options[:label]) +
+
+              (options[:inline] ? @tag.(:div, content: super) : super)
+
 
             div({ class: ["form-group"] }, options, html)
           end

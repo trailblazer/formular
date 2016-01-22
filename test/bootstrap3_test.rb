@@ -70,6 +70,8 @@ Public?
       # </div>
     end
 
+
+
     # describe "unchecked" do
     #   it { builder.checkbox(:public, label: "Public?").must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public_1" value="1" /><label for="form_public_1">Public?</label>} }
     #   it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public_1" value="1" />} }
@@ -78,7 +80,28 @@ Public?
     describe "with errors" do
 
     end
+
+    describe "inline" do
+      it { builder.checkbox(:public, label: "Public?", inline: true).must_eq %{
+<label class="checkbox-inline">
+<input type="hidden" value="0" name="public" />
+<input name="public" type="checkbox" id="form_public_1" value="1" />
+Public?
+</label>
+}
+      }
+
+      # TODO: more classes
+      # <div class="checkbox disabled">
+      #   <label>
+      #     <input type="checkbox" value="" disabled>
+      #     Option two is disabled
+      #   </label>
+      # </div>
+    end
   end
+
+
 
   describe "#radio" do
     describe "stacked (default)" do
@@ -124,6 +147,14 @@ Public?
 <small class="error">["wrong!"]</small>
 }
       end
+    end
+
+    it "inline: true" do
+      # TODO: allow merging :class!
+      builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!", inline: true).must_eq %{
+<div class="form-group">
+<label >One!</label><div ><label class="checkbox-inline"><input name="public[]" type="checkbox" value="1" id="form_public_1" />One</label><label class="checkbox-inline"><input name="public[]" type="checkbox" value="2" checked="true" id="form_public_2" />Two</label><label class="checkbox-inline"><input type="hidden" value="0" name="public[]" /><input name="public[]" type="checkbox" value="3" checked="true" id="form_public_3" />Three</label></div></div>
+}
     end
   end
 

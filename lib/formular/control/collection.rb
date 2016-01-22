@@ -37,7 +37,10 @@ module Formular
             skip_hidden: i < options[:collection].size-1,
             id: id_for(options[:name], options.merge(suffix: [value])),
             skip_suffix: true,
+            inline: options[:inline],
           }
+
+          # item_options.merge!(options[:item_options]) if options[:item_options] # DISCUSS: hmpf, well... if, then allow that generically.
 
           yield(model: model, options: item_options, index: i) # usually checkbox(options) or something.
         end
