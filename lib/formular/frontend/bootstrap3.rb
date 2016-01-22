@@ -72,12 +72,6 @@ module Formular
 
           div({ class: div_class }, options, html)
         end
-
-        # def group_content(attributes, options)
-        #   input = input(attributes, options)
-
-
-        # end
       end
 
       class Collection < Formular::Builder::Collection
@@ -85,9 +79,13 @@ module Formular
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
         class Checkbox < Formular::Builder::Collection::Checkbox
+          include Div
+
           def render(attributes={}, options={}, html="", &block)
-            @tag.(:label, attributes: {}, content: options[:label]) +  # TODO: allow attributes.
+            html = @tag.(:label, attributes: {}, content: options[:label]) +  # TODO: allow attributes.
               super
+
+            div({ class: ["form-group"] }, options, html)
           end
 
           include ErrorWrap

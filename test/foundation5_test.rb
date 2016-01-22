@@ -28,7 +28,7 @@ class Foundation5Test < Minitest::Spec
     end
   end
 
-  describe "collection type: :collection" do
+  describe "collection type: :checkbox" do
     it do
       # TODO: allow merging :class!
       builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!").must_eq %{
