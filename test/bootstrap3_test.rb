@@ -77,8 +77,19 @@ Public?
     #   it { builder.checkbox(:public).must_equal %{<input type="hidden" value="0" name="public" /><input name="public" type="checkbox" id="form_public_1" value="1" />} }
     # end
 
+    # DISCUSS: is that correct, the span after the div?
     describe "with errors" do
-
+      it { builder.checkbox(:public, label: "Public?", error: ["wrong!"]).must_eq %{
+<div class="checkbox">
+<label >
+<input type="hidden" value="0" name="public" />
+<input name="public" type="checkbox" id="form_public_1" value="1" />
+Public?
+</label>
+</div>
+<span class="error">["wrong!"]</span>
+}
+      }
     end
 
     describe "inline" do
@@ -139,12 +150,16 @@ Public?
 
       it do
         builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!").must_eq %{
+<div class="form-group has-error">
 <label >One!</label>
-<input name="public[]" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
-<input name="public[]" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
-<input type="hidden" value="0" name="public[]" />
-<input name="public[]" type="checkbox" value="3" checked="true" id="form_public_3" /><label for="form_public_3">Three</label>
-<small class="error">["wrong!"]</small>
+<div class="checkbox"><label ><input name="public[]" type="checkbox" value="1" id="form_public_1" />One</label></div>
+<div class="checkbox"><label ><input name="public[]" type="checkbox" value="2" checked="true" id="form_public_2" />Two</label></div>
+<div class="checkbox">
+<label ><input type="hidden" value="0" name="public[]" />
+<input name="public[]" type="checkbox" value="3" checked="true" id="form_public_3" />Three</label>
+</div>
+<span class="help-block">[\"wrong!\"]</span>
+</div>
 }
       end
     end
@@ -170,5 +185,24 @@ Public?
 </div>
 }
     end
+
+#     describe "with errors" do
+#       let (:model) { Comment.new(nil, nil, [], nil, nil, {public: ["wrong!"]}) }
+
+#       it do
+#         builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :radio, checked: [2,3], label: "One!").must_eq %{
+# <div class="form-group has-error">
+# <label >One!</label>
+# <div class="radio"><label ><input name="public" type="radio" value="1" id="form_public_1" />One</label></div>
+# <div class="radio"><label ><input name="public" type="radio" value="2" checked="true" id="form_public_2" />Two</label></div>
+# <div class="radio">
+# <label ><input type="hidden" value="0" name="public" />
+# <input name="public" type="radio" value="3" checked="true" id="form_public_3" />Three</label>
+# </div>
+# <span class="help-block">[\"wrong!\"]</span>
+# </div>
+# }
+#       end
+#     end
   end
 end

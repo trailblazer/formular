@@ -15,7 +15,7 @@ module Formular
           # attributes[:class] << "has-error"
 
           # div class+"has-error", form_control(..)
-          html = group_content(attributes, options) +
+          html = group_content(attributes, options, &block) +
             @tag.(:span, attributes: { class: ["help-block"] }, content: options[:error])
 
           div({ class: ["form-group", "has-error"] }, options, html) # FIXME: redundant.
@@ -100,12 +100,15 @@ module Formular
         module Render
           def render(attributes={}, options={}, html="", &block)
 
-            html = @tag.(:label, attributes: {}, content: options[:label]) +
-
-              (options[:inline] ? @tag.(:div, content: super) : super)
-
+            html = group_content(attributes, options, &block)
 
             div({ class: ["form-group"] }, options, html)
+          end
+
+          def group_content(attributes, options, &block)
+            @tag.(:label, attributes: {}, content: options[:label]) +
+
+              (options[:inline] ? @tag.(:div, content: collection(attributes, options, &block)) : collection(attributes, options, &block))
           end
         end
 

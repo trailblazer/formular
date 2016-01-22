@@ -3,6 +3,10 @@ module Formular
     # A Collection represents the widget for <checkbox and <radio groups, and <select.
     class Collection < Input
       def render(attributes, options={}, html="", &block)
+        collection(attributes, options, html, &block)
+      end
+
+      def collection(attributes, options={}, html="", &block)
         options[:collection].each_with_index do |model, i|
           html << item(model, i, attributes, options, &block)
         end
