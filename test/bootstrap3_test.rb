@@ -6,18 +6,23 @@ class Bootstrap3Test < Minitest::Spec
   let (:builder) { Formular::Bootstrap3::Builder.new(model: model) }
 
   describe "#input" do
+    # with label.
     it { builder.input(:id, label: "Id").gsub("\n", "").must_equal %{
 <div class="form-group">
 <label for="form_id">Id</label>
 <input name="id" type="text" id="form_id" class="form-control" value="" />
 </div>}.gsub("\n", "") }
 
-    it { builder.input(:id).must_equal                        %{<input name="id" type="text" id="form_id" value="" />} }
+    # no options.
+    it { builder.input(:id).gsub("\n", "").must_equal %{
+<div class="form-group">
+<input name="id" type="text" id="form_id" class="form-control" value="" />
+</div>}.gsub("\n", "") }
 
     describe "with errors" do
       let (:model) { Comment.new(nil, nil, [Reply.new], nil, nil, {id: ["wrong!"]}) }
 
-      it { builder.input(:id).must_equal %{<input class="error" name="id" type="text" id="form_id" value="" /><small class="error">["wrong!"]</small>} }
+      it { builder.input(:id).must_equal %{<div class="form-group has-error"><input name="id" type="text" id="form_id" class="form-control" value="" /><span class="help-block">[\"wrong!\"]</span></div>} }
       it { builder.input(:id, label: "Id").must_equal %{<label >Id<input class="error" name="id" type="text" id="form_id" value="" /></label><small class="error">["wrong!"]</small>} }
     end
   end

@@ -31,20 +31,27 @@ module Formular
         @tag = tag
       end
 
+      # Public dispatcher.
+      # Not meant to be overridden.
       def call(attributes, options, is_error, &block)
         is_error ?
           error(attributes, options, &block) :
           render(attributes, options, &block)
       end
 
+    private
       def render(attributes, options)
-        attributes[:value] ||= options[:reader_value]
-
-        @tag.(:input, attributes: attributes, content: options[:content]) # DISCUSS: save hash lookup for :content?
+        input(attributes, options)
       end
 
       def error(attributes, options, &block)
         render(attributes, options, &block) + @tag.(:span, attributes: {class: [:error]}, content: options[:error])
+      end
+
+      def input(attributes, options)
+        attributes[:value] ||= options[:reader_value]
+
+        @tag.(:input, attributes: attributes, content: options[:content]) # DISCUSS: save hash lookup for :content?
       end
     end
 

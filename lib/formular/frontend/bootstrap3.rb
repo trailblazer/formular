@@ -3,21 +3,22 @@ module Formular
 
   # TODO: switches, prefix actions
   module Bootstrap3
-#     <div class="form-group has-error">
-#   <label class="control-label" for="inputerror1">Input with success</label>
-#   <input type="text" class="form-control" id="inputSuccess1" aria-describedby="helpBlock2">
-#   <span id="helpBlock2" class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
-# </div>
+    #  <div class="form-group has-error">
+    #   <label class="control-label" for="inputerror1">Input with success</label>
+    #   <input type="text" class="form-control" id="inputSuccess1" aria-describedby="helpBlock2">
+    #   <span id="helpBlock2" class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+    # </div>
     class Builder < Formular::Builder
       module ErrorWrap
         def error(attributes, options, &block)
-          shared = { class: [:error] }
+          attributes[:class] ||= [] # FIXME: implement in Builder as default arg.
+          # attributes[:class] << "has-error"
 
-          input = render(shared.merge(attributes), options, &block)
+          # div class+"has-error", form_control(..)
+          html = group_content(attributes, options) +
+            @tag.(:span, attributes: { class: ["help-block"] }, content: options[:error])
 
-          input +
-          # @element.tag(:label, attributes: shared, content: input) +
-            @tag.(:small, attributes: shared, content: options[:error])
+          div({ class: ["form-group", "has-error"] }, options, html) # FIXME: redundant.
         end
       end
 
@@ -30,13 +31,21 @@ module Formular
         include Formular::Builder::Label
 
         def render(attributes, options)
+          html = group_content(attributes, options)
+          div({ class: ["form-group"] }, options, html)
+        end
+
+      private
+        def group_content(attributes, options)
           attributes[:class] ||= [] # FIXME: implement in Builder as default arg.
           attributes[:class] << "form-control"
 
           html = label(attributes, options)
-          html << super # <input>
+          html << input(attributes, options) # <input>
+        end
 
-          @tag.(:div, attributes: { class: ["form-group"] }, content: html)
+        def div(attributes, options, content)
+          @tag.(:div, attributes: attributes, content: content)
         end
       end
 
