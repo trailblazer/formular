@@ -117,7 +117,6 @@ module Formular
 
           def group_content(attributes, options, &block)
             @tag.(:label, attributes: {}, content: options[:label]) +
-
               (options[:inline] ? @tag.(:div, content: collection(attributes, options, &block)) : collection(attributes, options, &block))
           end
         end

@@ -61,6 +61,7 @@ module Formular
             checked: checked?(value, options),
             id: id_for(options[:name], options.merge(suffix: [value])),
             skip_suffix: true,
+            inline: options[:inline],
           }
 
           yield(model: model, options: item_options, index: i) # usually checkbox(options) or something.

@@ -173,7 +173,7 @@ class FormularTest < Minitest::Spec
       end
     end
 
-    describe "manual #checkbox" do
+    describe "type: :checkbox, manual #checkbox" do
       it do
         builder.collection :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |model:, **|
           builder.checkbox(:public, value: model.last, label: model.first, checked: (model.last == 2 or model.last == 3), skip_hidden: true)

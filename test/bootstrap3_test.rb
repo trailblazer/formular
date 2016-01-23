@@ -89,7 +89,7 @@ Public?
       }
     end
 
-    describe "inline" do
+    describe "inline: true" do
       it { builder.checkbox(:public, label: "Public?", inline: true).must_eq %{
 <label class="checkbox-inline">
 <input type="hidden" value="0" name="public" />
@@ -196,6 +196,20 @@ Public?
 <div class="radio"><label ><input name="public" type="radio" value="1" id="form_public_1" />One</label></div>
 <div class="radio"><label ><input name="public" type="radio" value="2" checked="true" id="form_public_2" />Two</label></div>
 <div class="radio"><label ><input name="public" type="radio" value="3" checked="true" id="form_public_3" />Three</label></div>
+</div>
+}
+    end
+
+    it "inline: true" do
+      # TODO: allow merging :class!
+      builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :radio, checked: [2,3], label: "One!", inline: true).must_eq %{
+<div class="form-group">
+<label >One!</label>
+<div >
+<label class="radio-inline"><input name="public" type="radio" value="1" id="form_public_1" />One</label>
+<label class="radio-inline"><input name="public" type="radio" value="2" checked="true" id="form_public_2" />Two</label>
+<label class="radio-inline"><input name="public" type="radio" value="3" checked="true" id="form_public_3" />Three</label>
+</div>
 </div>
 }
     end
