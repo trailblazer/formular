@@ -123,7 +123,7 @@ module Formular
 
     def radio(name, attributes={})
       control(:radio, name, { type: :radio }.merge(attributes),
-        { private_options: [:skip_suffix] })
+        { private_options: [:skip_suffix, :inline] })
     end
 
     def nested(name, collection:false, &block)

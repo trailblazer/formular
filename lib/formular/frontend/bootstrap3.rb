@@ -85,10 +85,15 @@ module Formular
       class Radio < Formular::Builder::Radio # FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         include Div
 
-        def render(attributes, div_class:["radio"], **options)
+        def render(attributes, div_class:["radio"], inline:nil, **options)
           html = radio(attributes, options.merge(label: false))
-          html = @tag.(:label, attributes: {}, content: "#{html}#{options[:label]}")
 
+          label_attrs = {}
+          label_attrs[:class] = ["radio-inline"] if inline
+
+          html = @tag.(:label, attributes: label_attrs, content: "#{html}#{options[:label]}")
+
+          return html if inline
           div({ class: div_class }, options, html)
         end
       end

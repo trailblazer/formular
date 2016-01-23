@@ -35,18 +35,15 @@ class Bootstrap3Test < Minitest::Spec
 </div>
 } }
     end
+
+    describe "wrapper: false" do
+
+    end
   end
 
   describe "#textarea" do
     it { builder.textarea(:public, rows: 3).must_eq %{<textarea name="public" rows="3" id="form_public" class="form-control"></textarea>} }
   end
-
-# <div class="checkbox">
-#   <label>
-#     <input type="checkbox" value="">
-#     Option one is this and that&mdash;be sure to include why it's great
-#   </label>
-# </div>
 
   describe "#checkbox" do
     describe "stacked (default)" do
@@ -125,6 +122,23 @@ Public?
 </div>
 }
       }
+    end
+
+    describe "inline: true" do
+      it { builder.radio(:public, label: "Public?", value: 1, inline: true).must_eq %{
+<label class="radio-inline">
+<input name="public" type="radio" value="1" id="form_public_1" />
+Public?
+</label>
+} }
+    end
+
+    describe "with errors" do
+
+    end
+
+    describe "wrapper: false" do
+
     end
   end
 
