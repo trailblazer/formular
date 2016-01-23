@@ -37,7 +37,22 @@ class Bootstrap3Test < Minitest::Spec
     end
 
     describe "wrapper: false" do
+      it do
+         builder.input(:id, label: "Id", wrapper: false).must_eq %{
+<label for="form_id">Id</label>
+<input name="id" type="text" id="form_id" class="form-control" value="" />}
+      end
 
+      it do
+        builder.input(:id, label: "Id", wrapper: false, label: false).must_eq %{
+<input name="id" type="text" id="form_id" class="form-control" value="" />}
+      end
+
+
+      it { builder.input(:id, label: "Id", wrapper: false, error: ["wrong!"]).must_eq %{
+<label for="form_id">Id</label>
+<input name="id" type="text" id="form_id" class="form-control" value="" />
+<span class="help-block">[\"wrong!\"]</span>} }
     end
   end
 

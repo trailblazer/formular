@@ -10,6 +10,8 @@ module Formular
     # </div>
     class Builder < Formular::Builder
       module ErrorWrap
+        # here, #group_content represents every control's content-returning method. if that method's not there,
+        # it will break.
         def error(attributes, options, &block)
           attributes[:class] ||= [] # FIXME: implement in Builder as default arg.
           # attributes[:class] << "has-error"
@@ -22,8 +24,10 @@ module Formular
         end
       end
 
-      module Div
+      module Div # :wrapper
         def div(attributes, options, content)
+          return content if options[:wrapper] == false
+
           @tag.(:div, attributes: attributes, content: content)
         end
       end

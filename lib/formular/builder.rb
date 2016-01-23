@@ -92,7 +92,7 @@ module Formular
       ) { |k, v, n| v }
     end
 
-    private def private_options_for(options, default_options = [:label, :error])
+    private def private_options_for(options, default_options = [:label, :error, :inline, :wrapper])
       return options[:private_options] + default_options if options[:private_options]
       default_options
     end
@@ -118,12 +118,12 @@ module Formular
     def checkbox(name, attributes={})
       # return Collection::Checkbox[*]
       control(:checkbox, name, { type: :checkbox }.merge(attributes),
-        { private_options: [:checked_value, :unchecked_value, :skip_hidden, :append_brackets, :skip_suffix, :inline] }) # FIXME: controls should be able to add private_options
+        { private_options: [:checked_value, :unchecked_value, :skip_hidden, :append_brackets, :skip_suffix] }) # FIXME: controls should be able to add private_options
     end
 
     def radio(name, attributes={})
       control(:radio, name, { type: :radio }.merge(attributes),
-        { private_options: [:skip_suffix, :inline] })
+        { private_options: [:skip_suffix] })
     end
 
     def nested(name, collection:false, &block)
@@ -154,7 +154,7 @@ module Formular
 
       control(control.to_sym, name, attributes, {
         collection: collection,
-        private_options: [:checked, :inline]
+        private_options: [:checked]
       }, [:reader_value], &blk) # FIXME: to_sym sucks.
     end
     # new API for controls: (checked:, special:, config:, **attributes)
