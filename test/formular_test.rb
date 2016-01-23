@@ -209,6 +209,14 @@ class FormularTest < Minitest::Spec
 <input name="public[]" type="checkbox" value="2" checked="true" id="form_public_2" /><label for="form_public_2">Two</label>
 }
       end
+
+      it "no :checked" do
+        builder.collection(:public, [[:One, 1],[:Two, 2]], type: :checkbox).must_eq %{
+<input name="public[]" type="checkbox" value="1" id="form_public_1" /><label for="form_public_1">One</label>
+<input type="hidden" value="0" name="public[]" />
+<input name="public[]" type="checkbox" value="2" id="form_public_2" /><label for="form_public_2">Two</label>
+}
+      end
     end
 
     describe "type: :checkbox with block" do
