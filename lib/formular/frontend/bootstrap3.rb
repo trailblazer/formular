@@ -67,34 +67,39 @@ module Formular
       #   </label>
       # </div>
       # TODO: add private_option :inline.
-      class Checkbox < Formular::Builder::Checkbox # do we need this?
-        include Div
 
-        def render(attributes, div_class:["checkbox"], inline:nil, **options)
-          html = checkbox(attributes, options.merge(label: false))
-
+      # <label class="..-inline"><input ..>
+      # <div><label class="..-inline"><input ..>
+      module Checkable
+        def checkable_wrap(attributes, div_class:, input_html:, inline: nil, **options)
           label_attrs = {}
-          label_attrs[:class] = ["checkbox-inline"] if inline
+          label_attrs[:class] = ["#{div_class}-inline"] if inline # e.g. checkbox-inline.
 
-          html = @tag.(:label, attributes: label_attrs, content: "#{html}#{options[:label]}")
+          html = @tag.(:label, attributes: label_attrs, content: "#{input_html}#{options[:label]}")
 
           return html if inline
-          div({ class: div_class }, options, html)
+          div({ class: [div_class] }, options, html) # FIXME, include Div.
+        end
+      end
+
+      class Checkbox < Formular::Builder::Checkbox # do we need this?
+        include Div
+        include Checkable
+
+        def render(attributes, options)
+          html = checkbox(attributes, options.merge(label: false))
+
+          checkable_wrap(attributes, options.merge(input_html: html, div_class: "checkbox"))
         end
       end
       class Radio < Formular::Builder::Radio # FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         include Div
+        include Checkable
 
-        def render(attributes, div_class:["radio"], inline:nil, **options)
+        def render(attributes, options)
           html = radio(attributes, options.merge(label: false))
 
-          label_attrs = {}
-          label_attrs[:class] = ["radio-inline"] if inline
-
-          html = @tag.(:label, attributes: label_attrs, content: "#{html}#{options[:label]}")
-
-          return html if inline
-          div({ class: div_class }, options, html)
+          checkable_wrap(attributes, options.merge(input_html: html, div_class: "radio"))
         end
       end
 
