@@ -25,6 +25,11 @@ no guessing, so different public methods. can be abstracted to a "guessing layer
 * `id: false` won't render an `id` attribute.
 * `id: "myID"` results in `id="myID"`.
 
+attributes
+wrapper_attrs
+label_attrs
+(error_attrs ?)
+
 ## Checkbox
 
 = f.checkbox :is_public, label: "Public?"

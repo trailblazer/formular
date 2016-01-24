@@ -47,6 +47,28 @@ class Bootstrap3Test < Minitest::Spec
       end
     end
 
+    describe "label_attrs: {}" do
+      it "ignores without :label" do
+        builder.input(:id, label_attrs: { "remote-data": true }).must_eq %{
+<div class="form-group"><input name="id" type="text" id="form_id" class="form-control" value="" /></div>}
+      end
+
+      it do
+        builder.input(:id, label_attrs: { "remote-data": true, class: [:id] }, label: "Id").must_eq %{
+<div class="form-group"><label remote-data="true" class="id" for="form_id">Id</label>
+<input name="id" type="text" id="form_id" class="form-control" value="" /></div>}
+      end
+
+      # with errors
+      it do
+        builder.input(:id, label_attrs: { "remote-data": true, class: [:id] }, label: "Id", error: ["wrong@!"]).must_eq %{
+<div class="form-group has-error"><label remote-data="true" class="id" for="form_id">Id</label>
+<input name="id" type="text" id="form_id" class="form-control" value="" />
+<span class="help-block">["wrong@!"]</span>
+</div>}
+      end
+    end
+
     describe "with errors" do
       let (:model) { Comment.new(nil, nil, [Reply.new], nil, nil, {id: ["wrong!"]}) }
 

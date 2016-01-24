@@ -5,7 +5,11 @@ module Formular
       # DISCUSS: pass in content?
       def label(attributes, options) # DISCUSS: should labels be part of a Control or a higher-level widget?
         return "" unless options[:label]
-        @tag.(:label, attributes: { for: attributes[:id] }, content: "#{options[:label]}")
+
+        attributes = { for: attributes[:id] }
+        attributes = options[:label_attrs].merge!(attributes) if options[:label_attrs]
+
+        @tag.(:label, attributes: attributes, content: "#{options[:label]}")
       end
     end
 
