@@ -111,7 +111,7 @@ module Formular
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
         module Render
-          def render(attributes={}, options={}, html="", &block)
+          def render(attributes, options, &block)
 
             html = group_content(attributes, options, &block)
 
