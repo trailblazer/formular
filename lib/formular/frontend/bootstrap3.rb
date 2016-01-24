@@ -13,10 +13,6 @@ module Formular
         # here, #group_content represents every control's content-returning method. if that method's not there,
         # it will break.
         def error(attributes, options, &block)
-          attributes[:class] ||= [] # FIXME: implement in Builder as default arg.
-          # attributes[:class] << "has-error"
-
-          # div class+"has-error", form_control(..)
           html = group_content(attributes, options, &block) +
             @tag.(:span, attributes: { class: ["help-block"] }, content: options[:error])
 

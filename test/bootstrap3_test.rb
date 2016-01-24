@@ -39,6 +39,12 @@ class Bootstrap3Test < Minitest::Spec
       end
 
       # with errors
+      it do
+        builder.input(:id, wrapper_attrs: { class: [:bright], "remote-data": true }, error: ["wrong@!"]).must_eq %{
+<div class="form-group has-error bright" remote-data="true">
+<input name="id" type="text" id="form_id" class="form-control" value="" /><span class="help-block">["wrong@!"]</span></div>
+}
+      end
     end
 
     describe "with errors" do
