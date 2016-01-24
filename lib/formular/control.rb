@@ -1,7 +1,7 @@
 # Controls treat attributes as mutuable.
 module Formular
   class Builder # i hate that, please, give use namespace Builder
-    module Label # i choose not to make this a separate class on purpose.
+    module Label
       # DISCUSS: pass in content?
       def label(attributes, options) # DISCUSS: should labels be part of a Control or a higher-level widget?
         return "" unless options[:label]

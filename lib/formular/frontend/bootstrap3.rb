@@ -24,7 +24,7 @@ module Formular
         end
       end
 
-      module Div # :wrapper
+      module Div # :wrapper # TODO: make generic in Control.
         def div(attributes, options, content)
           return content if options[:wrapper] == false
 

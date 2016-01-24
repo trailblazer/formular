@@ -38,6 +38,18 @@ class FormularTest < Minitest::Spec
     end
   end
 
+  describe "wrapper: false" do
+
+  end
+
+  describe "label: " do
+
+  end
+
+  describe "attributes for input" do
+    it { builder.input(:id, "data-remote": true).must_eq %{<input name="id" type="text" data-remote="true" id="form_id" value="" />} }
+  end
+
   describe "#nested" do
     let (:model) { Comment.new(nil, nil, [Reply.new, Reply.new]) }
 
