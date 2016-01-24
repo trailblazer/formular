@@ -19,6 +19,28 @@ class Bootstrap3Test < Minitest::Spec
 <input name="id" type="text" id="form_id" class="form-control" value="" />
 </div>} }
 
+    describe "attributes for input" do
+      it do
+        builder.input(:id, "remote-data": true).must_eq %{<div class="form-group"><input name="id" type="text" remote-data="true" id="form_id" class="form-control" value="" /></div>}
+      end
+    end
+
+    describe "wrapper_attrs: {}" do
+      it do
+        builder.input(:id, wrapper_attrs: { "remote-data": true }).must_eq %{<div remote-data="true" class="form-group"><input name="id" type="text" id="form_id" class="form-control" value="" /></div>}
+      end
+
+      it do
+        builder.input(:id, wrapper_attrs: { class: [:bright] }).must_eq %{<div class="form-group bright"><input name="id" type="text" id="form_id" class="form-control" value="" /></div>}
+      end
+
+      it do
+        builder.input(:id, wrapper_attrs: { class: [:bright], "remote-data": true }).must_eq %{<div class="form-group bright" remote-data="true"><input name="id" type="text" id="form_id" class="form-control" value="" /></div>}
+      end
+
+      # with errors
+    end
+
     describe "with errors" do
       let (:model) { Comment.new(nil, nil, [Reply.new], nil, nil, {id: ["wrong!"]}) }
 

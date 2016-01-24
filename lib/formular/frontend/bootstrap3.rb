@@ -28,6 +28,9 @@ module Formular
         def div(attributes, options, content)
           return content if options[:wrapper] == false
 
+          # TODO: test for foundation5, too!
+          attributes = options[:wrapper_attrs].merge!(attributes) if options[:wrapper_attrs]
+
           @tag.(:div, attributes: attributes, content: content)
         end
       end

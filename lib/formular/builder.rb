@@ -82,6 +82,8 @@ module Formular
     private def normalize_options!(name, attributes, options)
       private_options_for(options).each { |k| options[k] = attributes.delete(k) if attributes.has_key?(k) }
 
+      options[:wrapper_attrs] = Attributes[options[:wrapper_attrs]]
+
       options.merge(
         path:         @path + [name],
         model:        @model,
@@ -92,7 +94,11 @@ module Formular
       ) { |k, v, n| v }
     end
 
-    private def private_options_for(options, default_options = [:label, :error, :inline, :wrapper])
+    private def private_options
+      [:label, :error, :inline, :wrapper, :wrapper_attrs, :label_attrs]
+    end
+
+    private def private_options_for(options, default_options = private_options)
       return options[:private_options] + default_options if options[:private_options]
       default_options
     end
