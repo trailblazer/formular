@@ -61,6 +61,10 @@ module Formular
 
     class Textarea < Input
       def render(attributes, options)
+        textarea(attributes, options)
+      end
+
+      def textarea(attributes, options)
         attributes[:value] ||= options[:reader_value] # FIXME.
 
         content = attributes.delete(:value) || ""

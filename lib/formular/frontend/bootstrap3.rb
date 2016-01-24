@@ -57,10 +57,17 @@ module Formular
       end
 
       class Textarea < Formular::Builder::Textarea
-        def render(attributes, options)
-          super(attributes.merge(class: ["form-control"]), options) # FIXME.
+        def render(attributes, div_class:["form-group"], **options)
+          html = group_content(attributes, options)
+          div({ class: div_class }, options, html)
         end
+
+        include Div
         include ErrorWrap
+
+        def group_content(attributes, options)
+          textarea(attributes.merge(class: ["form-control"]), options) # FIXME.
+        end
       end
 
       # <div class="checkbox">

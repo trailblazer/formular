@@ -107,7 +107,19 @@ class Bootstrap3Test < Minitest::Spec
   end
 
   describe "#textarea" do
-    it { builder.textarea(:public, rows: 3).must_eq %{<textarea name="public" rows="3" id="form_public" class="form-control"></textarea>} }
+    it do
+      builder.textarea(:public, rows: 3).must_eq %{
+<div class="form-group">
+<textarea name="public" rows="3" id="form_public" class="form-control"></textarea>
+</div>}
+    end
+
+    # with errors
+    it do
+      builder.textarea(:public, rows: 3, error: ["wrong!"]).must_eq %{
+<div class="form-group has-error"><textarea name="public" rows="3" id="form_public" class="form-control"></textarea><span class="help-block">["wrong!"]</span></div>
+}
+    end
   end
 
   describe "#checkbox" do
