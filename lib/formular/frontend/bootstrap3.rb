@@ -31,18 +31,22 @@ module Formular
         end
       end
 
+      # Render #group_content and wrap it via #div.
+      module Render
+        def render(attributes, div_class:["form-group"], **options, &block)
+          html = group_content(attributes, options, &block)
+          div({ class: div_class }, options, html)
+        end
+      end
+
       # <div class="form-group">
       #   <label for="exampleInputEmail1">Email address</label>
       #   <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
       # </div>
       class Input < Formular::Builder::Input
+        include Render
         include ErrorWrap
         include Formular::Builder::Label
-
-        def render(attributes, div_class:["form-group"], **options)
-          html = group_content(attributes, options)
-          div({ class: div_class }, options, html)
-        end
 
       private
         def group_content(attributes, options)
@@ -57,11 +61,7 @@ module Formular
       end
 
       class Textarea < Formular::Builder::Textarea
-        def render(attributes, div_class:["form-group"], **options)
-          html = group_content(attributes, options)
-          div({ class: div_class }, options, html)
-        end
-
+        include Render
         include Div
         include ErrorWrap
 
@@ -117,14 +117,9 @@ module Formular
       # <label>Check these out</label>
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
-        module Render
-          def render(attributes, options, &block)
 
-            html = group_content(attributes, options, &block)
 
-            div({ class: ["form-group"] }, options, html)
-          end
-
+        module GroupContent
           def group_content(attributes, options, &block)
             @tag.(:label, attributes: {}, content: options[:label]) +
               (options[:inline] ? @tag.(:div, content: collection(attributes, options, &block)) : collection(attributes, options, &block))
@@ -132,17 +127,19 @@ module Formular
         end
 
         class Checkbox < Formular::Builder::Collection::Checkbox
+          include Render
           include Div
 
-          include Render
+          include GroupContent
 
           include ErrorWrap
         end
 
         class Radio < Formular::Builder::Collection::Radio
+          include Render
           include Div
 
-          include Render
+          include GroupContent
 
           include ErrorWrap
         end
