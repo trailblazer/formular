@@ -292,22 +292,22 @@ Public?
     end
 
 #     describe "with errors" do
-#       let (:model) { Comment.new(nil, nil, [], nil, nil, {public: ["wrong!"]}) }
-
-#       it do
-#         builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :radio, checked: [2,3], label: "One!").must_eq %{
-# <div class="form-group has-error">
-# <label >One!</label>
-# <div class="radio"><label ><input name="public" type="radio" value="1" id="form_public_1" />One</label></div>
-# <div class="radio"><label ><input name="public" type="radio" value="2" checked="true" id="form_public_2" />Two</label></div>
-# <div class="radio">
-# <label ><input type="hidden" value="0" name="public" />
-# <input name="public" type="radio" value="3" checked="true" id="form_public_3" />Three</label>
-# </div>
-# <span class="help-block">[\"wrong!\"]</span>
-# </div>
-# }
-#       end
 #     end
+  end
+
+  describe "#select" do
+
+    it do
+      builder.select(:public, [[:One, 1],[:Two, 2],[:Three, 3]], selected: [2], label: "One!").must_eq %{
+<div class="form-group">
+<label >One!</label>
+<select name="public" id="form_public" class="form-control">
+<option value="1">One</option>
+<option value="2" selected="true">Two</option>
+<option value="3">Three</option>
+</select>
+</div>
+}
+    end
   end
 end

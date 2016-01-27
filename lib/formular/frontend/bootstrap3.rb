@@ -9,6 +9,15 @@ module Formular
     #   <span id="helpBlock2" class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
     # </div>
     class Builder < Formular::Builder
+      # Wrapper (form-group div).
+      # Render #group_content and wrap it via #div.
+      module Render
+        def render(attributes, div_class:["form-group"], **options, &block)
+          html = group_content(attributes, options, &block)
+          div({ class: div_class }, options, html)
+        end
+      end
+
       module ErrorWrap
         # here, #group_content represents every control's content-returning method. if that method's not there,
         # it will break.
@@ -31,14 +40,6 @@ module Formular
         end
       end
 
-      # Render #group_content and wrap it via #div.
-      module Render
-        def render(attributes, div_class:["form-group"], **options, &block)
-          html = group_content(attributes, options, &block)
-          div({ class: div_class }, options, html)
-        end
-      end
-
       # <div class="form-group">
       #   <label for="exampleInputEmail1">Email address</label>
       #   <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
@@ -47,6 +48,7 @@ module Formular
         include Render
         include ErrorWrap
         include Formular::Builder::Label
+        include Div
 
       private
         def group_content(attributes, options)
@@ -57,7 +59,6 @@ module Formular
           html << input(attributes, options) # <input>
         end
 
-        include Div
       end
 
       class Textarea < Formular::Builder::Textarea
@@ -66,7 +67,7 @@ module Formular
         include ErrorWrap
 
         def group_content(attributes, options)
-          textarea(attributes.merge(class: ["form-control"]), options) # FIXME.
+          textarea(attributes.merge(class: ["form-control"]), options)
         end
       end
 
@@ -117,31 +118,40 @@ module Formular
       # <label>Check these out</label>
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
-
-
         module GroupContent
           def group_content(attributes, options, &block)
-            @tag.(:label, attributes: {}, content: options[:label]) +
-              (options[:inline] ? @tag.(:div, content: collection(attributes, options, &block)) : collection(attributes, options, &block))
+            html = collection(attributes, options, &block)
+
+            @tag.(:label, attributes: {}, content: options[:label]) + # FIXME: add #label support.
+              (options[:inline] ? @tag.(:div, content: html) : html)
           end
         end
 
         class Checkbox < Formular::Builder::Collection::Checkbox
           include Render
           include Div
-
           include GroupContent
-
           include ErrorWrap
         end
 
         class Radio < Formular::Builder::Collection::Radio
           include Render
           include Div
-
           include GroupContent
-
           include ErrorWrap
+        end
+
+
+      end
+
+      class Select < Formular::Builder::Select
+        include Render
+        include Collection::GroupContent
+        include Div
+
+        def group_content(attributes, options, &block)
+          attributes.merge!(class: ["form-control"]) # FIXME: is that really an Attributes hash?
+          super
         end
       end
     end

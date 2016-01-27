@@ -70,13 +70,17 @@ module Formular
     end
 
     class Select < Collection
-      def render(attributes, options, &block)
-        @tag.(:select, attributes: attributes, content: super)
-      end
+      # def render(attributes, options, &block)
+      #   @tag.(:select, attributes: attributes, content: super)
+      # end
 
       def option(content, attributes)
         checked!(attributes, {}, :selected)
         @tag.(:option, content: content, attributes: attributes)
+      end
+
+      def collection(attributes, options, html="", &block)
+        @tag.(:select, attributes: attributes, content: super)
       end
 
     private
