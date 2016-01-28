@@ -86,11 +86,14 @@ module Formular
     private
       include Checked
 
-      # def render_option(cfg, i, options)
       def item(item, i, attributes, options, &block)
-        block_given? ?
-          yield(self, model: item, index: i) :                                        # user leverages DSL.
-          option(item.first, value: item.last, selected: options[:selected].include?(item.last)) # automatically create <option>.
+        item_options = {
+          value: value = item.last,
+          label: item.first,
+          selected: checked?(value, options),
+        }
+
+        yield(select: self, model: item, index: i, options: item_options)
       end
     end
   end

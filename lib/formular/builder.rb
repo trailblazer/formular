@@ -40,9 +40,9 @@ module Formular
         textarea: self.class::Textarea.new(@tag),
         checkbox: self.class::Checkbox.new(@tag),
         radio:    self.class::Radio.new(@tag),
-        select:   self.class::Select.new(@tag),
         collection_checkbox: self.class::Collection::Checkbox.new(@tag),
         collection_radio:    self.class::Collection::Radio.new(@tag),
+        collection_select:   self.class::Select.new(@tag),
         collection:    self.class::Collection.new(@tag),
       }
     end
@@ -150,13 +150,16 @@ module Formular
     def collection(name, collection, type:nil, **attributes, &block)
       default_block = {
         radio:    ->(options:, **) { radio(name, options) },
-        checkbox: ->(options:, **) { checkbox(name, options.merge(error: false)) }
+        checkbox: ->(options:, **) { checkbox(name, options.merge(error: false)) },
+        select:   ->(options:, select:, **) { select.option(options.delete(:label), options) }
       }
 
       blk  = block || default_block[type]
 
       control = "collection"
       control << "_#{type}" if type
+
+      attributes[:checked] = attributes.delete(:selected) if attributes[:selected] # FIXME: right location?
 
       control(control.to_sym, name, attributes, {
         collection: collection,
@@ -172,8 +175,8 @@ module Formular
       @tag.(:fieldset, content: content)
     end
 
-    def select(name, collection, attributes={}, &block) # DISCUSS: can we merge that with #collection?
-      control(:select, name, attributes.merge(collection: collection), private_options: [:collection, :selected], &block)
+    def select(name, collection, attributes={}, &block)
+      collection(name, collection, attributes.merge(type: :select), &block)
     end
 
   private

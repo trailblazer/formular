@@ -245,12 +245,33 @@ class FormularTest < Minitest::Spec
 <input name="public[]" type="checkbox" value="3" checked="true" class="even" id="form_public_3" /><label for="form_public_3" data-action="create">Three</label>}
       end
     end
+
+    describe "type: :select" do
+      # nothing selected.
+      it do
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :select).must_eq %{
+<select name="public" id="form_public">
+<option value="1">One</option>
+<option value="2">Two</option>
+<option value="3">Three</option>
+</select>}
+      end
+
+      it do
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :select, selected: [2]).must_eq %{
+<select name="public" id="form_public">
+<option value="1">One</option>
+<option value="2" selected="true">Two</option>
+<option value="3">Three</option>
+</select>}
+      end
+    end
   end
 
   describe "#select" do
     it do
-      builder.select :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, model:, **|
-        r.option(model.first, value: model.last) # TODO: alias to label.
+      builder.select :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |select:, model:, **|
+        select.option(model.first, value: model.last) # TODO: alias to label.
       end.must_eq %{
 <select name="public" id="form_public">
 <option value="1">One</option>
@@ -261,8 +282,8 @@ class FormularTest < Minitest::Spec
 
     # selected explicitly.
     it do
-      builder.select :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |r, model:, **|
-        r.option(model.first, value: model.last, selected: (model.last == 2)) # TODO: alias to label.
+      builder.select :public, [[:One, 1],[:Two, 2],[:Three, 3]] do |select:, model:, **|
+        select.option(model.first, value: model.last, selected: (model.last == 2)) # TODO: alias to label.
       end.must_eq %{
 <select name="public" id="form_public">
 <option value="1">One</option>
