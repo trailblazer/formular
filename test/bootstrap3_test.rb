@@ -21,7 +21,9 @@ class Bootstrap3Test < Minitest::Spec
 
     describe "attributes for input" do
       it do
-        builder.input(:id, "remote-data": true).must_eq %{<div class="form-group"><input name="id" type="text" remote-data="true" id="form_id" class="form-control" value="" /></div>}
+        builder.input(:id, "remote-data": true, class: [:element]).must_eq %{<div class="form-group">
+<input name="id" type="text" remote-data="true" class="form-control element" id="form_id" value="" />
+</div>}
       end
     end
 
@@ -319,7 +321,7 @@ Public?
           ).must_eq %{
 <div class="form-group bright" data-remote="true">
 <label >One!</label>
-<select name="public" data-select="true" id="form_public" class="form-control shiny">
+<select name="public" class="form-control shiny" data-select="true" id="form_public">
 <option value="2" selected="true">Two</option>
 </select>
 </div>}

@@ -52,13 +52,11 @@ module Formular
 
       private
         def group_content(attributes, options)
-          attributes[:class] ||= [] # FIXME: implement in Builder as default arg.
-          attributes[:class] << "form-control"
+          attributes.merge!(class: ["form-control"])
 
           html = label(attributes, options)
           html << input(attributes, options) # <input>
         end
-
       end
 
       class Textarea < Formular::Builder::Textarea
@@ -150,7 +148,7 @@ module Formular
         include Div
 
         def group_content(attributes, options, &block)
-          attributes.merge!(class: ["form-control"]) # FIXME: is that really an Attributes hash?
+          attributes.merge!(class: ["form-control"])
           super
         end
       end

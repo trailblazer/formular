@@ -71,7 +71,8 @@ module Formular
 
       options    = normalize_options!(name, attributes, options.merge(extras))
       attributes = normalize_attributes!(name, attributes, options)
-      puts "@@@@@ #{attributes.inspect}"
+      # puts "@@@@@ #{attributes.inspect}"
+      attributes = Attributes[attributes] # FIXME: introduce options[:control_html]
 
       render_control(tag, attributes, options, &block)
     end

@@ -46,6 +46,29 @@ class FormularTest < Minitest::Spec
 
   end
 
+  describe "label_attrs: {}" do
+      it "ignores without :label" do
+        builder.input(:id, label_attrs: { "remote-data": true }).must_eq %{
+<input name="id" type="text" id="form_id" value="" />
+}
+      end
+
+      it do
+        builder.input(:id, label_attrs: { "remote-data": true, class: [:id] }, label: "Id").must_eq %{
+<div class="form-group"><label remote-data="true" class="id" for="form_id">Id</label>
+<input name="id" type="text" id="form_id" class="form-control" value="" /></div>}
+      end
+
+      # with errors
+      it do
+        builder.input(:id, label_attrs: { "remote-data": true, class: [:id] }, label: "Id", error: ["wrong@!"]).must_eq %{
+<div class="form-group has-error"><label remote-data="true" class="id" for="form_id">Id</label>
+<input name="id" type="text" id="form_id" class="form-control" value="" />
+<span class="help-block">["wrong@!"]</span>
+</div>}
+      end
+    end
+
   describe "attributes for input" do
     it { builder.input(:id, "data-remote": true).must_eq %{<input name="id" type="text" data-remote="true" id="form_id" value="" />} }
   end
