@@ -31,6 +31,8 @@ module Formular
     # The only public method #call dispatches to the respective state method by
     # respecting the is_error argument.
     class Input
+      include Label
+
       def initialize(tag)
         @tag = tag
       end
@@ -45,7 +47,7 @@ module Formular
 
     private
       def render(attributes, options)
-        input(attributes, options)
+        label(attributes, options) + input(attributes, options)
       end
 
       def error(attributes, options, &block)
@@ -53,7 +55,7 @@ module Formular
       end
 
       def input(attributes, options)
-        attributes[:value] ||= options[:reader_value]
+        attributes[:value] ||= options[:reader_value] # FIXME: do that outside in Builder!
 
         @tag.(:input, attributes, options[:content]) # DISCUSS: save hash lookup for :content?
       end

@@ -47,14 +47,14 @@ module Formular
       class Input < Formular::Builder::Input
         include Render
         include ErrorWrap
-        include Formular::Builder::Label
         include Div
 
       private
         def group_content(attributes, options)
           attributes.merge!(class: ["form-control"])
 
-          html = label(attributes, options)
+          # DISCUSS: this is exactly what Input#render does.
+          html = label(attributes, options) # from Input.
           html << input(attributes, options) # <input>
         end
       end

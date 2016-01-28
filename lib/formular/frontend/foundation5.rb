@@ -27,8 +27,10 @@ module Formular
         include ErrorWrap
 
         def render(attributes, options)
-          return super unless options[:label]
-          @tag.(:label, {}, "#{options[:label]}#{super}")
+          html = input(attributes, options)
+
+          return html unless options[:label]
+          @tag.(:label, {}, "#{options[:label]}#{html}")
         end
       end
 
