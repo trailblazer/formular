@@ -295,10 +295,9 @@ Public?
 #     end
   end
 
-  describe "#select" do
-
+  describe "collection type: :select" do
     it do
-      builder.select(:public, [[:One, 1],[:Two, 2],[:Three, 3]], selected: [2], label: "One!").must_eq %{
+      builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], selected: [2], label: "One!", type: :select).must_eq %{
 <div class="form-group">
 <label >One!</label>
 <select name="public" id="form_public" class="form-control">

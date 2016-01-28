@@ -265,6 +265,8 @@ class FormularTest < Minitest::Spec
 <option value="3">Three</option>
 </select>}
       end
+
+      #
     end
   end
 

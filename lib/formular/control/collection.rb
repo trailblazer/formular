@@ -88,8 +88,8 @@ module Formular
 
       def item(item, i, attributes, options, &block)
         item_options = {
-          value: value = item.last,
-          label: item.first,
+          value:    value = item.last,
+          label:    item.first,
           selected: checked?(value, options),
         }
 
