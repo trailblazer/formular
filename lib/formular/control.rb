@@ -9,7 +9,7 @@ module Formular
         attributes = { for: attributes[:id] }
         attributes = options[:label_attrs].merge!(attributes) if options[:label_attrs]
 
-        @tag.(:label, attributes: attributes, content: "#{options[:label]}")
+        @tag.(:label, attributes, "#{options[:label]}")
       end
     end
 
@@ -49,13 +49,13 @@ module Formular
       end
 
       def error(attributes, options, &block)
-        render(attributes, options, &block) + @tag.(:span, attributes: {class: [:error]}, content: options[:error])
+        render(attributes, options, &block) + @tag.(:span, { class: [:error] }, options[:error])
       end
 
       def input(attributes, options)
         attributes[:value] ||= options[:reader_value]
 
-        @tag.(:input, attributes: attributes, content: options[:content]) # DISCUSS: save hash lookup for :content?
+        @tag.(:input, attributes, options[:content]) # DISCUSS: save hash lookup for :content?
       end
     end
 
@@ -69,7 +69,7 @@ module Formular
 
         content = attributes.delete(:value) || ""
 
-        @tag.(:textarea, attributes: attributes, content: content) # DISCUSS: save hash lookup for :content?
+        @tag.(:textarea, attributes, content) # DISCUSS: save hash lookup for :content?
       end
     end
 
@@ -108,7 +108,7 @@ module Formular
 
       # <input type="hidden" value="0" name="public" />
       def render_hidden(attributes, options)
-        @tag.(:input, attributes: { type: :hidden, value: options[:unchecked_value], name: attributes[:name] })
+        @tag.(:input, { type: :hidden, value: options[:unchecked_value], name: attributes[:name] })
       end
     end
 

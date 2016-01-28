@@ -23,7 +23,7 @@ module Formular
         # it will break.
         def error(attributes, options, &block)
           html = group_content(attributes, options, &block) +
-            @tag.(:span, attributes: { class: ["help-block"] }, content: options[:error])
+            @tag.(:span, { class: ["help-block"] }, options[:error])
 
           div({ class: ["form-group", "has-error"] }, options, html) # FIXME: redundant.
         end
@@ -36,7 +36,7 @@ module Formular
           # TODO: test for foundation5, too!
           attributes = options[:wrapper_attrs].merge!(attributes) if options[:wrapper_attrs]
 
-          @tag.(:div, attributes: attributes, content: content)
+          @tag.(:div, attributes, content)
         end
       end
 
@@ -86,7 +86,7 @@ module Formular
           label_attrs = {}
           label_attrs[:class] = ["#{div_class}-inline"] if inline # e.g. checkbox-inline.
 
-          html = @tag.(:label, attributes: label_attrs, content: "#{input_html}#{options[:label]}")
+          html = @tag.(:label, label_attrs, "#{input_html}#{options[:label]}")
 
           return html if inline
           div({ class: [div_class] }, options, html) # FIXME, include Div.
@@ -122,8 +122,8 @@ module Formular
           def group_content(attributes, options, &block)
             html = collection(attributes, options, &block)
 
-            @tag.(:label, attributes: {}, content: options[:label]) + # FIXME: add #label support.
-              (options[:inline] ? @tag.(:div, content: html) : html)
+            @tag.(:label, {}, options[:label]) + # FIXME: add #label support.
+              (options[:inline] ? @tag.(:div, {}, html) : html)
           end
         end
 

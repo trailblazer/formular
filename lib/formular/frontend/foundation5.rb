@@ -16,7 +16,7 @@ module Formular
 
           input +
           # @element.tag(:label, attributes: shared, content: input) +
-            @tag.(:small, attributes: shared, content: options[:error])
+            @tag.(:small, shared, options[:error])
         end
       end
 
@@ -28,7 +28,7 @@ module Formular
 
         def render(attributes, options)
           return super unless options[:label]
-          @tag.(:label, attributes: {}, content: "#{options[:label]}#{super}")
+          @tag.(:label, {}, "#{options[:label]}#{super}")
         end
       end
 
@@ -46,7 +46,7 @@ module Formular
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
         class Checkbox < Formular::Builder::Collection::Checkbox
           def render(attributes={}, options={}, html="", &block)
-            @tag.(:label, attributes: {}, content: options[:label]) +  # TODO: allow attributes.
+            @tag.(:label, {}, options[:label]) +  # TODO: allow attributes.
               super
           end
 

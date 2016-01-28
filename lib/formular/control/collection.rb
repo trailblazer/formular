@@ -76,11 +76,11 @@ module Formular
 
       def option(content, attributes)
         checked!(attributes, {}, :selected)
-        @tag.(:option, content: content, attributes: attributes)
+        @tag.(:option, attributes, content)
       end
 
       def collection(attributes, options, html="", &block)
-        @tag.(:select, attributes: attributes, content: super)
+        @tag.(:select, attributes, super)
       end
 
     private

@@ -50,7 +50,7 @@ module Formular
     def form(**attributes, &block)
       content = capture(self, &block)
 
-      @tag.(:form, attributes: attributes, content: content)
+      @tag.(:form, attributes, content)
     end
 
     def input(name, attributes={})
@@ -71,6 +71,7 @@ module Formular
 
       options    = normalize_options!(name, attributes, options.merge(extras))
       attributes = normalize_attributes!(name, attributes, options)
+      puts "@@@@@ #{attributes.inspect}"
 
       render_control(tag, attributes, options, &block)
     end
@@ -113,12 +114,12 @@ module Formular
 
     def button(attributes={})
       # TODO: use control!
-      @tag.(:input, attributes: { type: :button }.merge(attributes))
+      @tag.(:input, { type: :button }.merge(attributes))
       # input({ type: :button }.merge(attributes))
     end
 
     def label(content, attributes)
-      @tag.(:label, attributes: attributes, content: content )
+      @tag.(:label, attributes, content )
     end
 
     def checkbox(name, attributes={})
@@ -172,7 +173,7 @@ module Formular
       content = capture(self, &block)
       return if content == "" # DISCUSS: should that be here?
 
-      @tag.(:fieldset, content: content)
+      @tag.(:fieldset, {}, content)
     end
 
     def select(name, collection, attributes={}, &block)

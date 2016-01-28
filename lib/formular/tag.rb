@@ -1,7 +1,7 @@
 module Formular
   # Generic renderer functions without any state.
   class Tag
-    def call(name, attributes:{}, content:nil, **)
+    def call(name, attributes, content=nil)
       return %{<#{name} #{html_attrs(attributes)} />} unless content
       %{<#{name} #{html_attrs(attributes)}>#{content}</#{name}>}
     end

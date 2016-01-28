@@ -308,5 +308,22 @@ Public?
 </div>
 }
     end
+
+    describe "wrapper_attrs: {}" do
+      it do
+        builder.collection(:public, [[:Two, 2]], selected: [2], label: "One!", type: :select,
+          wrapper_attrs: { class: ["bright"], "data-remote": true },
+
+          class: [:shiny],
+          "data-select": true, # input_attrs
+          ).must_eq %{
+<div class="form-group bright" data-remote="true">
+<label >One!</label>
+<select name="public" data-select="true" id="form_public" class="form-control shiny">
+<option value="2" selected="true">Two</option>
+</select>
+</div>}
+      end
+    end
   end
 end
