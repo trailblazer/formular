@@ -14,6 +14,7 @@ module Formular
     end
 
     module Checked
+
       def checked!(attributes, options, option_name=:checked)
         if attributes.has_key?(option_name)
           attributes.delete(option_name) if !attributes[option_name]
@@ -24,13 +25,14 @@ module Formular
       end
     end
 
+
     # Controls have two states implemented with
     # * #render (valid or fresh input field)
     # * #error (invalid input field)
     #
     # The only public method #call dispatches to the respective state method by
     # respecting the is_error argument.
-    class Input
+    class Control # TODO: make that namespace instead of Builder.
       include Label
 
       def initialize(tag)
@@ -53,7 +55,10 @@ module Formular
       def error(attributes, options, &block)
         render(attributes, options, &block) + @tag.(:span, { class: [:error] }, options[:error])
       end
+    end
 
+
+    module InputTag
       def input(attributes, options)
         attributes[:value] ||= options[:reader_value] # FIXME: do that outside in Builder!
 
@@ -61,7 +66,11 @@ module Formular
       end
     end
 
-    class Textarea < Input
+    class Input < Control
+      include InputTag
+    end
+
+    class Textarea < Control
       def render(attributes, options)
         textarea(attributes, options)
       end
@@ -78,7 +87,7 @@ module Formular
     # value = rendered value
     # options[:reader_value]
     # Stand-alone checkbox a la "Accept our terms: []".
-    class Checkbox < Input
+    class Checkbox < Control
       def render(attributes, options)
         checkbox(attributes, options)
       end
@@ -101,7 +110,7 @@ module Formular
       end
 
     private
-      include Label
+      include InputTag
       include Checked
 
       def default_values
@@ -114,7 +123,7 @@ module Formular
       end
     end
 
-    class Radio < Input
+    class Radio < Control
       def render(attributes, options)
         radio(attributes, options)
       end
@@ -133,10 +142,8 @@ module Formular
 
       # TODO: move label to Input.
     private
-      include Label
+      include InputTag
       include Checked
     end
   end
 end
-
-# DISCUSS: use kw args instead of private_options?

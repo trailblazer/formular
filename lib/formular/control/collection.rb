@@ -1,7 +1,7 @@
 module Formular
   class Builder
     # A Collection represents the widget for <checkbox and <radio groups, and <select.
-    class Collection < Input
+    class Collection < Control
       def render(attributes, options={}, html="", &block)
         collection(attributes, options, html, &block)
       end
@@ -13,10 +13,6 @@ module Formular
 
         html
       end
-
-      # def error(*args, &block)
-      #   render(*args, &block)
-      # end
 
     private
       def item(model, i, attributes, options, &block)

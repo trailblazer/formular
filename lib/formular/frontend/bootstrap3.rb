@@ -101,6 +101,7 @@ module Formular
           checkable_wrap(attributes, options.merge(input_html: html, div_class: "checkbox"))
         end
       end
+
       class Radio < Formular::Builder::Radio # FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         include Div
         include Checkable
