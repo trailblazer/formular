@@ -57,6 +57,12 @@ module Formular
       end
     end
 
+    class Form < Control
+      def render(attributes, options, &block)
+        @tag.(:form, attributes, options[:content])
+      end
+    end
+
 
     module InputTag
       def input(attributes, options)

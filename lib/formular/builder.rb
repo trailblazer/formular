@@ -26,7 +26,15 @@ module Formular
         attributes[:id] = id_for(name, options)
       end
     end
+
+    module Name
+      def name!(name, attributes, options)
+        attributes[:name] = form_encoded_name(options[:path])
+      end
+    end
+
     include Id
+    include Name
 
     def initialize(tag: Tag.new, path: [], prefix: ["form"], model:, parent:nil, errors:nil)
       @tag      = tag
@@ -36,6 +44,7 @@ module Formular
       @prefix   = prefix
 
       @controls = {
+        form:     self.class::Form.new(@tag),
         input:    self.class::Input.new(@tag),
         textarea: self.class::Textarea.new(@tag),
         checkbox: self.class::Checkbox.new(@tag),
@@ -49,8 +58,8 @@ module Formular
 
     def form(**attributes, &block)
       content = capture(self, &block)
-
-      @tag.(:form, attributes, content)
+      # DISCUSS: leave the capture in Builder, or can we move to Control?
+      control(:form, nil, attributes, {content: content}, [:id, :reader_value, :name])
     end
 
     def input(name, attributes={})
@@ -62,16 +71,20 @@ module Formular
     #  attributes:
     #  options: :id
     private def control(tag, name, attributes, options={}, exclude=[], &block) # TODO: rename tag to control_name
+      attributes = attributes.dup
+
       # TODO: make that extras stuff nicer.
       extras = {}
       extras[:reader_value] = @model.send(name) unless exclude.include?(:reader_value)
-      id!(name, attributes, prefix: @prefix) unless exclude.include?(:id)
+
+      options    = normalize_options!(name, attributes, options.merge(extras))
+
+      name!(name, attributes, options) unless exclude.include?(:name)
+      id!(name, attributes, options) unless exclude.include?(:id)
 
       # TODO: test me: name from attributes has precedence. attributes is immutual.
 
-      options    = normalize_options!(name, attributes, options.merge(extras))
-      attributes = normalize_attributes!(name, attributes, options)
-      # puts "@@@@@ #{attributes.inspect}"
+      # attributes = normalize_attributes!(name, attributes, options)
       attributes = Attributes[attributes] # FIXME: introduce options[:control_html]
 
       render_control(tag, attributes, options, &block)
@@ -105,9 +118,9 @@ module Formular
       default_options
     end
 
-    private def normalize_attributes!(name, attributes, options)
-      { name: form_encoded_name(options[:path]) }.merge(attributes)
-    end
+    # private def normalize_attributes!(name, attributes, options)
+    #   { name: form_encoded_name(options[:path]) }.merge(attributes)
+    # end
 
     def textarea(name, attributes={})
       control(:textarea, name, attributes)
