@@ -16,6 +16,62 @@ Formular's rendering is easily customizable. It provides support for Foundation 
 
 ## Example
 
+While you can instantiate the form builder manually, it's easiest to use the `form` helper to do so. Include `Formular::Helper` into your cell, view, or in a Rails controller as a helper.
+
+```ruby
+module Post::Cell
+  class New < Cell::ViewModel
+    include Formular::Helper
+```
+
+or
+
+```ruby
+class PostsController < ApplicationController
+  helper Formular::Helper
+```
+
+You should also configure what frontend you want to use. This will wrap inputs correctly, and so on.
+
+```ruby
+Formular::Helper.frontend :bootstrap3
+```
+
+In your view, you're now ready to use Formular's API to render forms.
+
+```slim
+= form(model.contract, url) do |f|
+
+  = f.input :title, placeholder: "Title"
+  = f.input :url_slug, placeholder: "URL slug"
+  .form-group
+    = f.checkbox :is_public, label: "Public?"
+  .form-group
+    = f.radio :owner, label: "Flori", value: 1
+    = f.radio :owner, label: "Konsti", value: 2
+
+  .row
+    .col-md-2
+      = f.collection :owner, [["Flori", 1], ["Konsti", 2]], type: :radio, label: "Owners"
+    .col-md-3
+      = f.collection :owner, [["Flori", 1], ["Konsti", 2]], type: :radio, label: "Owners, inline", inline: true
+    = f.collection :roles, [["Admin", 1], ["Owner", 2], ["Maintainer", 3]], type: :checkbox, checked: model.contract.roles, label: "Roles", wrapper_attrs: { class: ["col-md-2"] }
+    = f.collection :roles, [["Admin", 1], ["Owner", 2], ["Maintainer", 3]], type: :checkbox, inline: true, checked: model.contract.roles, label: "Roles, inline", wrapper_attrs: { class: ["col-md-5"] }
+
+  = f.select :select_roles, [["Admin", 1], ["Owner", 2], ["Maintainer", 3]], selected: model.contract.select_roles, label: "Selectable Roles"
+
+  .form-group
+    = f.textarea :content, placeholder: "And your story...", rows: 9
+  .form-group
+    = f.button type: :submit, value: "Submit!", class: [:btn, :'btn-lg', :'btn-default']
+```
+
+Note that a lot of this code can be done automatically by Formular.
+
+## Documentation
+
+Formular's API docs and information on how to extend it can be found on the [Trailblazer project page](http://trailblazer.to/gems/formular).
+
 ## API
 
 The render API is highly inspired by the [SimpleForm](https://github.com/plataformatec/simple_form) gem.
@@ -50,6 +106,7 @@ checked: false/nil => *no* `checked` attribute.
 ## Limitations
 
 * Currently, nested hashes aren't suffixed with `_attributes`, as it's usually done in ActiveRecord.
+* Capturing only works with Slim and Hamlit, so far.
 
 ## Installation
 
