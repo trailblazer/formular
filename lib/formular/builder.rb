@@ -70,23 +70,19 @@ module Formular
     # provides
     #  attributes:
     #  options: :id
-    private def control(tag, name, attributes, options={}, exclude=[], &block) # TODO: rename tag to control_name
-      attributes = attributes.dup
-
+    # TODO: i hate that exclude argument, it is a hack.
+    private def control(tag, name, attributes, options={}, exclude=[], &block)
       # TODO: make that extras stuff nicer.
       extras = {}
       extras[:reader_value] = @model.send(name) unless exclude.include?(:reader_value)
 
       options    = normalize_options!(name, attributes, options.merge(extras))
+      attributes = normalize_attributes(name, attributes, options)
 
       name!(name, attributes, options) unless exclude.include?(:name)
       id!(name, attributes, options) unless exclude.include?(:id)
 
       # TODO: test me: name from attributes has precedence. attributes is immutual.
-
-      # attributes = normalize_attributes!(name, attributes, options)
-      attributes = Attributes[attributes] # FIXME: introduce options[:control_html]
-
       render_control(tag, attributes, options, &block)
     end
 
@@ -107,6 +103,10 @@ module Formular
         name:         name,
         prefix:       @prefix,
       ) { |k, v, n| v }
+    end
+
+    def normalize_attributes(name, attributes, options)
+      Attributes[attributes] # FIXME: introduce options[:control_html]
     end
 
     private def private_options
@@ -175,6 +175,7 @@ module Formular
       control << "_#{type}" if type
 
       attributes[:checked] = attributes.delete(:selected) if attributes[:selected] # FIXME: right location?
+      attributes[:checked] ||= []
 
       control(control.to_sym, name, attributes, {
         collection: collection,

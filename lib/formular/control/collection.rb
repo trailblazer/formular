@@ -20,7 +20,7 @@ module Formular
       end
 
       # We check for #to_s equality on every item in `:checked`.
-      def checked?(value, checked:[], **)
+      def checked?(value, checked:, **)
         checked.map(&:to_s).include?(value.to_s)
       end
 
