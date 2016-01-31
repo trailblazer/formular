@@ -1,7 +1,7 @@
 require "test_helper"
 require "cell/hamlit"
 
-class Comment::EditCell < Cell::ViewModel
+class Comment::HamlitCell < Cell::ViewModel
   include Cell::Hamlit
 
   self.view_paths = ['test/fixtures']
@@ -19,7 +19,7 @@ class HamlitTest < Minitest::Spec
   describe "valid, initial rendering" do
     let (:model) { Comment.new(1, "Nice!", [Reply.new]) }
 
-    it { Comment::EditCell.new(model).().must_eq %{Edit
+    it { Comment::HamlitCell.new(model).().must_eq %{Edit
 <form action="/posts">ID
 <input type="text" name="id" id="form_id" value="1" />
 <textarea name="body" id="form_body">Nice!</textarea>

@@ -1,7 +1,7 @@
 require "test_helper"
 require "cell/slim"
 
-class Comment::NewCell < Cell::ViewModel
+class Comment::SlimCell < Cell::ViewModel
   include Cell::Slim
   # include Cell::Hamlit
 
@@ -35,7 +35,7 @@ class SlimTest < Minitest::Spec
   describe "valid, initial rendering" do
     let (:model) { Comment.new(1, "Nice!", [Reply.new]) }
 
-    it { Comment::NewCell.new(model).().must_eq %{<New></New>
+    it { Comment::SlimCell.new(model).().must_eq %{<New></New>
 <form action="/posts">ID
 <input type="text" name="id" id="form_id" value="1" />
 <textarea name="body" id="form_body">Nice!</textarea>
@@ -53,7 +53,7 @@ class SlimTest < Minitest::Spec
     before { model.validate({}) }
 
     it do
-      Comment::NewCell.new(model).().must_eq %{<New></New><form action="/posts">ID
+      Comment::SlimCell.new(model).().must_eq %{<New></New><form action="/posts">ID
 <input type="text" name="id" id="form_id" value="" />
 <textarea class="error" name="body" id="form_body">
 hang ten in east berlin
