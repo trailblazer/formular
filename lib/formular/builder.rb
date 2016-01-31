@@ -155,7 +155,6 @@ module Formular
 
       # content
       content = nested.each_with_index.collect do |model, index|
-      # content = Collection[*nested].() do |model:, index:, **|
         self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name, index]).(&block)
       end.join("")
 
