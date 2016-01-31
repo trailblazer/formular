@@ -208,6 +208,14 @@ class FormularTest < Minitest::Spec
 <input type="radio" value="2" name="public" id="form_public_2" /><label for="form_public_2">Two</label>
 }
       end
+
+      # no array passed to :checked.
+      it "checked: 1" do
+        builder.collection(:public, [[:One, 1],[:Two, 2]], type: :radio, checked: 2).must_eq %{
+<input type="radio" value="1" name="public" id="form_public_1" /><label for="form_public_1">One</label>
+<input type="radio" value="2" checked="true" name="public" id="form_public_2" /><label for="form_public_2">Two</label>
+}
+      end
     end
 
     describe "type: :checkbox, manual #checkbox" do

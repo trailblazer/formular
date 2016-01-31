@@ -175,7 +175,7 @@ module Formular
       control << "_#{type}" if type
 
       attributes[:checked] = attributes.delete(:selected) if attributes[:selected] # FIXME: right location?
-      attributes[:checked] ||= []
+      attributes[:checked] = Array(attributes[:checked])
 
       control(control.to_sym, name, attributes, {
         collection: collection,
