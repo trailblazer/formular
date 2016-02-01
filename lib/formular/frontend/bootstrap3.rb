@@ -39,6 +39,13 @@ module Formular
           @tag.(:div, attributes, content)
         end
       end
+      
+      module Hint # :wrapper # TODO: make generic in Control.
+        def hint(options)
+          return "" if options[:hint] == nil || options[:hint] == false
+          @tag.(:span, { class: ["help-block"] }, options[:hint])
+        end
+      end
 
       class Form < Formular::Builder::Form
         def render(attributes, options, &block)
@@ -55,6 +62,7 @@ module Formular
         include Render
         include ErrorWrap
         include Div
+        include Hint
 
       private
         def group_content(attributes, options)
@@ -64,6 +72,7 @@ module Formular
           # DISCUSS: this is exactly what Input#render does.
           html = label(attributes, options) # from Input.
           html << input(attributes, options) # <input>
+          html << hint(options)
         end
       end
 
@@ -71,6 +80,7 @@ module Formular
         include Render
         include Div
         include ErrorWrap
+        include Hint
 
         def group_content(attributes, options)
           options[:label_attrs].merge!({ class: ["control-label"] })
@@ -78,6 +88,7 @@ module Formular
           
           html = label(attributes, options) # from Input.
           html << textarea(attributes, options)
+          html << hint(options)
         end
       end
 
@@ -134,14 +145,17 @@ module Formular
             html = collection(attributes, options, &block)
             options[:label_attrs].merge!({ class: ["control-label"]})
             
-            @tag.(:label, options[:label_attrs], options[:label]) + # FIXME: add #label support.
-              (options[:inline] ? @tag.(:div, {}, html) : html)              
+            #only include the label if label option provided
+            (options[:label] ? @tag.(:label, options[:label_attrs], options[:label]) : "") +
+            (options[:inline] ? @tag.(:div, {}, html) : html) +
+            hint(options)
           end
         end
 
         class Checkbox < Formular::Builder::Collection::Checkbox
           include Render
           include Div
+          include Hint
           include GroupContent
           include ErrorWrap
         end
@@ -149,6 +163,7 @@ module Formular
         class Radio < Formular::Builder::Collection::Radio
           include Render
           include Div
+          include Hint
           include GroupContent
           include ErrorWrap
         end
@@ -160,6 +175,7 @@ module Formular
         include Render
         include Collection::GroupContent
         include Div
+        include Hint
 
         def group_content(attributes, options, &block)
           attributes.merge!(class: ["form-control"])
