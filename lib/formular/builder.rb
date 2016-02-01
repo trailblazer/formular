@@ -94,6 +94,7 @@ module Formular
       private_options_for(options).each { |k| options[k] = attributes.delete(k) if attributes.has_key?(k) }
 
       options[:wrapper_attrs] = Attributes[options[:wrapper_attrs]]
+      options[:label_attrs] = Attributes[options[:label_attrs]]
 
       options.merge(
         path:         @path + [name],

@@ -9,7 +9,7 @@ class Bootstrap3Test < Minitest::Spec
     # with label.
     it { builder.input(:id, label: "Id").must_eq %{
 <div class="form-group">
-<label for="form_id">Id</label>
+<label class="control-label" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" />
 </div>} }
 
@@ -57,14 +57,14 @@ class Bootstrap3Test < Minitest::Spec
 
       it do
         builder.input(:id, label_attrs: { "remote-data": true, class: [:id] }, label: "Id").must_eq %{
-<div class="form-group"><label remote-data="true" class="id" for="form_id">Id</label>
+<div class="form-group"><label remote-data="true" class="control-label id" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" /></div>}
       end
 
       # with errors
       it do
         builder.input(:id, label_attrs: { "remote-data": true, class: [:id] }, label: "Id", error: ["wrong@!"]).must_eq %{
-<div class="form-group has-error"><label remote-data="true" class="id" for="form_id">Id</label>
+<div class="form-group has-error"><label remote-data="true" class="control-label id" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" />
 <span class="help-block">["wrong@!"]</span>
 </div>}
@@ -81,7 +81,7 @@ class Bootstrap3Test < Minitest::Spec
 </div>} }
       it { builder.input(:id, label: "Id").must_eq %{
 <div class="form-group has-error">
-<label for="form_id">Id</label>
+<label class="control-label" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" />
 <span class="help-block">[\"wrong!\"]</span>
 </div>
@@ -91,18 +91,18 @@ class Bootstrap3Test < Minitest::Spec
     describe "wrapper: false" do
       it do
          builder.input(:id, label: "Id", wrapper: false).must_eq %{
-<label for="form_id">Id</label>
+<label class="control-label" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" />}
       end
 
       it do
-        builder.input(:id, label: "Id", wrapper: false, label: false).must_eq %{
+        builder.input(:id, wrapper: false, label: false).must_eq %{
 <input type="text" name="id" id="form_id" class="form-control" value="" />}
       end
 
 
       it { builder.input(:id, label: "Id", wrapper: false, error: ["wrong!"]).must_eq %{
-<label for="form_id">Id</label>
+<label class="control-label" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" />
 <span class="help-block">[\"wrong!\"]</span>} }
     end
@@ -112,6 +112,14 @@ class Bootstrap3Test < Minitest::Spec
     it do
       builder.textarea(:public, rows: 3).must_eq %{
 <div class="form-group">
+<textarea rows="3" name="public" id="form_public" class="form-control"></textarea>
+</div>}
+    end
+    
+    it do
+      builder.textarea(:public, rows: 3, label: "Public").must_eq %{
+<div class="form-group">
+<label class="control-label" for="form_public">Public</label>
 <textarea rows="3" name="public" id="form_public" class="form-control"></textarea>
 </div>}
     end
@@ -227,7 +235,7 @@ Public?
       # TODO: allow merging :class!
       builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!").must_eq %{
 <div class="form-group">
-<label >One!</label>
+<label class="control-label">One!</label>
 <div class="checkbox"><label ><input type="checkbox" value="1" name="public[]" id="form_public_1" />One</label></div>
 <div class="checkbox"><label ><input type="checkbox" value="2" checked="true" name="public[]" id="form_public_2" />Two</label></div>
 <div class="checkbox">
@@ -244,7 +252,7 @@ Public?
       it do
         builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!").must_eq %{
 <div class="form-group has-error">
-<label >One!</label>
+<label class="control-label">One!</label>
 <div class="checkbox"><label ><input type="checkbox" value="1" name="public[]" id="form_public_1" />One</label></div>
 <div class="checkbox"><label ><input type="checkbox" value="2" checked="true" name="public[]" id="form_public_2" />Two</label></div>
 <div class="checkbox">
@@ -261,7 +269,7 @@ Public?
       # TODO: allow merging :class!
       builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!", inline: true).must_eq %{
 <div class="form-group">
-<label >One!</label><div ><label class="checkbox-inline"><input type="checkbox" value="1" name="public[]" id="form_public_1" />One</label>
+<label class="control-label">One!</label><div ><label class="checkbox-inline"><input type="checkbox" value="1" name="public[]" id="form_public_1" />One</label>
 <label class="checkbox-inline"><input type="checkbox" value="2" checked="true" name="public[]" id="form_public_2" />Two</label>
 <label class="checkbox-inline"><input type="hidden" value="0" name="public[]" />
 <input type="checkbox" value="3" checked="true" name="public[]" id="form_public_3" />Three</label></div></div>
@@ -274,7 +282,7 @@ Public?
       # TODO: allow merging :class!
       builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :radio, checked: [2,3], label: "One!").must_eq %{
 <div class="form-group">
-<label >One!</label>
+<label class="control-label">One!</label>
 <div class="radio"><label ><input type="radio" value="1" name="public" id="form_public_1" />One</label></div>
 <div class="radio"><label ><input type="radio" value="2" checked="true" name="public" id="form_public_2" />Two</label></div>
 <div class="radio"><label ><input type="radio" value="3" checked="true" name="public" id="form_public_3" />Three</label></div>
@@ -286,7 +294,7 @@ Public?
       # TODO: allow merging :class!
       builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :radio, checked: [2,3], label: "One!", inline: true).must_eq %{
 <div class="form-group">
-<label >One!</label>
+<label class="control-label">One!</label>
 <div >
 <label class="radio-inline"><input type="radio" value="1" name="public" id="form_public_1" />One</label>
 <label class="radio-inline"><input type="radio" value="2" checked="true" name="public" id="form_public_2" />Two</label>
@@ -304,7 +312,7 @@ Public?
     it do
       builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], selected: [2], label: "One!", type: :select).must_eq %{
 <div class="form-group">
-<label >One!</label>
+<label for="form_public" class="control-label">One!</label>
 <select name="public" id="form_public" class="form-control">
 <option value="1">One</option>
 <option value="2" selected="true">Two</option>
@@ -323,7 +331,7 @@ Public?
           "data-select": true, # input_attrs
           ).must_eq %{
 <div class="form-group bright" data-remote="true">
-<label >One!</label>
+<label for="form_public" class="control-label">One!</label>
 <select class="form-control shiny" data-select="true" name="public" id="form_public">
 <option value="2" selected="true">Two</option>
 </select>

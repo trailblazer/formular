@@ -58,6 +58,7 @@ module Formular
 
       private
         def group_content(attributes, options)
+          options[:label_attrs].merge!({ class: ["control-label"] })
           attributes.merge!(class: ["form-control"])
 
           # DISCUSS: this is exactly what Input#render does.
@@ -72,7 +73,11 @@ module Formular
         include ErrorWrap
 
         def group_content(attributes, options)
-          textarea(attributes.merge(class: ["form-control"]), options)
+          options[:label_attrs].merge!({ class: ["control-label"] })
+          attributes.merge!(class: ["form-control"])
+          
+          html = label(attributes, options) # from Input.
+          html << textarea(attributes, options)
         end
       end
 
@@ -121,15 +126,16 @@ module Formular
       end
 
       class Collection < Formular::Builder::Collection
-      # <label>Check these out</label>
+      # <label class="control-label">Check these out</label>
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
         module GroupContent
           def group_content(attributes, options, &block)
             html = collection(attributes, options, &block)
-
-            @tag.(:label, {}, options[:label]) + # FIXME: add #label support.
-              (options[:inline] ? @tag.(:div, {}, html) : html)
+            options[:label_attrs].merge!({ class: ["control-label"]})
+            
+            @tag.(:label, options[:label_attrs], options[:label]) + # FIXME: add #label support.
+              (options[:inline] ? @tag.(:div, {}, html) : html)              
           end
         end
 
@@ -157,6 +163,8 @@ module Formular
 
         def group_content(attributes, options, &block)
           attributes.merge!(class: ["form-control"])
+          options[:label_attrs].merge!({ for: attributes[:id] })
+          #label for option should only be included select fields, not all collections
           super
         end
       end
