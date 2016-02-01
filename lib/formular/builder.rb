@@ -110,7 +110,7 @@ module Formular
     end
 
     private def private_options
-      [:label, :error, :inline, :wrapper, :wrapper_attrs, :label_attrs]
+      [:label, :error, :inline, :wrapper, :wrapper_attrs, :label_attrs, :style]
     end
 
     private def private_options_for(options, default_options = private_options)

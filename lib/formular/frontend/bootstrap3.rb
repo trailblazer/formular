@@ -40,6 +40,13 @@ module Formular
         end
       end
 
+      class Form < Formular::Builder::Form
+        def render(attributes, options, &block)
+          attributes.merge!(class: ["form-inline"]) if options[:style] == :inline
+          super
+        end
+      end
+
       # <div class="form-group">
       #   <label for="exampleInputEmail1">Email address</label>
       #   <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
