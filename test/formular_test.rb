@@ -339,6 +339,8 @@ class FormularTest < Minitest::Spec
   end
 
   describe "#form" do
+    it { builder.form().must_eq %{<form  />} }
+    # no block is ok.
     it { builder.form() {}.must_eq %{<form  />} }
     it { builder.form(class: [:bright]) {}.must_eq %{<form class="bright" />} }
   end
