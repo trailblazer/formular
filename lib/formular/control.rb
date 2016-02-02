@@ -3,12 +3,16 @@ module Formular
   class Builder # i hate that, please, give use namespace Builder
     module Label
       # DISCUSS: pass in content?
+      #A labels for attribute is now optional. 
+      #If you set options[:for] == false it will not be included
       def label(attributes, options) # DISCUSS: should labels be part of a Control or a higher-level widget?
         return "" unless options[:label]
-
-        attributes = { for: attributes[:id] }
-        attributes = options[:label_attrs].merge!(attributes) if options[:label_attrs]
-
+        attributes = if options[:label_attrs].delete(:for) == false
+          { }
+        else
+          { for: attributes[:id] }
+        end
+        attributes = options[:label_attrs].merge!(attributes)
         @tag.(:label, attributes, "#{options[:label]}")
       end
     end

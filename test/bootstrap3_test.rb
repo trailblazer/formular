@@ -373,7 +373,7 @@ Public?
     it do
       builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], selected: [2], label: "One!", type: :select).must_eq %{
 <div class="form-group">
-<label for="form_public" class="control-label">One!</label>
+<label class="control-label" for="form_public">One!</label>
 <select name="public" id="form_public" class="form-control">
 <option value="1">One</option>
 <option value="2" selected="true">Two</option>
@@ -392,7 +392,7 @@ Public?
           "data-select": true, # input_attrs
           ).must_eq %{
 <div class="form-group bright" data-remote="true">
-<label for="form_public" class="control-label">One!</label>
+<label class="control-label" for="form_public">One!</label>
 <select class="form-control shiny" data-select="true" name="public" id="form_public">
 <option value="2" selected="true">Two</option>
 </select>

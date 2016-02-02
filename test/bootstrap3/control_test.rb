@@ -10,12 +10,11 @@ class Bootstrap3ControlTest < Minitest::Spec
 
   end
 
-    # with label_attrs.
-    it { builder.input(:id, label: "ID", style: :horizontal,
-      label_attrs: { class: ["col-sm-2"] },
-      class: ["col-sm-10"] ).must_eq %{
-<div class="form-group">
-<label class="control-label col-sm-2" for="form_id">ID</label>
-<div class="col-sm-10"><input type="text" name="id" id="form_id" class="form-control" value="" /></div>
-</div>} }
+    # with label_attrs. Horizontal tests are all in seperate class
+#     it { builder.input(:id, label: "ID", style: :horizontal,
+#       label_attrs: { class: ["col-sm-2"] }).must_eq %{
+# <div class="form-group">
+# <label class="control-label col-sm-2" for="form_id">ID</label>
+# <div class="col-sm-10"><input type="text" name="id" id="form_id" class="form-control" value="" /></div>
+# </div>} }
 end
