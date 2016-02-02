@@ -69,9 +69,11 @@ module Formular
           options[:label_attrs].merge!({ class: ["control-label"] })
           attributes.merge!(class: ["form-control"])
 
-          # DISCUSS: this is exactly what Input#render does.
+          input = input(attributes, options) # <input>
+          input = @tag.(:div, { class: ["col-sm-10"] }, input) if options[:style]==:horizontal # FRAN: this must be wrapper_attrs or something!
+
           html = label(attributes, options) # from Input.
-          html << input(attributes, options) # <input>
+          html << input
           html << hint(options)
         end
       end
@@ -110,7 +112,7 @@ module Formular
           html = @tag.(:label, label_attrs, "#{input_html}#{options[:label]}")
 
           return html if inline
-          div({ class: [div_class] }, options, html) # FIXME, include Div.
+          div({ class: [div_class] }, options, html)
         end
       end
 
