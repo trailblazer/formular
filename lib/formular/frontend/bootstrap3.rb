@@ -39,7 +39,7 @@ module Formular
           @tag.(:div, attributes, content)
         end
       end
-      
+
       module Hint # :wrapper # TODO: make generic in Control.
         def hint(options)
           return "" if options[:hint] == nil || options[:hint] == false
@@ -85,7 +85,7 @@ module Formular
         def group_content(attributes, options)
           options[:label_attrs].merge!({ class: ["control-label"] })
           attributes.merge!(class: ["form-control"])
-          
+
           html = label(attributes, options) # from Input.
           html << textarea(attributes, options)
           html << hint(options)
@@ -142,13 +142,14 @@ module Formular
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
         module GroupContent
           def group_content(attributes, options, &block)
-            html = collection(attributes, options, &block)
+            content = collection(attributes, options, &block)
             options[:label_attrs].merge!({ class: ["control-label"]})
-            
-            #only include the label if label option provided
-            (options[:label] ? @tag.(:label, options[:label_attrs], options[:label]) : "") +
-            (options[:inline] ? @tag.(:div, {}, html) : html) +
-            hint(options)
+
+            html = ""
+            # only include the label if label option provided.
+            html << @tag.(:label, options[:label_attrs], options[:label]) if options[:label]
+            html << (options[:inline] ? @tag.(:div, {}, content) : content)
+            html << hint(options)
           end
         end
 
