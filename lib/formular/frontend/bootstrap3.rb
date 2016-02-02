@@ -39,6 +39,13 @@ module Formular
           @tag.(:div, attributes, content)
         end
       end
+      
+      module Hint # :wrapper # TODO: make generic in Control.
+        def hint(options)
+          return "" if options[:hint] == nil || options[:hint] == false
+          @tag.(:span, { class: ["help-block"] }, options[:hint])
+        end
+      end
 
       class Form < Formular::Builder::Form
         def render(attributes, options, &block)
@@ -55,14 +62,17 @@ module Formular
         include Render
         include ErrorWrap
         include Div
+        include Hint
 
       private
         def group_content(attributes, options)
+          options[:label_attrs].merge!({ class: ["control-label"] })
           attributes.merge!(class: ["form-control"])
 
           # DISCUSS: this is exactly what Input#render does.
           html = label(attributes, options) # from Input.
           html << input(attributes, options) # <input>
+          html << hint(options)
         end
       end
 
@@ -70,9 +80,15 @@ module Formular
         include Render
         include Div
         include ErrorWrap
+        include Hint
 
         def group_content(attributes, options)
-          textarea(attributes.merge(class: ["form-control"]), options)
+          options[:label_attrs].merge!({ class: ["control-label"] })
+          attributes.merge!(class: ["form-control"])
+          
+          html = label(attributes, options) # from Input.
+          html << textarea(attributes, options)
+          html << hint(options)
         end
       end
 
@@ -121,21 +137,25 @@ module Formular
       end
 
       class Collection < Formular::Builder::Collection
-      # <label>Check these out</label>
+      # <label class="control-label">Check these out</label>
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
         module GroupContent
           def group_content(attributes, options, &block)
             html = collection(attributes, options, &block)
-
-            @tag.(:label, {}, options[:label]) + # FIXME: add #label support.
-              (options[:inline] ? @tag.(:div, {}, html) : html)
+            options[:label_attrs].merge!({ class: ["control-label"]})
+            
+            #only include the label if label option provided
+            (options[:label] ? @tag.(:label, options[:label_attrs], options[:label]) : "") +
+            (options[:inline] ? @tag.(:div, {}, html) : html) +
+            hint(options)
           end
         end
 
         class Checkbox < Formular::Builder::Collection::Checkbox
           include Render
           include Div
+          include Hint
           include GroupContent
           include ErrorWrap
         end
@@ -143,6 +163,7 @@ module Formular
         class Radio < Formular::Builder::Collection::Radio
           include Render
           include Div
+          include Hint
           include GroupContent
           include ErrorWrap
         end
@@ -154,9 +175,12 @@ module Formular
         include Render
         include Collection::GroupContent
         include Div
+        include Hint
 
         def group_content(attributes, options, &block)
           attributes.merge!(class: ["form-control"])
+          options[:label_attrs].merge!({ for: attributes[:id] })
+          #label for option should only be included select fields, not all collections
           super
         end
       end

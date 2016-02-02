@@ -9,10 +9,17 @@ class Bootstrap3Test < Minitest::Spec
     # with label.
     it { builder.input(:id, label: "Id").must_eq %{
 <div class="form-group">
-<label for="form_id">Id</label>
+<label class="control-label" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" />
 </div>} }
 
+    # with hint
+    it { builder.input(:id, hint: "Handy help text").must_eq %{
+<div class="form-group">
+<input type="text" name="id" id="form_id" class="form-control" value="" />
+<span class="help-block">Handy help text</span>
+</div>} }
+    
     # no options.
     it { builder.input(:id).must_eq %{
 <div class="form-group">
@@ -47,6 +54,10 @@ class Bootstrap3Test < Minitest::Spec
 <input type="text" name="id" id="form_id" class="form-control" value="" /><span class="help-block">["wrong@!"]</span></div>
 }
       end
+      # with hint
+      it do
+        builder.input(:id, wrapper_attrs: { class: [:bright], "remote-data": true }, hint: "Handy help text").must_eq %{<div class="form-group bright" remote-data="true"><input type="text" name="id" id="form_id" class="form-control" value="" /><span class="help-block">Handy help text</span></div>}
+      end
     end
 
     describe "label_attrs: {}" do
@@ -57,14 +68,14 @@ class Bootstrap3Test < Minitest::Spec
 
       it do
         builder.input(:id, label_attrs: { "remote-data": true, class: [:id] }, label: "Id").must_eq %{
-<div class="form-group"><label remote-data="true" class="id" for="form_id">Id</label>
+<div class="form-group"><label remote-data="true" class="control-label id" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" /></div>}
       end
 
       # with errors
       it do
         builder.input(:id, label_attrs: { "remote-data": true, class: [:id] }, label: "Id", error: ["wrong@!"]).must_eq %{
-<div class="form-group has-error"><label remote-data="true" class="id" for="form_id">Id</label>
+<div class="form-group has-error"><label remote-data="true" class="control-label id" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" />
 <span class="help-block">["wrong@!"]</span>
 </div>}
@@ -79,45 +90,79 @@ class Bootstrap3Test < Minitest::Spec
 <input type="text" name="id" id="form_id" class="form-control" value="" />
 <span class="help-block">[\"wrong!\"]</span>
 </div>} }
-      it { builder.input(:id, label: "Id").must_eq %{
+
+      describe "with label" do
+        it do 
+          builder.input(:id, label: "Id").must_eq %{
 <div class="form-group has-error">
-<label for="form_id">Id</label>
+<label class="control-label" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" />
 <span class="help-block">[\"wrong!\"]</span>
-</div>
-} }
+</div>} 
+        end
+      end
+      
+      describe "with hint" do
+        it do 
+          builder.input(:id, hint: "Handy help text").must_eq %{
+<div class="form-group has-error">
+<input type="text" name="id" id="form_id" class="form-control" value="" />
+<span class="help-block">Handy help text</span>
+<span class="help-block">[\"wrong!\"]</span>
+</div>}
+        end
+      end
     end
 
     describe "wrapper: false" do
-      it do
+      it "with label" do
          builder.input(:id, label: "Id", wrapper: false).must_eq %{
-<label for="form_id">Id</label>
+<label class="control-label" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" />}
       end
 
-      it do
-        builder.input(:id, label: "Id", wrapper: false, label: false).must_eq %{
+      it "without label" do
+        builder.input(:id, wrapper: false).must_eq %{
 <input type="text" name="id" id="form_id" class="form-control" value="" />}
       end
 
 
-      it { builder.input(:id, label: "Id", wrapper: false, error: ["wrong!"]).must_eq %{
-<label for="form_id">Id</label>
+      it "with label & has error" do 
+        builder.input(:id, label: "Id", wrapper: false, error: ["wrong!"]).must_eq %{
+<label class="control-label" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" />
-<span class="help-block">[\"wrong!\"]</span>} }
+<span class="help-block">[\"wrong!\"]</span>}
+      end
+          
+      it "with hint" do
+         builder.input(:id, hint: 'Handy help text', wrapper: false).must_eq %{
+<input type="text" name="id" id="form_id" class="form-control" value="" />
+<span class="help-block">Handy help text</span>}
+      end
     end
   end
 
   describe "#textarea" do
+    it "wrapper: false" do
+      builder.textarea(:public, rows: 3, wrapper: false).must_eq %{<textarea rows="3" name="public" id="form_public" class="form-control"></textarea>}
+    end
+    
     it do
       builder.textarea(:public, rows: 3).must_eq %{
 <div class="form-group">
 <textarea rows="3" name="public" id="form_public" class="form-control"></textarea>
 </div>}
     end
+    
+    it "with label" do
+      builder.textarea(:public, rows: 3, label: "Public").must_eq %{
+<div class="form-group">
+<label class="control-label" for="form_public">Public</label>
+<textarea rows="3" name="public" id="form_public" class="form-control"></textarea>
+</div>}
+    end
 
-    # with errors
-    it do
+    it "with errors" do
       builder.textarea(:public, rows: 3, error: ["wrong!"]).must_eq %{
 <div class="form-group has-error"><textarea rows="3" name="public" id="form_public" class="form-control"></textarea><span class="help-block">["wrong!"]</span></div>
 }
@@ -227,7 +272,7 @@ Public?
       # TODO: allow merging :class!
       builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!").must_eq %{
 <div class="form-group">
-<label >One!</label>
+<label class="control-label">One!</label>
 <div class="checkbox"><label ><input type="checkbox" value="1" name="public[]" id="form_public_1" />One</label></div>
 <div class="checkbox"><label ><input type="checkbox" value="2" checked="true" name="public[]" id="form_public_2" />Two</label></div>
 <div class="checkbox">
@@ -244,7 +289,7 @@ Public?
       it do
         builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!").must_eq %{
 <div class="form-group has-error">
-<label >One!</label>
+<label class="control-label">One!</label>
 <div class="checkbox"><label ><input type="checkbox" value="1" name="public[]" id="form_public_1" />One</label></div>
 <div class="checkbox"><label ><input type="checkbox" value="2" checked="true" name="public[]" id="form_public_2" />Two</label></div>
 <div class="checkbox">
@@ -261,7 +306,7 @@ Public?
       # TODO: allow merging :class!
       builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], label: "One!", inline: true).must_eq %{
 <div class="form-group">
-<label >One!</label><div ><label class="checkbox-inline"><input type="checkbox" value="1" name="public[]" id="form_public_1" />One</label>
+<label class="control-label">One!</label><div ><label class="checkbox-inline"><input type="checkbox" value="1" name="public[]" id="form_public_1" />One</label>
 <label class="checkbox-inline"><input type="checkbox" value="2" checked="true" name="public[]" id="form_public_2" />Two</label>
 <label class="checkbox-inline"><input type="hidden" value="0" name="public[]" />
 <input type="checkbox" value="3" checked="true" name="public[]" id="form_public_3" />Three</label></div></div>
@@ -274,7 +319,7 @@ Public?
       # TODO: allow merging :class!
       builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :radio, checked: [2,3], label: "One!").must_eq %{
 <div class="form-group">
-<label >One!</label>
+<label class="control-label">One!</label>
 <div class="radio"><label ><input type="radio" value="1" name="public" id="form_public_1" />One</label></div>
 <div class="radio"><label ><input type="radio" value="2" checked="true" name="public" id="form_public_2" />Two</label></div>
 <div class="radio"><label ><input type="radio" value="3" checked="true" name="public" id="form_public_3" />Three</label></div>
@@ -286,7 +331,7 @@ Public?
       # TODO: allow merging :class!
       builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :radio, checked: [2,3], label: "One!", inline: true).must_eq %{
 <div class="form-group">
-<label >One!</label>
+<label class="control-label">One!</label>
 <div >
 <label class="radio-inline"><input type="radio" value="1" name="public" id="form_public_1" />One</label>
 <label class="radio-inline"><input type="radio" value="2" checked="true" name="public" id="form_public_2" />Two</label>
@@ -301,10 +346,34 @@ Public?
   end
 
   describe "collection type: :select" do
+    describe "without label" do
+      it do
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], selected: [2], type: :select).must_eq %{
+<div class="form-group">
+<select name="public" id="form_public" class="form-control">
+<option value="1">One</option>
+<option value="2" selected="true">Two</option>
+<option value="3">Three</option>
+</select>
+</div>}
+      end
+      it "with hint" do
+        builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], selected: [2], type: :select, hint: "Handy help text").must_eq %{
+<div class="form-group">
+<select name="public" id="form_public" class="form-control">
+<option value="1">One</option>
+<option value="2" selected="true">Two</option>
+<option value="3">Three</option>
+</select>
+<span class="help-block">Handy help text</span>
+</div>}
+      end
+    end
+    
     it do
       builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], selected: [2], label: "One!", type: :select).must_eq %{
 <div class="form-group">
-<label >One!</label>
+<label for="form_public" class="control-label">One!</label>
 <select name="public" id="form_public" class="form-control">
 <option value="1">One</option>
 <option value="2" selected="true">Two</option>
@@ -323,7 +392,7 @@ Public?
           "data-select": true, # input_attrs
           ).must_eq %{
 <div class="form-group bright" data-remote="true">
-<label >One!</label>
+<label for="form_public" class="control-label">One!</label>
 <select class="form-control shiny" data-select="true" name="public" id="form_public">
 <option value="2" selected="true">Two</option>
 </select>
