@@ -22,7 +22,7 @@ module Formular
       module Error
         include Render
         # simply return render with the extra has-error class
-        # to provide flexibility over the location of the messages themselves, 
+        # to provide flexibility over the location of the messages themselves,
         # the messages are added inside group_content via #error_tag(options)
         def error(attributes, options, &block)
           render(attributes, div_class:["form-group", "has-error"], **options, &block)
@@ -51,43 +51,43 @@ module Formular
           @tag.(:span, { class: ["help-block"] }, options[:hint])
         end
       end #module Hint
-      
+
       #TODO: inject options[:style] = :horizontal to all controls
       # when form options[:style] == :horizontal
       class Form < Formular::Builder::Form
         def render(attributes, options, &block)
-          attributes.merge!(class: ["form-#{options[:style]}"]) if [:inline, :horizontal].include?(options[:style])
+          attributes.merge!(class: ["form-#{options[:style]}"]) if options[:style]
           super
         end
       end #class Form
-      
+
       #used to render group content regardless of actual control
       module GroupContent
         def group_content(attributes, options, control)
           column_attrs = column_attrs(options) if options[:style] == :horizontal
           options[:label_attrs].merge!({ class: ["control-label"] })
-          
+
           html = label(attributes, options)
           input_html = control
           input_html << hint(options)
           input_html << error_tag(options)
-          
+
           if options[:style] == :horizontal
             #used by horizontal forms to wrap the input_html in an extra wrapping div with a
             #custom class
-            html << @tag.(:div, { class: column_attrs[:input_class] }, input_html) 
-          elsif options[:inline] 
+            html << @tag.(:div, { class: column_attrs[:input_class] }, input_html)
+          elsif options[:inline]
             #used by inline collections to wrap the input_html in an extra wrapping div
-            html << @tag.(:div, { }, input_html) 
+            html << @tag.(:div, { }, input_html)
           else
             html << input_html
           end
         end
-        
-        private 
+
+        private
           def column_attrs(options)
             #column_attrs: { label_class: ["col-sm-2"], input_class: ["col-sm-10"]}
-            #label_class is optional as if there is no label then the user will pass 
+            #label_class is optional as if there is no label then the user will pass
             #an offset class into input_class insead
             column_attrs = options.delete(:column_attrs)
             options[:label_attrs].merge!(class: column_attrs[:label_class]) if column_attrs[:label_class]
@@ -105,7 +105,7 @@ module Formular
         include Div
         include Hint
         include Error
-        
+
       private
         def control(attributes, options, &block)
           attributes.merge!(class: ["form-control"])
@@ -175,12 +175,12 @@ module Formular
       # <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
       # <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
         module Control
-          def control(attributes, options, &block)            
+          def control(attributes, options, &block)
             collection(attributes, options, &block)
             #collection(attributes, options={}, html="", &block)
           end
         end
-        
+
         class Checkbox < Formular::Builder::Collection::Checkbox
           include Render
           include Div
@@ -188,11 +188,11 @@ module Formular
           include Error
           include Collection::Control
           include GroupContent
-          
+
           def group_content(attributes, options, control)
-            options[:label_attrs].merge!({ for: false })            
-            #label :for should not be included on main labels            
-            super            
+            options[:label_attrs].merge!({ for: false })
+            #label :for should not be included on main labels
+            super
           end
         end #class Checkbox
 
@@ -203,14 +203,14 @@ module Formular
           include Error
           include Collection::Control
           include GroupContent
-          
+
           def group_content(attributes, options, control)
-            options[:label_attrs].merge!({ for: false })        
+            options[:label_attrs].merge!({ for: false })
             #label :for should not be included on main labels
             super
           end
         end #class Radio
-      end 
+      end
 
       class Select < Formular::Builder::Select
         include Render
