@@ -19,7 +19,7 @@ class Bootstrap3Test < Minitest::Spec
 <input type="text" name="id" id="form_id" class="form-control" value="" />
 <span class="help-block">Handy help text</span>
 </div>} }
-    
+
     # no options.
     it { builder.input(:id).must_eq %{
 <div class="form-group">
@@ -92,18 +92,18 @@ class Bootstrap3Test < Minitest::Spec
 </div>} }
 
       describe "with label" do
-        it do 
+        it do
           builder.input(:id, label: "Id").must_eq %{
 <div class="form-group has-error">
 <label class="control-label" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" />
 <span class="help-block">[\"wrong!\"]</span>
-</div>} 
+</div>}
         end
       end
-      
+
       describe "with hint" do
-        it do 
+        it do
           builder.input(:id, hint: "Handy help text").must_eq %{
 <div class="form-group has-error">
 <input type="text" name="id" id="form_id" class="form-control" value="" />
@@ -127,13 +127,13 @@ class Bootstrap3Test < Minitest::Spec
       end
 
 
-      it "with label & has error" do 
+      it "with label & has error" do
         builder.input(:id, label: "Id", wrapper: false, error: ["wrong!"]).must_eq %{
 <label class="control-label" for="form_id">Id</label>
 <input type="text" name="id" id="form_id" class="form-control" value="" />
 <span class="help-block">[\"wrong!\"]</span>}
       end
-          
+
       it "with hint" do
          builder.input(:id, hint: 'Handy help text', wrapper: false).must_eq %{
 <input type="text" name="id" id="form_id" class="form-control" value="" />
@@ -146,14 +146,14 @@ class Bootstrap3Test < Minitest::Spec
     it "wrapper: false" do
       builder.textarea(:public, rows: 3, wrapper: false).must_eq %{<textarea rows="3" name="public" id="form_public" class="form-control"></textarea>}
     end
-    
+
     it do
       builder.textarea(:public, rows: 3).must_eq %{
 <div class="form-group">
 <textarea rows="3" name="public" id="form_public" class="form-control"></textarea>
 </div>}
     end
-    
+
     it "with label" do
       builder.textarea(:public, rows: 3, label: "Public").must_eq %{
 <div class="form-group">
@@ -369,7 +369,7 @@ Public?
 </div>}
       end
     end
-    
+
     it do
       builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], selected: [2], label: "One!", type: :select).must_eq %{
 <div class="form-group">

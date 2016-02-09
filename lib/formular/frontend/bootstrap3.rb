@@ -9,6 +9,12 @@ module Formular
     #   <span id="helpBlock2" class="help-block">A block of help text that breaks onto a new line and may extend beyond one line.</span>
     # </div>
     class Builder < Formular::Builder
+      #add bootstrap specific options to supported options
+      #avoids polluting base with frontend specifics
+      private def private_options
+        super + [:column_attrs, :style, :hint, :input_group]
+      end
+
       # Wrapper (form-group div).
       # Render #group_content and wrap it via #div.
       module Render
@@ -95,6 +101,37 @@ module Formular
           end
       end #module GroupContent
 
+      #http://getbootstrap.com/components/#input-groups
+      #bootstrap only supports this component on Inputs
+      #Bootstrap does not support multiple add-ons (.input-group-addon or .input-group-btn)
+      #on a single side.
+      #Bootstrap do not support multiple form-controls in a single input group.
+      module InputGroup
+        include GroupContent
+        #we add an additional wrapper around the input and inject content before (left)
+        #or after (right) the input itself.
+        def group_content(attributes, options, control)
+          input_group = options.delete(:input_group)
+          if input_group
+            input_group_attributes = Attributes[input_group[:attrs]].merge!({class: ["input-group"]})
+
+            control.prepend(input_group_addon(input_group[:left])) if input_group[:left]
+            control << input_group_addon(input_group[:right]) if input_group[:right]
+
+            control = @tag.(:div, input_group_attributes, control)
+          end
+          super(attributes,options,control)
+        end
+
+        private
+        def input_group_addon(options)
+          return "" unless options[:content] #don't render anything if there is no content
+          attributes = Attributes[options[:attrs]]
+          attributes.merge!({class: ["input-group-#{options[:button] ? "btn" : "addon"}"]})
+          @tag.(:span, attributes, options[:content])
+        end
+      end
+
       # <div class="form-group">
       #   <label for="exampleInputEmail1">Email address</label>
       #   <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
@@ -105,6 +142,7 @@ module Formular
         include Div
         include Hint
         include Error
+        include InputGroup
 
       private
         def control(attributes, options, &block)
@@ -138,10 +176,15 @@ module Formular
       # <div><label class="..-inline"><input ..>
       module Checkable
         def checkable_wrap(attributes, div_class:, input_html:, inline: nil, **options)
-          label_attrs = {}
-          label_attrs[:class] = ["#{div_class}-inline"] if inline # e.g. checkbox-inline.
+          #only wrap in a label if options[:label] is provided
+          html = if options[:label]
+            label_attrs = {}
+            label_attrs[:class] = ["#{div_class}-inline"] if inline # e.g. checkbox-inline.
 
-          html = @tag.(:label, label_attrs, "#{input_html}#{options[:label]}")
+            @tag.(:label, label_attrs, "#{input_html}#{options[:label]}")
+          else
+            input_html
+          end
 
           return html if inline
           div({ class: [div_class] }, options, html)

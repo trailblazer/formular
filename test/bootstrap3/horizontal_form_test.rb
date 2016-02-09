@@ -8,22 +8,22 @@ class Bootstrap3HorizontalFormTest < Minitest::Spec
   describe "#form style: :horizontal" do
     it { builder.form(style: :horizontal){}.must_eq %{<form class="form-horizontal" />} }
     it { builder.form(style: :horizontal, class: [:bright]){}.must_eq %{<form class="form-horizontal bright" />} }
-    
+
     describe "#input" do
-      it "without Label" do 
+      it "without Label" do
         builder.input(:id, style: :horizontal, column_attrs: { input_class: ["col-sm-offset-2", "col-sm-10"]} ).must_eq %{
 <div class="form-group">
 <div class="col-sm-offset-2 col-sm-10"><input type="text" name="id" id="form_id" class="form-control" value="" /></div>
-</div>} 
+</div>}
       end
-      it do 
+      it do
         builder.input(:id, style: :horizontal, label: "ID", column_attrs: { label_class: ["col-sm-2"], input_class: ["col-sm-10"]} ).must_eq %{
 <div class="form-group">
 <label class="control-label col-sm-2" for="form_id">ID</label>
 <div class="col-sm-10"><input type="text" name="id" id="form_id" class="form-control" value="" /></div>
 </div>}
       end
-      
+
       describe "with errors" do
         it { builder.input(:id, style: :horizontal, label: "ID", error: ["wrong@!"], column_attrs: { label_class: ["col-sm-2"], input_class: ["col-sm-10"]} ).must_eq %{
 <div class="form-group has-error">
@@ -45,20 +45,20 @@ class Bootstrap3HorizontalFormTest < Minitest::Spec
 </div>} }
       end
     end
-    
+
     describe "#textarea" do
-      it "without label" do 
+      it "without label" do
         builder.textarea(:public, style: :horizontal, column_attrs: { input_class: ["col-sm-offset-2", "col-sm-10"]} ).must_eq %{
 <div class="form-group">
 <div class="col-sm-offset-2 col-sm-10"><textarea name="public" id="form_public" class="form-control"></textarea></div>
-</div>} 
+</div>}
       end
-      it do 
+      it do
         builder.textarea(:public, style: :horizontal, label: "Public", column_attrs: { label_class: ["col-sm-2"], input_class: ["col-sm-10"]} ).must_eq %{
 <div class="form-group">
 <label class="control-label col-sm-2" for="form_public">Public</label>
 <div class="col-sm-10"><textarea name="public" id="form_public" class="form-control"></textarea></div>
-</div>} 
+</div>}
       end
 
       describe "with errors" do
@@ -108,7 +108,7 @@ class Bootstrap3HorizontalFormTest < Minitest::Spec
 </div>
 </div>}
       end
-      
+
       describe "with errors" do
         it do
           builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], selected: [2], type: :select, style: :horizontal, label: "Public", error: ["wrong@!"], column_attrs: { label_class: ["col-sm-2"], input_class: ["col-sm-10"]}).must_eq %{
@@ -125,7 +125,7 @@ class Bootstrap3HorizontalFormTest < Minitest::Spec
 </div>}
         end
       end
-      
+
       describe "with hint" do
         it do
           builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], selected: [2], type: :select, style: :horizontal, label: "Public", hint: "Handy help text", column_attrs: { label_class: ["col-sm-2"], input_class: ["col-sm-10"]}).must_eq %{
@@ -143,7 +143,7 @@ class Bootstrap3HorizontalFormTest < Minitest::Spec
         end
       end
     end
-    
+
     describe "collection type: :checkbox" do
       it "without label" do
         builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], style: :horizontal, column_attrs: { input_class: ["col-sm-offset-2","col-sm-10"]}).must_eq %{
@@ -155,7 +155,7 @@ class Bootstrap3HorizontalFormTest < Minitest::Spec
 </div>
 </div>}
       end
-      
+
       it do
         # TODO: allow merging :class!
         builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], style: :horizontal, label: "One!", column_attrs: { label_class: ["col-sm-2"], input_class: ["col-sm-10"]}).must_eq %{
@@ -197,7 +197,7 @@ class Bootstrap3HorizontalFormTest < Minitest::Spec
 </div>}
         end
       end
-      
+
       describe "with hint" do
         it do
           builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :checkbox, checked: [2,3], style: :horizontal, label: "One!", hint: "Handy help text", column_attrs: { label_class: ["col-sm-2"], input_class: ["col-sm-10"]}).must_eq %{
@@ -226,7 +226,7 @@ class Bootstrap3HorizontalFormTest < Minitest::Spec
         end
       end
     end
-    
+
     describe "collection type: :radio" do
       it "without label" do
         # TODO: allow merging :class!
@@ -239,7 +239,7 @@ class Bootstrap3HorizontalFormTest < Minitest::Spec
 </div>
 </div>}
       end
-      
+
       it do
         # TODO: allow merging :class!
         builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :radio, checked: [2,3], style: :horizontal, label: "One!", column_attrs: { label_class: ["col-sm-2"], input_class: ["col-sm-10"]}).must_eq %{
@@ -279,7 +279,7 @@ class Bootstrap3HorizontalFormTest < Minitest::Spec
 </div>}
         end
       end
-      
+
       describe "with hint" do
         it do
           builder.collection(:public, [[:One, 1],[:Two, 2],[:Three, 3]], type: :radio, checked: [2,3], style: :horizontal, label: "One!", inline: true, hint: "Handy help text", column_attrs: { label_class: ["col-sm-2"], input_class: ["col-sm-10"]}).must_eq %{
