@@ -146,7 +146,8 @@ module Formular
 
       private
         def control(attributes, options, &block)
-          attributes.merge!(class: ["form-control"])
+          #don't add form-control class to file fields
+          attributes.merge!(class: ["form-control"]) unless attributes[:type] == "file"
           input(attributes, options)
         end
       end #class Input

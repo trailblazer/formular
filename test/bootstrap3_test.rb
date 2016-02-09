@@ -6,6 +6,15 @@ class Bootstrap3Test < Minitest::Spec
   let (:builder) { Formular::Bootstrap3::Builder.new(model: model) }
 
   describe "#input" do
+
+    # with file fields.
+    it "type: 'file' shouldn't have form-control class" do
+      builder.input(:id, type: "file").must_eq %{
+<div class="form-group">
+<input type="file" name="id" id="form_id" value="" />
+</div>}
+  end
+
     # with label.
     it { builder.input(:id, label: "Id").must_eq %{
 <div class="form-group">

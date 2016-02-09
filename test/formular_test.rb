@@ -13,6 +13,12 @@ class FormularTest < Minitest::Spec
     end
   end
 
+  describe ":type" do
+    it do
+      builder.input(:id, type: "file").must_eq %{<input type="file" name="id" id="form_id" value="" />}
+    end
+  end
+
 
   describe ":id" do
     it { builder.input(:id).must_eq %{<input type="text" name="id" id="form_id" value="" />} }
