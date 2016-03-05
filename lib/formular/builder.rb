@@ -150,14 +150,21 @@ module Formular
 
     def nested(name, collection:false, &block)
       nested = @model.send(name)
+      nested_builder = -> (model, prefix) { self.class
+        .new(model: model, path: @path+[name], parent: self, prefix: @prefix+prefix).(&block)  }
       # TODO: implement for collection, too. (magic or explicit collection: true?)
       # TODO: handle nil/[]
       # TODO: n-level nesting: path with local_path+ AND INDEX FOR COLLECTIONS.
 
+
       # content
-      content = nested.each_with_index.collect do |model, index|
-        self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name, index]).(&block)
-      end.join("")
+      if nested.is_a? Array
+        content = nested.each_with_index.collect do |model, index|
+          nested_builder.(model, [name, index])
+        end.join("")
+      else
+        content = nested_builder.(nested, [name])
+      end
 
       fieldset { content }
     end

@@ -4,8 +4,9 @@ require "minitest/autorun"
 
 require "cells-slim"
 
-Comment = Struct.new(:id, :body, :replies, :uuid, :public, :errors) # TODO: remove errors!
+Comment = Struct.new(:id, :body, :replies, :uuid, :public, :errors, :owner) # TODO: remove errors!
 Reply   = Struct.new(:id, :email, :errors)
+Owner   = Struct.new(:id, :errors)
 
 
 require "reform"

@@ -74,7 +74,7 @@ class FormularTest < Minitest::Spec
     it { builder.input(:id, "data-remote": true).must_eq %{<input type="text" data-remote="true" name="id" id="form_id" value="" />} }
   end
 
-  describe "#nested" do
+  describe "#nested collection" do
     let (:model) { Comment.new(nil, nil, [Reply.new, Reply.new]) }
 
     it do
@@ -91,6 +91,22 @@ class FormularTest < Minitest::Spec
           f.input(:id)
         end.must_equal nil
       end
+    end
+  end
+
+  describe "#nested object" do
+    let (:model) { Comment.new(nil, nil, nil, nil, nil, nil, Owner.new) }
+
+    it do
+      builder.nested(:owner) do |f|
+        f.input(:id)
+      end.must_eq %{<fieldset ><input type="text" name="owner[id]" id="form_owner_id" value="" /></fieldset>}
+    end
+
+    describe "empty object" do
+      let (:model) { Comment.new }
+
+      # TODO: handle nil
     end
   end
 
