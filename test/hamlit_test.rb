@@ -23,7 +23,7 @@ class HamlitTest < Minitest::Spec
 <form action="/posts">ID
 <input type="text" name="id" id="form_id" value="1" />
 <textarea name="body" id="form_body">Nice!</textarea>
-<fieldset ><input type="text" name="replies[email]" id="form_replies_0_email" value="" /></fieldset>
+<fieldset ><input type="text" name="replies[][email]" id="form_replies_0_email" value="" /></fieldset>
 <input type="button" value="Submit" /><input type="text" value="0x" name="uuid" id="form_uuid" />
 </form>} }
   end

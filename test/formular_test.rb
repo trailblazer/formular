@@ -30,7 +30,7 @@ class FormularTest < Minitest::Spec
     it do
       builder.nested(:replies) do |f|
         f.input(:id)
-      end.must_eq %{<fieldset ><input type="text" name="replies[id]" id="form_replies_0_id" value="" /></fieldset>}
+      end.must_eq %{<fieldset ><input type="text" name="replies[][id]" id="form_replies_0_id" value="" /></fieldset>}
     end
   end
 
@@ -80,7 +80,7 @@ class FormularTest < Minitest::Spec
     it do
       builder.nested(:replies) do |f|
         f.input(:id)
-      end.must_eq %{<fieldset ><input type="text" name="replies[id]" id="form_replies_0_id" value="" /><input type="text" name="replies[id]" id="form_replies_1_id" value="" /></fieldset>}
+      end.must_eq %{<fieldset ><input type="text" name="replies[][id]" id="form_replies_0_id" value="" /><input type="text" name="replies[][id]" id="form_replies_1_id" value="" /></fieldset>}
     end
 
 

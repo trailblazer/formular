@@ -150,8 +150,8 @@ module Formular
 
     def nested(name, collection:false, &block)
       nested = @model.send(name)
-      nested_builder = -> (model, prefix) { self.class
-        .new(model: model, path: @path+[name], parent: self, prefix: @prefix+prefix).(&block)  }
+      nested_builder = -> (model, prefix, path) { self.class
+        .new(model: model, path: @path+path, parent: self, prefix: @prefix+prefix).(&block)  }
       # TODO: implement for collection, too. (magic or explicit collection: true?)
       # TODO: handle nil/[]
       # TODO: n-level nesting: path with local_path+ AND INDEX FOR COLLECTIONS.
@@ -160,10 +160,10 @@ module Formular
       # content
       if nested.is_a? Array
         content = nested.each_with_index.collect do |model, index|
-          nested_builder.(model, [name, index])
+          nested_builder.(model, [name, index], [name, nil])
         end.join("")
       else
-        content = nested_builder.(nested, [name])
+        content = nested_builder.(nested, [name], [name])
       end
 
       fieldset { content }
