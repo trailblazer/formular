@@ -94,7 +94,7 @@ class FormularTest < Minitest::Spec
     end
   end
 
-  describe "#nested singular object" do
+  describe "#nested collection: false (singular object)" do
     let (:model) { Comment.new(nil, nil, nil, nil, nil, nil, Owner.new) }
 
     it do
