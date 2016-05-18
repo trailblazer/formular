@@ -154,24 +154,16 @@ module Formular
       # nested_builder = -> (model, prefix, path) {   }
       # TODO: handle nil/[]
       # TODO: n-level nesting: path with local_path.
-
-
-      # self.class.new(model: model, path: [name], parent: self, prefix: @prefix+[name, index]).(&block)
-      #
       content =
         if collection
           render_control(:collection, {}, collection: nested) do |model:, index:|
-            nested_builder(model, @prefix+[name, index], @path+[name, nil], &block)
+            self.class.new(model: model, parent: self, prefix: @prefix+[name, index], path: @path+[name, nil]).(&block)
           end
         else
-          nested_builder(nested, @prefix+[name], @path+[name], &block)
+          self.class.new(model: nested, parent: self, prefix: @prefix+[name], path: @path+[name]).(&block)
         end
 
       fieldset { content }
-    end
-
-    private def nested_builder(model, prefix, path, &block)
-      self.class.new(model: model, path: path, parent: self, prefix: prefix).(&block)
     end
 
     def collection(name, collection, type:nil, **attributes, &block)
