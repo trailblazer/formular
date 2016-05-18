@@ -94,11 +94,11 @@ class FormularTest < Minitest::Spec
     end
   end
 
-  describe "#nested object" do
+  describe "#nested singular object" do
     let (:model) { Comment.new(nil, nil, nil, nil, nil, nil, Owner.new) }
 
     it do
-      builder.nested(:owner) do |f|
+      builder.nested(:owner, collection: false) do |f|
         f.input(:id)
       end.must_eq %{<fieldset ><input type="text" name="owner[id]" id="form_owner_id" value="" /></fieldset>}
     end
