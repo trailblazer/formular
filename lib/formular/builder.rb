@@ -151,9 +151,7 @@ module Formular
     def nested(name, collection:true, &block)
       nested = @model.send(name)
 
-      # nested_builder = -> (model, prefix, path) {   }
       # TODO: handle nil/[]
-      # TODO: n-level nesting: path with local_path.
       content =
         if collection
           render_control(:collection, {}, collection: nested) do |model:, index:|
