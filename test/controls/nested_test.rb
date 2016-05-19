@@ -52,5 +52,10 @@ class NestedSingularTest < Minitest::Spec
     let (:model) { Comment.new }
 
     # TODO: handle nil
+    it do
+      builder.nested(:owner, collection: false) do |f|
+        f.input(:id)
+      end.must_equal nil
+    end
   end
 end

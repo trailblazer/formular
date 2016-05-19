@@ -150,8 +150,8 @@ module Formular
 
     def nested(name, collection:true, &block)
       nested = @model.send(name)
+      return unless nested
 
-      # TODO: handle nil/[]
       content =
         if collection
           render_control(:collection, {}, collection: nested) do |model:, index:|
