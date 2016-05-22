@@ -10,7 +10,7 @@ module Formular
     self.default_attributes = Attributes[{}]
 
     def self.attribute(key, value)
-      self.default_attributes = default_attributes.merge!( Attributes[{key => value}] )
+      self.default_attributes = default_attributes.merge!( {key => value} )
     end
 
     def self.html(&block)
@@ -37,11 +37,7 @@ module Formular
       @tag = self.class.tag_name
       @renderer = self.class.renderer
     end
-    attr_reader :attributes, :tag, :renderer, :builder
-
-    # def path(name = nil)
-    #   name ? @path << name : @path
-    # end
+    attr_reader :tag, :renderer, :builder, :attributes, :options
 
     def to_html
       renderer.call(self)

@@ -5,6 +5,10 @@ module Formular
       super
     end
 
+    def merge(hash)
+      dup.merge!(hash)
+    end
+
     def merge!(hash)
       classes     = self[:class]
       new_classes = hash[:class]

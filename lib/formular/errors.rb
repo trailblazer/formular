@@ -1,13 +1,13 @@
 module Formular
   module Errors
     def error_text
-      text = has_custom_error? ? @options[:error] : errors.send(error_method)
+      text = has_custom_error? ? options[:error] : errors.send(error_method)
 
       "#{html_escape(text)}".html_safe
     end
 
     def has_errors?
-      @builder.errors && @builder.errors.size > 0
+      builder.errors && builder.errors.size > 0
     end
 
     protected
@@ -21,11 +21,11 @@ module Formular
     end
 
     def errors_on_attribute
-      @builder.errors[@options[:name]]
+      builder.errors[options[:name]]
     end
 
     def has_custom_error?
-      @options[:error].is_a?(String)
+      options[:error].is_a?(String)
     end
   end
 end

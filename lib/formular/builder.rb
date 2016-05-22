@@ -24,8 +24,8 @@ module Formular
       element = @elements[method]
       if element
         attributes, options = args
-        options = options ? options.merge!({builder: self}) : {builder: self}
-        element.(attributes, options, &block)
+        opts = options ? options.merge!({builder: self}) : {builder: self}
+        element.(attributes, opts, &block)
       else
         super
       end

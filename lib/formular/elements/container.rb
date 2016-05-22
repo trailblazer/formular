@@ -19,7 +19,7 @@ module Formular
       end
 
       def content
-       @block ? Renderer.new(@block).call(self) : @options[:content]
+        @block ? Renderer.new(@block).call(self) : options[:content]
       end
 
       #I don't like this...
@@ -31,24 +31,19 @@ module Formular
 
       def method_missing(method, *args, &block)
         #if builder&elements are called on me then we attach us at the container(maybe parent)
-        if @builder
+        if builder
           #attributes, options = args
           #options = options ? options.merge!({container: self}) : {container: self}
           #TODO inject self into options
-          @builder.send(method, *args, &block)
+          builder.send(method, *args, &block)
         else
           super
         end
       end
 
-      def respond_to?(method, include_private)
-        super || (@builder ? @builder.respond_to?(method, include_private) : false)
+      def respond_to?(method, include_private = false)
+        super || (builder ? builder.respond_to?(method, include_private) : false)
       end
-
-      #return the path of the element
-      # def path
-      #
-      # end
     end #class Container
   end #module Elements
 end #module Formular
