@@ -2,7 +2,7 @@ require 'test_helper'
 require "formular/elements/submit"
 
 describe Formular::Elements::Submit do
-  let(:element) {Formular::Elements::Submit.new(value: "Submit Button")}
+  let(:element) {Formular::Elements::Submit.(value: "Submit Button")}
   it "#tag" do
     element.tag.must_equal "input"
   end

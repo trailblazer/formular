@@ -7,7 +7,11 @@ module Formular
     def call(element)
       @output = ""
       @element = element
-      instance_exec @output, element, &@fn
+      instance_exec element, &@fn
+    end
+
+    def concat(string)
+      @output << string
     end
 
     def opening_tag(closed=false)

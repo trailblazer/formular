@@ -1,0 +1,12 @@
+div New
+= form action: "/posts", model: model do |f|
+  = f.input :id
+  = f.textarea :body
+  = f.collection :replies do |reply|
+    = reply.input :content
+  = f.nested :owner do |owner|
+    = owner.input :name
+    = owner.input :email
+  = f.input :uuid
+  = f.submit value: "Submit"
+

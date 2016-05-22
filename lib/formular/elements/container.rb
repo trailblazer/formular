@@ -4,19 +4,22 @@ module Formular
     #this class is used for elements that contain something e.g. <label>Label Words</label>
     #it is designed to accept content as a string, as a block or just provide
     #the open and closing tags
+
+    #unless container should element call return the HTML??
+    #does it matter as to_s is there so in a view it would automatically render the html...?
     class Container < Formular::Element
-      html do |output, element|
+      html do |element|
         if element.content == nil
           opening_tag
         else
-          output << opening_tag
-          output << element.content
-          output << closing_tag
+          concat opening_tag
+          concat element.content
+          concat closing_tag
         end
       end
 
       def content
-        @block ? Renderer.new(@block).call(self) : @options[:content]
+       @block ? Renderer.new(@block).call(self) : @options[:content]
       end
 
       #I don't like this...
@@ -25,6 +28,27 @@ module Formular
       def end
         Renderer.new(Proc.new {closing_tag}).call(self)
       end
+
+      def method_missing(method, *args, &block)
+        #if builder&elements are called on me then we attach us at the container(maybe parent)
+        if @builder
+          #attributes, options = args
+          #options = options ? options.merge!({container: self}) : {container: self}
+          #TODO inject self into options
+          @builder.send(method, *args, &block)
+        else
+          super
+        end
+      end
+
+      def respond_to?(method, include_private)
+        super || (@builder ? @builder.respond_to?(method, include_private) : false)
+      end
+
+      #return the path of the element
+      # def path
+      #
+      # end
     end #class Container
   end #module Elements
 end #module Formular

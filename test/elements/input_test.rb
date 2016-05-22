@@ -2,7 +2,7 @@ require 'test_helper'
 require "formular/elements/input"
 
 describe Formular::Elements::Input do
-  let(:element) {Formular::Elements::Input.new(type: "text", value: "Some text")}
+  let(:element) {Formular::Elements::Input.(type: "text", value: "Some text")}
   it "#tag" do
     element.tag.must_equal "input"
   end

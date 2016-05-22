@@ -1,5 +1,6 @@
 require 'test_helper'
 require "formular/elements/fieldset"
+require "formular/elements/label"
 
 describe Formular::Elements::Fieldset do
   it "::tag" do
@@ -10,23 +11,23 @@ describe Formular::Elements::Fieldset do
 
   describe "contents as string" do
     it "#to_s" do
-      element = Formular::Elements::Fieldset.new({}, content: "<legend>Hello</legend>")
+      element = Formular::Elements::Fieldset.({}, content: "<legend>Hello</legend>")
       element.to_s.must_equal %(<fieldset><legend>Hello</legend></fieldset>)
     end
   end
 
   describe "contents as block" do
     it "#to_s" do
-      element = Formular::Elements::Fieldset.new do |output|
-        output << "<legend>Hello</legend>"
-        output << Formular::Elements::Label.new({class: ["control-label"]}, content: "A handy label").to_s
+      element = Formular::Elements::Fieldset.() do |f|
+        concat "<legend>Hello</legend>"
+        concat Formular::Elements::Label.({class: ["control-label"]}, content: "A handy label").to_s
       end
       element.to_s.must_equal %(<fieldset><legend>Hello</legend><label class="control-label">A handy label</label></fieldset>)
     end
   end
 
   describe "no contents" do
-    let(:element) { Formular::Elements::Fieldset.new({class: ["grouping"]}) }
+    let(:element) { Formular::Elements::Fieldset.({class: ["grouping"]}) }
 
     it "#to_s" do
       element.to_s.must_equal %(<fieldset class="grouping">)

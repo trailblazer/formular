@@ -25,15 +25,23 @@ module Formular
       @tag_name || name.split("::").last.downcase
     end
 
+    def self.call(*args, &block)
+      new(*args, &block)
+    end
+
     def initialize(attributes={}, options={}, &block)
       @attributes = self.class.default_attributes.dup.merge!(Attributes[attributes])
       @options = options
-      @block = block if block_given?
+      @builder = options.delete(:builder)
+      @block = block
       @tag = self.class.tag_name
       @renderer = self.class.renderer
     end
+    attr_reader :attributes, :tag, :renderer, :builder
 
-    attr_reader :attributes, :tag, :renderer
+    # def path(name = nil)
+    #   name ? @path << name : @path
+    # end
 
     def to_html
       renderer.call(self)
