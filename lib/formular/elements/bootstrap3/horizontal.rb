@@ -38,6 +38,12 @@ module Formular
 
         end #class Textarea
 
+        class Select < Formular::Elements::Bootstrap3::Select
+          extend Formular::Elements::Bootstrap3::Horizontal::ControlHtml
+          html &html_block
+
+        end #class Select
+
         class InputColumnWrapper < Formular::Elements::Container
           tag "div"
 

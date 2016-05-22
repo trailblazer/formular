@@ -19,7 +19,6 @@ module Formular
 
     attr_reader :model, :errors, :element_set
 
-    #TODO:: support more flexible options...
     def method_missing(method, *args, &block)
       element = @elements[method]
       if element

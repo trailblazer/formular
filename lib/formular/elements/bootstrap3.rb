@@ -3,6 +3,7 @@ require "formular/elements/textarea"
 require "formular/elements/container"
 require "formular/elements/label"
 require "formular/elements/control_group"
+require "formular/elements/select"
 module Formular
   module Elements
     module Bootstrap3
@@ -36,6 +37,20 @@ module Formular
         end
         include Formular::Elements::ControlGroup
       end #class Input
+
+      class Select < Formular::Elements::Select
+        extend Formular::Elements::Bootstrap3::ControlHtml
+
+        attribute :class, ["form-control"]
+
+        html &html_block
+
+        def control_html
+          Renderer.new(Proc.new { |input| [opening_tag,input.option_tags,closing_tag].join("") }).call(self)
+        end
+
+        include Formular::Elements::ControlGroup
+      end #class Select
 
       class File < Formular::Elements::Bootstrap3::Input
         extend Formular::Elements::Bootstrap3::ControlHtml

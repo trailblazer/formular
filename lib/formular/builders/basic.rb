@@ -4,6 +4,7 @@ require "formular/elements/input"
 require "formular/elements/label"
 require "formular/elements/textarea"
 require "formular/elements/submit"
+require "formular/elements/select"
 
 module Formular
   module Builders
@@ -13,7 +14,8 @@ module Formular
         input: Formular::Elements::Input,
         label: Formular::Elements::Label,
         textarea: Formular::Elements::Textarea,
-        submit: Formular::Elements::Submit
+        submit: Formular::Elements::Submit,
+        select: Formular::Elements::Select
       }
 
       def capture(*args)
@@ -27,20 +29,26 @@ module Formular
       def label(name, attributes={}, options={})
         attributes = {for: path(name).to_encoded_id}.merge(Attributes[attributes])
         options[:content] ||= name.to_s.split(/ |\_|\-/).map(&:capitalize).join(" ")
-        super(attributes, options)
+        method_missing(:label, attributes, options)
       end
 
       def input(name, attributes={}, options={})
         attributes = {name: path(name).to_encoded_name, id: path(name).to_encoded_id, value: reader_value(name)}.merge(Attributes[attributes])
         options[:name] = name
-        super(attributes, options)
+        method_missing(:input, attributes, options)
+      end
+
+      def select(name, collection_array, attributes={}, options={})
+        attrs = { name: path(name).to_encoded_name, id: path(name).to_encoded_id }.merge(Attributes[attributes])
+        opts = { collection: collection_array, value: reader_value(name), name: name }.merge(options)
+        method_missing(:select, attrs, opts)
       end
 
       def textarea(name, attributes={}, options={})
         attributes = {name: path(name).to_encoded_name, id: path(name).to_encoded_id}.merge(Attributes[attributes])
         options[:content] = attributes.delete(:value) || reader_value(name)
         options[:name] = name
-        super(attributes, options)
+        method_missing(:textarea, attributes, options)
       end
 
       def collection(name, models = nil, &block)
