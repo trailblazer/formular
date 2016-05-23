@@ -15,5 +15,5 @@ gem "dry-validation"
 gem "minitest-line"
 
 gem "uber"
-
+gem "declarative"
 gem "cells-slim"

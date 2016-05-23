@@ -14,14 +14,9 @@ module Formular
       end #class Error
 
       class Input < Formular::Elements::Input
-        extend Formular::Elements::WrappedControl::ClassMethods
-        include Formular::Elements::WrappedControl::InstanceMethods
-
-        self.option_keys += [:error_options, :label_options, :wrapper_options]
+        include Formular::Elements::WrappedControl
 
         attribute :class, ["form-control"]
-
-        html &html_block
 
         def control_html
           Renderer.new(Proc.new {opening_tag(true)}).call(self)
@@ -29,14 +24,9 @@ module Formular
       end #class Input
 
       class Select < Formular::Elements::Select
-        extend Formular::Elements::WrappedControl::ClassMethods
-        include Formular::Elements::WrappedControl::InstanceMethods
-
-        self.option_keys += [:error_options, :label_options, :wrapper_options]
+        include Formular::Elements::WrappedControl
 
         attribute :class, ["form-control"]
-
-        html &html_block
 
         def control_html
           Renderer.new(Proc.new { |input| [opening_tag,input.option_tags,closing_tag].join("") }).call(self)
@@ -44,25 +34,17 @@ module Formular
       end #class Select
 
       class File < Formular::Elements::Bootstrap3::Input
-        extend Formular::Elements::WrappedControl::ClassMethods
-        include Formular::Elements::WrappedControl::InstanceMethods
+        include Formular::Elements::WrappedControl
 
-        self.option_keys += [:error_options, :label_options, :wrapper_options]
+        add_option_keys [:error_options, :label_options, :wrapper_options]
 
         attribute :class, []
         attribute :type, "file"
-
-        html &html_block
       end #class File
 
       class Textarea < Formular::Elements::Textarea
-        extend Formular::Elements::WrappedControl::ClassMethods
-        include Formular::Elements::WrappedControl::InstanceMethods
-        self.option_keys += [:error_options, :label_options, :wrapper_options]
-
+        include Formular::Elements::WrappedControl
         attribute :class, ["form-control"]
-
-        html &html_block
 
         def control_html
           Renderer.new(Proc.new { |input| [opening_tag,input.content,closing_tag].join("") }).call(self)

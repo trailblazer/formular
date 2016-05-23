@@ -20,6 +20,10 @@ module Formular
       self.renderer = Renderer.new(block)
     end
 
+    def self.add_option_keys(keys)
+      self.option_keys += keys
+    end
+
     def self.tag(name)
       @tag_name = name
     end

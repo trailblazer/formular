@@ -8,7 +8,7 @@ module Formular
     #unless container should element call return the HTML??
     #does it matter as to_s is there so in a view it would automatically render the html...?
     class Container < Formular::Element
-      self.option_keys << :content
+      add_option_keys [:content]
 
       html do |element|
         if element.content == nil

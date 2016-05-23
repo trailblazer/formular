@@ -3,7 +3,7 @@ require "formular/elements/container"
 module Formular
   module Elements
     class Select < Formular::Element
-      self.option_keys += [:collection, :value, :attribute_name]
+      add_option_keys [:collection, :value, :attribute_name]
 
       html do |input|
         concat opening_tag
