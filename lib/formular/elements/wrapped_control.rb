@@ -40,7 +40,7 @@ module Formular
 
         def wrapped_element_options(element_label, element_options)
           opts = element_options || {}
-          opts.merge{ opts[:content] = options[:label] } if element_label.is_a?(String)
+          element_label.is_a?(String) ? opts.merge({ content: element_label }) : opts
         end
       end #module InstanceMethods
     end #module WrappedControl

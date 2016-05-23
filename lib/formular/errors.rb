@@ -10,7 +10,8 @@ module Formular
 
     protected
 
-    #errors is an array, what method should we use to return a string?
+    #errors is an array, what method should we use to return a string? (:first, :last, :join etc.)
+    #ideally this should be configurable...
     def error_method
       :first
     end

@@ -32,6 +32,17 @@ describe Formular::Builders::Bootstrap3 do
 
       html.must_equal %(<form method="put" action="/questions/13"><div class="form-group"><textarea class="form-control" name="comment[body]" id="comment_body">Something exciting</textarea></div><div class="form-group"><select class="form-control" name="comment[public]" id="comment_public"><option value="1" selected="selected">Yes</option><option value="0">No</option></select></div><div class="form-group"><input type="text" class="form-control" name="comment[body]" id="comment_body" value="Something exciting"/></div></form>)
     end
+
+    it "please use custom labels" do
+      form = builder.form(action: "/questions/13", method: "put")
+      html = form.to_s
+      html << form.textarea(:body, label: "Some fancy label").to_s
+      html << form.select(:public, [[1,"Yes"], [0, "No"]], label: "Another fancy label").to_s
+      html << form.input(:body, label: "Oh look, here's another fancy label").to_s
+      html << form.end
+
+      html.must_equal %(<form method="put" action="/questions/13"><div class="form-group"><label class="control-label" for="comment_body">Some fancy label</label><textarea class="form-control" name="comment[body]" id="comment_body">Something exciting</textarea></div><div class="form-group"><label class="control-label" for=\"comment_public\">Another fancy label</label><select class="form-control" name="comment[public]" id="comment_public"><option value="1" selected="selected">Yes</option><option value="0">No</option></select></div><div class="form-group"><label class="control-label" for="comment_body">Oh look, here's another fancy label</label><input type="text" class="form-control" name="comment[body]" id="comment_body" value="Something exciting"/></div></form>)
+    end
   end
 
   it "calls correct elements" do

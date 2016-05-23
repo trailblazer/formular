@@ -43,7 +43,7 @@ module Formular
       end
 
       def error(name, options={})
-        message = error_message(name)
+        message = options[:content] || error_message(name)
         return "" unless message
         opts = { attribute_name: name, content: message }.merge(Attributes[options])
         method_missing(:error, opts)
