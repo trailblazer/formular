@@ -10,7 +10,7 @@ module Formular
             Proc.new() do |input|
               input.builder.wrapper(input.has_errors? ? {class: ["has-error"]} : {}) do |wrapper|
                 concat input.label
-                concat wrapper.input_column_wrapper({}, {content: input.control_html + input.error}).to_s
+                concat wrapper.input_column_wrapper(content: input.control_html + input.error).to_s
               end.to_s
             end
           end

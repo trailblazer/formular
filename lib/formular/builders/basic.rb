@@ -26,29 +26,26 @@ module Formular
         capture(self, &block)
       end
 
-      def label(name, attributes={}, options={})
-        attributes = {for: path(name).to_encoded_id}.merge(Attributes[attributes])
-        options[:content] ||= name.to_s.split(/ |\_|\-/).map(&:capitalize).join(" ")
-        method_missing(:label, attributes, options)
+      def label(name, options={})
+        opts = { for: path(name).to_encoded_id }.merge(Attributes[options])
+        opts[:content] ||= name.to_s.split(/ |\_|\-/).map(&:capitalize).join(" ")
+        method_missing(:label, opts)
       end
 
-      def input(name, attributes={}, options={})
-        attributes = {name: path(name).to_encoded_name, id: path(name).to_encoded_id, value: reader_value(name)}.merge(Attributes[attributes])
-        options[:name] = name
-        method_missing(:input, attributes, options)
+      def input(name, options={})
+        opts = { attribute_name: name, name: path(name).to_encoded_name, id: path(name).to_encoded_id, value: reader_value(name)}.merge(Attributes[options])
+        method_missing(:input, opts)
       end
 
-      def select(name, collection_array, attributes={}, options={})
-        attrs = { name: path(name).to_encoded_name, id: path(name).to_encoded_id }.merge(Attributes[attributes])
-        opts = { collection: collection_array, value: reader_value(name), name: name }.merge(options)
-        method_missing(:select, attrs, opts)
+      def select(name, collection_array, options={})
+        opts = { name: path(name).to_encoded_name, id: path(name).to_encoded_id, collection: collection_array, value: reader_value(name), attribute_name: name }.merge(Attributes[options])
+        method_missing(:select, opts)
       end
 
-      def textarea(name, attributes={}, options={})
-        attributes = {name: path(name).to_encoded_name, id: path(name).to_encoded_id}.merge(Attributes[attributes])
-        options[:content] = attributes.delete(:value) || reader_value(name)
-        options[:name] = name
-        method_missing(:textarea, attributes, options)
+      def textarea(name, options={})
+        opts = { attribute_name: name, name: path(name).to_encoded_name, id: path(name).to_encoded_id }.merge(Attributes[options])
+        opts[:content] = opts.delete(:value) || reader_value(name)
+        method_missing(:textarea, opts)
       end
 
       def collection(name, models = nil, &block)

@@ -10,11 +10,11 @@ describe Formular::Builder do
 
   describe "#method_missing" do
     it "should pass self to element" do
-      builder.label({},content: "H").builder.must_equal builder
+      builder.label(content: "H").builder.must_equal builder
     end
 
     it "should call correct element" do
-      builder.label({},content: "H").to_s.must_equal %(<label>H</label>)
+      builder.label(content: "H").to_s.must_equal %(<label>H</label>)
       builder.input(value: "some cool answer").to_s.must_equal %(<input type="text" value="some cool answer"/>)
     end
 
@@ -26,7 +26,7 @@ describe Formular::Builder do
   describe "returns html correctly" do
     it "#outputs with block" do
       form = builder.form(action: "/questions/13") do |f|
-        concat f.label({class: ["control-label"]}, content: "What colour is the sky?").to_s
+        concat f.label(class: ["control-label"], content: "What colour is the sky?").to_s
         concat f.input(type: "text", value: "Something exciting").to_s
       end
       form.to_s.must_equal %(<form method="post" action="/questions/13"><label class="control-label">What colour is the sky?</label><input type="text" value="Something exciting"/></form>)
@@ -35,7 +35,7 @@ describe Formular::Builder do
     it "#outputs without block (use end)" do
       form = builder.form(action: "/questions/13", method: "put")
       html = form.to_s
-      html << form.label({class: ["control-label"]}, content: "What colour is the sky?").to_s
+      html << form.label(class: ["control-label"], content: "What colour is the sky?").to_s
       html << form.input(type: "text", value: "Something exciting").to_s
       html << form.end
 
@@ -43,7 +43,7 @@ describe Formular::Builder do
     end
 
     it "#outputs without string" do
-      form = builder.form({}, content: "<h1>Fab Form</h1>")
+      form = builder.form(content: "<h1>Fab Form</h1>")
 
       form.to_s.must_equal %(<form method="post"><h1>Fab Form</h1></form>)
     end

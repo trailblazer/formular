@@ -10,7 +10,7 @@ describe Formular::Elements::Label do
 
   describe "contents as string" do
     it "#to_s" do
-      element = Formular::Elements::Label.({}, content: "What a nice label")
+      element = Formular::Elements::Label.(content: "What a nice label")
       element.to_s.must_equal %(<label>What a nice label</label>)
     end
   end
@@ -27,7 +27,7 @@ describe Formular::Elements::Label do
   end
 
   describe "no contents" do
-    let(:element) { Formular::Elements::Label.({class: ["control-label"]}) }
+    let(:element) { Formular::Elements::Label.(class: ["control-label"]) }
 
     it "#to_s" do
       element.to_s.must_equal %(<label class="control-label">)

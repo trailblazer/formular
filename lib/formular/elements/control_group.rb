@@ -9,7 +9,8 @@ module Formular
 
       def label
         label_opts = options[:label] ? {content: options[:label]} : {}
-        builder.label(options[:name], options[:label_attrs], label_opts).to_s
+        label_opts.merge(options[:label_opts]) if options[:label_opts]
+        builder.label(options[:attribute_name], label_opts).to_s
       end
 
       include Errors

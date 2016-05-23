@@ -7,7 +7,10 @@ module Formular
     extend Uber::InheritableAttr
     inheritable_attr :renderer
     inheritable_attr :default_attributes
+    inheritable_attr :option_keys
+
     self.default_attributes = Attributes[{}]
+    self.option_keys = []
 
     def self.attribute(key, value)
       self.default_attributes = default_attributes.merge!( {key => value} )
@@ -29,10 +32,8 @@ module Formular
       new(*args, &block)
     end
 
-    def initialize(attributes={}, options={}, &block)
-      @attributes = self.class.default_attributes.dup.merge!(Attributes[attributes])
-      @options = options
-      @builder = options.delete(:builder)
+    def initialize(options={}, &block)
+      normalize_attributes(options)
       @block = block
       @tag = self.class.tag_name
       @renderer = self.class.renderer
@@ -43,5 +44,19 @@ module Formular
       renderer.call(self)
     end
     alias_method :to_s, :to_html
+
+    private
+    def normalize_attributes(options={})
+      @builder = options.delete(:builder)
+      opts = {}
+      attrs = {}
+      options.each { |k,v| permitted_key?(k) ? opts[k] = v : attrs[k] = v }
+      @attributes = self.class.default_attributes.dup.merge!(Attributes[attrs])
+      @options = opts
+    end
+
+    def permitted_key?(k)
+      self.class.option_keys.include?(k)
+    end
   end #class Element
 end #module Formular

@@ -3,6 +3,8 @@ require "formular/elements/container"
 module Formular
   module Elements
     class Select < Formular::Element
+      self.option_keys += [:collection, :value, :attribute_name]
+
       html do |input|
         concat opening_tag
         concat input.option_tags
@@ -20,9 +22,8 @@ module Formular
       def collection_to_options(collection)
         collection.map do |array|
           if array.last.is_a?(Array)
-            attrs = {label: array.first}
-            opts = {content: collection_to_options(array.last)}
-            Formular::Elements::OptGroup.new(attrs, opts).to_s #we should probably call this through the builder incase people need to edit it?
+            opts = {label: array.first, content: collection_to_options(array.last)}
+            Formular::Elements::OptGroup.new(opts).to_s #we should probably call this through the builder incase people need to edit it?
           else
             array_to_option(array)
           end
@@ -30,10 +31,9 @@ module Formular
       end
 
       def array_to_option(array)
-        attrs = {value: array.first}
-        attrs[:selected] = "selected" if array.first == options[:value]
-        opts = {content: array.last}
-        Formular::Elements::Option.new(attrs, opts).to_s #we should probably call this through the builder incase people need to edit it?
+        opts = {value: array.first, content: array.last}
+        opts[:selected] = "selected" if array.first == options[:value]
+        Formular::Elements::Option.new(opts).to_s #we should probably call this through the builder incase people need to edit it?
       end
     end # class Select
 

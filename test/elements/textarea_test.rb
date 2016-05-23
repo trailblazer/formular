@@ -9,7 +9,7 @@ describe Formular::Elements::Textarea do
 
   describe "contents as string" do
     it "#to_s" do
-      element = Formular::Elements::Textarea.({}, content: "Some lovely words here...")
+      element = Formular::Elements::Textarea.(content: "Some lovely words here...")
       element.to_s.must_equal %(<textarea>Some lovely words here...</textarea>)
     end
   end
@@ -25,7 +25,7 @@ describe Formular::Elements::Textarea do
   end
 
   describe "no contents" do
-    let(:element) { Formular::Elements::Textarea.({rows: 3}) }
+    let(:element) { Formular::Elements::Textarea.(rows: 3) }
 
     it "#to_s" do
       element.to_s.must_equal %(<textarea rows="3">)

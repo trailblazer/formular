@@ -19,12 +19,11 @@ module Formular
 
     attr_reader :model, :errors, :element_set
 
-    def method_missing(method, *args, &block)
+    def method_missing(method, options={}, &block)
       element = @elements[method]
       if element
-        attributes, options = args
         opts = options ? options.merge!({builder: self}) : {builder: self}
-        element.(attributes, opts, &block)
+        element.(opts, &block)
       else
         super
       end
