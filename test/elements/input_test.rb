@@ -1,5 +1,5 @@
 require 'test_helper'
-require "formular/elements/input"
+require "formular/elements"
 
 describe Formular::Elements::Input do
   let(:element) {Formular::Elements::Input.(type: "text", value: "Some text")}

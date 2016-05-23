@@ -1,8 +1,8 @@
 require "formular/builders/basic"
+require "formular/elements"
 require "formular/elements/bootstrap3"
 require "formular/elements/bootstrap3/horizontal"
 require "formular/elements/bootstrap3/inline"
-require "formular/elements/form"
 module Formular
   module Builders
     class Bootstrap3 < Formular::Builders::Basic

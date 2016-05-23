@@ -1,20 +1,20 @@
-require "formular/elements/input"
-require "formular/elements/textarea"
-require "formular/elements/container"
-require "formular/elements/label"
-require "formular/elements/wrapped_control"
-require "formular/elements/select"
+require "formular/element"
+require "formular/elements"
+require "formular/elements/modules/container"
+require "formular/elements/modules/wrapped_control"
+require "formular/elements/module"
 module Formular
   module Elements
     module Bootstrap3
-      class Error < Formular::Elements::Container
+      class Error < Formular::Element
+        include Formular::Elements::Modules::Container
         tag :span
         attribute :class, ["help-block"]
 
       end #class Error
 
       class Input < Formular::Elements::Input
-        include Formular::Elements::WrappedControl
+        include Formular::Elements::Modules::WrappedControl
 
         attribute :class, ["form-control"]
 
@@ -24,7 +24,7 @@ module Formular
       end #class Input
 
       class Select < Formular::Elements::Select
-        include Formular::Elements::WrappedControl
+        include Formular::Elements::Modules::WrappedControl
 
         attribute :class, ["form-control"]
 
@@ -34,7 +34,7 @@ module Formular
       end #class Select
 
       class File < Formular::Elements::Bootstrap3::Input
-        include Formular::Elements::WrappedControl
+        include Formular::Elements::Modules::WrappedControl
 
         add_option_keys [:error_options, :label_options, :wrapper_options]
 
@@ -43,7 +43,7 @@ module Formular
       end #class File
 
       class Textarea < Formular::Elements::Textarea
-        include Formular::Elements::WrappedControl
+        include Formular::Elements::Modules::WrappedControl
         attribute :class, ["form-control"]
 
         def control_html
@@ -51,23 +51,19 @@ module Formular
         end
       end #class Textarea
 
-      class Label < Formular::Elements::Label
-        attribute :class, ["control-label"]
-      end #class Label
-
-      class Wrapper < Formular::Elements::Container
+      class Wrapper < Formular::Element
+        include Formular::Elements::Modules::Container
         tag "div"
         attribute :class, ["form-group"]
       end #class Wrapper
 
-      class ErrorWrapper < Formular::Elements::Container
+      class ErrorWrapper < Formular::Elements::Bootstrap3::Wrapper
         tag "div"
-        attribute :class, ["form-group", "has-error"]
+        attribute :class, ["has-error"]
       end #class Wrapper
 
-      class Submit < Formular::Elements::Submit
-        attribute :class, ["btn", "btn-default"]
-      end #class Submit
+      Label = Class.new(Formular::Elements::Label) { attribute :class, ["control-label"] }
+      Submit = Class.new(Formular::Elements::Submit) { attribute :class, ["btn", "btn-default"] }
     end #module Bootstrap3
   end #module Elements
 end #module Formular

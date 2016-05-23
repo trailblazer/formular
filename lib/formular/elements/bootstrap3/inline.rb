@@ -1,6 +1,5 @@
-require "formular/elements/form"
+require "formular/elements"
 require "formular/elements/bootstrap3"
-
 module Formular
   module Elements
     module Bootstrap3

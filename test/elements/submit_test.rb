@@ -1,5 +1,5 @@
 require 'test_helper'
-require "formular/elements/submit"
+require "formular/elements"
 
 describe Formular::Elements::Submit do
   let(:element) {Formular::Elements::Submit.(value: "Submit Button")}

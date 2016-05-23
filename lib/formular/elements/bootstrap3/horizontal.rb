@@ -1,7 +1,8 @@
-require "formular/elements/form"
-require "formular/elements/container"
-require "formular/elements/bootstrap3"
+require "formular/element"
+require "formular/elements"
+require "formular/elements/modules/container"
 require "formular/elements/module"
+require "formular/elements/bootstrap3"
 module Formular
   module Elements
     module Bootstrap3
@@ -41,7 +42,8 @@ module Formular
 
         end #class Select
 
-        class InputColumnWrapper < Formular::Elements::Container
+        class InputColumnWrapper < Formular::Element
+          include Formular::Elements::Modules::Container
           tag "div"
 
           def attributes

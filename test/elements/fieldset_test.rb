@@ -1,6 +1,5 @@
 require 'test_helper'
-require "formular/elements/fieldset"
-require "formular/elements/label"
+require "formular/elements"
 
 describe Formular::Elements::Fieldset do
   it "::tag" do

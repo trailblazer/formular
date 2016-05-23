@@ -1,6 +1,5 @@
 require 'test_helper'
-require "formular/elements/form"
-require "formular/elements/label"
+require "formular/elements"
 
 describe Formular::Elements::Form do
   it "::tag" do

@@ -1,7 +1,31 @@
 require "formular/element"
-require "formular/elements/container"
+require "formular/elements/module"
+require "formular/elements/modules/container"
 module Formular
   module Elements
+    Container = Class.new(Formular::Element) { include Formular::Elements::Modules::Container }
+    Option = Class.new(Container)
+    OptGroup = Class.new(Container)
+    Fieldset = Class.new(Container)
+    Form = Class.new(Container) { attribute :method, "post" }
+    Textarea = Class.new(Container) { add_option_keys [:attribute_name] }
+    Error = Class.new(Container) { tag "p" }
+    Label = Class.new(Container)
+
+    class Submit < Formular::Element
+      tag "input"
+
+      attribute :type, "submit"
+
+      html { opening_tag(true) }
+    end #class Submit
+
+    class Input < Formular::Element
+      attribute :type, "text"
+      add_option_keys [:attribute_name]
+      html { opening_tag(true) }
+    end # class Input
+
     class Select < Formular::Element
       add_option_keys [:collection, :value, :attribute_name]
 
@@ -36,7 +60,5 @@ module Formular
         Formular::Elements::Option.new(opts).to_s #we should probably call this through the builder incase people need to edit it?
       end
     end # class Select
-    OptGroup = Class.new(Formular::Elements::Container)
-    Option = Class.new(Formular::Elements::Container)
   end #module Elements
 end #module Formular

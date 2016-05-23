@@ -1,5 +1,5 @@
 require 'test_helper'
-require "formular/elements/select"
+require "formular/elements"
 
 describe Formular::Elements::Select do
   let(:element) {Formular::Elements::Select.(name: "public", collection: [[0, "False"], [1, "True"]], value: 0)}

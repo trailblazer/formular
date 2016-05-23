@@ -1,12 +1,5 @@
 require "formular/builder"
-require "formular/elements/form"
-require "formular/elements/error"
-require "formular/elements/input"
-require "formular/elements/label"
-require "formular/elements/textarea"
-require "formular/elements/submit"
-require "formular/elements/select"
-
+require "formular/elements"
 require "formular/errors"
 module Formular
   module Builders

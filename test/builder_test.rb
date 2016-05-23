@@ -1,8 +1,6 @@
 require "test_helper"
 require "formular/builder"
-require "formular/elements/label"
-require "formular/elements/input"
-require "formular/elements/form"
+require "formular/elements"
 
 describe Formular::Builder do
   let(:model) { Comment.new(nil, nil, [Reply.new]) }

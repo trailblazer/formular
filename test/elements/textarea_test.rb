@@ -1,5 +1,5 @@
 require 'test_helper'
-require "formular/elements/textarea"
+require "formular/elements"
 
 describe Formular::Elements::Textarea do
   it "::tag" do
