@@ -1,18 +1,23 @@
 require "formular/builder"
 require "formular/elements/form"
+require "formular/elements/error"
 require "formular/elements/input"
 require "formular/elements/label"
 require "formular/elements/textarea"
 require "formular/elements/submit"
 require "formular/elements/select"
 
+require "formular/errors"
 module Formular
   module Builders
     class Basic < Formular::Builder
+      include Formular::Errors
+
       self.elements = {
         form: Formular::Elements::Form,
         input: Formular::Elements::Input,
         label: Formular::Elements::Label,
+        error: Formular::Elements::Error,
         textarea: Formular::Elements::Textarea,
         submit: Formular::Elements::Submit,
         select: Formular::Elements::Select
@@ -35,6 +40,13 @@ module Formular
       def input(name, options={})
         opts = { attribute_name: name, name: path(name).to_encoded_name, id: path(name).to_encoded_id, value: reader_value(name)}.merge(Attributes[options])
         method_missing(:input, opts)
+      end
+
+      def error(name, options={})
+        message = error_message(name)
+        return "" unless message
+        opts = { attribute_name: name, content: message }.merge(Attributes[options])
+        method_missing(:error, opts)
       end
 
       def select(name, collection_array, options={})

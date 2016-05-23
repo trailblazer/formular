@@ -15,6 +15,7 @@ module Formular
         label: Formular::Elements::Bootstrap3::Label,
         textarea: Formular::Elements::Bootstrap3::Textarea,
         wrapper: Formular::Elements::Bootstrap3::Wrapper,
+        error_wrapper: Formular::Elements::Bootstrap3::ErrorWrapper,
         submit: Formular::Elements::Bootstrap3::Submit
       }
     end #class Bootstrap3
@@ -29,6 +30,7 @@ module Formular
         label: Formular::Elements::Bootstrap3::Label,
         textarea: Formular::Elements::Bootstrap3::Textarea,
         wrapper: Formular::Elements::Bootstrap3::Wrapper,
+        error_wrapper: Formular::Elements::Bootstrap3::ErrorWrapper,
         submit: Formular::Elements::Bootstrap3::Submit
       }
     end #class Bootstrap3Inline
@@ -43,6 +45,7 @@ module Formular
         label: Formular::Elements::Bootstrap3::Horizontal::Label,
         textarea: Formular::Elements::Bootstrap3::Horizontal::Textarea,
         wrapper: Formular::Elements::Bootstrap3::Wrapper,
+        error_wrapper: Formular::Elements::Bootstrap3::ErrorWrapper,
         input_column_wrapper: Formular::Elements::Bootstrap3::Horizontal::InputColumnWrapper,
         submit: Formular::Elements::Bootstrap3::Horizontal::Submit
       }

@@ -50,12 +50,12 @@ module Formular
       @builder = options.delete(:builder)
       opts = {}
       attrs = {}
-      options.each { |k,v| permitted_key?(k) ? opts[k] = v : attrs[k] = v }
+      options.each { |k,v| option_key?(k) ? opts[k] = v : attrs[k] = v }
       @attributes = self.class.default_attributes.dup.merge!(Attributes[attrs])
       @options = opts
     end
 
-    def permitted_key?(k)
+    def option_key?(k)
       self.class.option_keys.include?(k)
     end
   end #class Element

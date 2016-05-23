@@ -5,10 +5,10 @@ module Formular
   module Elements
     module Bootstrap3
       module Horizontal
-        module ControlHtml
+        module WrappedControl
           def html_block
             Proc.new() do |input|
-              input.builder.wrapper(input.has_errors? ? {class: ["has-error"]} : {}) do |wrapper|
+              input.wrapper do |wrapper|
                 concat input.label
                 concat wrapper.input_column_wrapper(content: input.control_html + input.error).to_s
               end.to_s
@@ -21,25 +21,37 @@ module Formular
         end #class Form
 
         class Input < Formular::Elements::Bootstrap3::Input
-          extend Formular::Elements::Bootstrap3::Horizontal::ControlHtml
+          extend Formular::Elements::Bootstrap3::Horizontal::WrappedControl
+          include Formular::Elements::WrappedControl::InstanceMethods
+          self.option_keys += [:error_options, :label_options, :wrapper_options]
+
           html &html_block
 
         end #class Input
 
         class File < Formular::Elements::Bootstrap3::File
-          extend Formular::Elements::Bootstrap3::Horizontal::ControlHtml
+          extend Formular::Elements::Bootstrap3::Horizontal::WrappedControl
+          include Formular::Elements::WrappedControl::InstanceMethods
+          self.option_keys += [:error_options, :label_options, :wrapper_options]
+
           html &html_block
 
         end # class File
 
         class Textarea < Formular::Elements::Bootstrap3::Textarea
-          extend Formular::Elements::Bootstrap3::Horizontal::ControlHtml
+          extend Formular::Elements::Bootstrap3::Horizontal::WrappedControl
+          include Formular::Elements::WrappedControl::InstanceMethods
+          self.option_keys += [:error_options, :label_options, :wrapper_options]
+
           html &html_block
 
         end #class Textarea
 
         class Select < Formular::Elements::Bootstrap3::Select
-          extend Formular::Elements::Bootstrap3::Horizontal::ControlHtml
+          extend Formular::Elements::Bootstrap3::Horizontal::WrappedControl
+          include Formular::Elements::WrappedControl::InstanceMethods
+          self.option_keys += [:error_options, :label_options, :wrapper_options]
+
           html &html_block
 
         end #class Select

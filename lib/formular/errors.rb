@@ -1,31 +1,22 @@
 module Formular
   module Errors
-    def error_text
-      text = has_custom_error? ? options[:error] : errors.send(error_method)
-
-      "#{html_escape(text)}".html_safe
+    def error_message(attribute_name)
+      errors.send(error_method) if has_errors?(attribute_name)
     end
 
-    def has_errors?
-      builder.errors && builder.errors.size > 0
+    def has_errors?(attribute_name)
+      errors && errors_on_attribute(attribute_name).size > 0
     end
 
     protected
+
     #errors is an array, what method should we use to return a string?
     def error_method
       :first
     end
 
-    def errors
-      @errors ||= (errors_on_attribute).compact
-    end
-
     def errors_on_attribute
-      builder.errors[options[:name]]
-    end
-
-    def has_custom_error?
-      options[:error].is_a?(String)
+      @attribute_errors ||= errors[attribute_name]
     end
   end
 end

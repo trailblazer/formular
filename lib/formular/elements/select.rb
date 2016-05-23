@@ -36,13 +36,7 @@ module Formular
         Formular::Elements::Option.new(opts).to_s #we should probably call this through the builder incase people need to edit it?
       end
     end # class Select
-
-    class OptGroup < Formular::Elements::Container
-
-    end #class OptionGroup
-
-    class Option < Formular::Elements::Container
-
-    end #class Option
+    OptGroup = Class.new(Formular::Elements::Container)
+    Option = Class.new(Formular::Elements::Container)
   end #module Elements
 end #module Formular
