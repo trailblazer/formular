@@ -37,8 +37,8 @@ module Formular
             Renderer.new(Proc.new {closing_tag}).call(self)
           end
 
-          #do we inject self into args? would we ever need to know what container
-          #an input came from?
+          #I really really don't like this, but we need a way of
+          #calling builder methods.
           def method_missing(method, *args, &block)
             if builder && builder.respond_to?(method)
               builder.send(method, *args, &block)

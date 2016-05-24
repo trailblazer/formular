@@ -8,7 +8,7 @@ module Formular
     class Basic < Formular::Builder
       include Formular::Errors
 
-      self.elements = {
+      element_set({
         form: Formular::Elements::Form,
         input: Formular::Elements::Input,
         label: Formular::Elements::Label,
@@ -16,15 +16,15 @@ module Formular
         textarea: Formular::Elements::Textarea,
         submit: Formular::Elements::Submit,
         select: Formular::Elements::Select
-      }
+      })
 
       #FIXME!!This should be removed
       #select must be defined somewhere else as if I don't explicitly do this we get TypeError
       #when called from a container
       #TypeError: wrong argument type Symbol (expected Array)
-      def select(*attrs)
-        method_missing(:select, *attrs)
-      end
+      # def select(*attrs)
+      #   method_missing(:select, *attrs)
+      # end
 
       def collection(name, models = nil, &block)
         models ||= model? ? model.send(name) : []

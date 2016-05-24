@@ -6,6 +6,7 @@ require "formular/elements/modules/control"
 module Formular
   module Elements
     Container = Class.new(Formular::Element) { include Formular::Elements::Modules::Container }
+    Control = Class.new(Formular::Element) { include Formular::Elements::Modules::Control }
     Option = Class.new(Container)
     OptGroup = Class.new(Container)
     Fieldset = Class.new(Container)
@@ -16,15 +17,14 @@ module Formular
       add_option_keys [:attribute_name]
       attribute :content, :error_message
 
-
       def error_message
         (options[:attribute_name] && builder) ? builder.error_message(options[:attribute_name]) : nil
       end
     end #class Error
 
-    class Textarea < Container
+    class Textarea < Control
+      include Formular::Elements::Modules::Container
       add_option_keys [:value]
-      include Formular::Elements::Modules::Control
 
       def content
         options[:value] || super
@@ -51,14 +51,12 @@ module Formular
       html { opening_tag(true) }
     end #class Submit
 
-    class Input < Formular::Element
-      include Formular::Elements::Modules::Control
+    class Input < Control
       attribute :type, "text"
       html { opening_tag(true) }
     end # class Input
 
-    class Select < Formular::Element
-      include Formular::Elements::Modules::Control
+    class Select < Control
       add_option_keys [:collection, :value]
 
       html do |input|

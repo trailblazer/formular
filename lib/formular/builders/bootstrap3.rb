@@ -6,7 +6,7 @@ require "formular/elements/bootstrap3/inline"
 module Formular
   module Builders
     class Bootstrap3 < Formular::Builders::Basic
-      self.elements = {
+      element_set({
         form: Formular::Elements::Form,
         error: Formular::Elements::Bootstrap3::Error,
         input: Formular::Elements::Bootstrap3::Input,
@@ -17,11 +17,11 @@ module Formular
         wrapper: Formular::Elements::Bootstrap3::Wrapper,
         error_wrapper: Formular::Elements::Bootstrap3::ErrorWrapper,
         submit: Formular::Elements::Bootstrap3::Submit
-      }
+      })
     end #class Bootstrap3
 
     class Bootstrap3Inline < Formular::Builders::Basic
-      self.elements = {
+      element_set({
         form: Formular::Elements::Bootstrap3::Inline::Form,
         error: Formular::Elements::Bootstrap3::Error,
         input: Formular::Elements::Bootstrap3::Input,
@@ -32,11 +32,11 @@ module Formular
         wrapper: Formular::Elements::Bootstrap3::Wrapper,
         error_wrapper: Formular::Elements::Bootstrap3::ErrorWrapper,
         submit: Formular::Elements::Bootstrap3::Submit
-      }
+      })
     end #class Bootstrap3Inline
 
     class Bootstrap3Horizontal < Formular::Builders::Bootstrap3
-      self.elements = {
+      element_set({
         form: Formular::Elements::Bootstrap3::Horizontal::Form,
         error: Formular::Elements::Bootstrap3::Error,
         input: Formular::Elements::Bootstrap3::Horizontal::Input,
@@ -48,7 +48,7 @@ module Formular
         error_wrapper: Formular::Elements::Bootstrap3::ErrorWrapper,
         input_column_wrapper: Formular::Elements::Bootstrap3::Horizontal::InputColumnWrapper,
         submit: Formular::Elements::Bootstrap3::Horizontal::Submit
-      }
+      })
       inheritable_attr :column_classes
 
       self.column_classes = {left_column: ["col-sm-2"], right_column: ["col-sm-10"], left_offset: ["col-sm-offset-2"]}
