@@ -18,48 +18,34 @@ module Formular
           end
         end
 
-        class Form < Formular::Elements::Form
-          attribute :class, ["form-horizontal"]
-        end #class Form
+        Form = Class.new(Formular::Elements::Form) { attribute :class, ["form-horizontal"] }
+        Select = Class.new(Formular::Elements::Bootstrap3::Select) { include WrappedControl }
+        Textarea = Class.new(Formular::Elements::Bootstrap3::Textarea) { include WrappedControl }
+        Input = Class.new(Formular::Elements::Bootstrap3::Input) { include WrappedControl }
+        File = Class.new(Formular::Elements::Bootstrap3::File) { include WrappedControl }
 
-        class Input < Formular::Elements::Bootstrap3::Input
-          include Formular::Elements::Bootstrap3::Horizontal::WrappedControl
-
-        end #class Input
-
-        class File < Formular::Elements::Bootstrap3::File
-          include Formular::Elements::Bootstrap3::Horizontal::WrappedControl
-
-        end # class File
-
-        class Textarea < Formular::Elements::Bootstrap3::Textarea
-          include Formular::Elements::Bootstrap3::Horizontal::WrappedControl
-
-        end #class Textarea
-
-        class Select < Formular::Elements::Bootstrap3::Select
-          include Formular::Elements::Bootstrap3::Horizontal::WrappedControl
-
-        end #class Select
-
-        class InputColumnWrapper < Formular::Element
-          include Formular::Elements::Modules::Container
+        class InputColumnWrapper < Formular::Elements::Container
+          attribute :class, :column_class
           tag "div"
 
-          def attributes
-            @attributes.merge({class: builder.class.column_classes[:right_column]})
+          def column_class
+            builder.class.column_classes[:right_column]
           end
         end #class InputColumnWrapper
 
         class Label < Formular::Elements::Bootstrap3::Label
-          def attributes
-            @attributes.merge({class: builder.class.column_classes[:left_column]})
+          attribute :class, :column_class
+
+          def column_class
+            builder.class.column_classes[:left_column] + ["control-label"]
           end
         end #class Label
 
         class Submit < Formular::Elements::Bootstrap3::Submit
-          def attributes
-            @attributes.merge({class: builder.class.column_classes[:left_offset] + builder.class.column_classes[:left_column]})
+          attribute :class, :column_class
+
+          def column_class
+            builder.class.column_classes[:left_offset] + builder.class.column_classes[:left_column]
           end
         end #class Submit
       end #module Horizontal

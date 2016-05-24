@@ -8,8 +8,8 @@ module Formular
     #this is where we start...
     def initialize(model: nil, path: nil, errors: nil, elements: nil)
       @model = model
-      @path = path || @model.class
-      @errors = errors || model != nil ? model.errors : {}
+      @path = path
+      @errors = errors || (model? ? model.errors : nil)
       @elements = elements || self.class.elements
     end
 
@@ -17,13 +17,33 @@ module Formular
       @model != nil
     end
 
+    def capture(*args)
+      yield(*args)
+    end
+
+    def call(&block)
+      capture(self, &block)
+    end
+
     attr_reader :model, :errors, :element_set
 
-    def method_missing(method, options={}, &block)
+    def method_missing(method, *args, &block)
       element = @elements[method]
       if element
-        opts = options ? options.merge!({builder: self}) : {builder: self}
-        element.(opts, &block)
+        if args.size > 1
+          name, options = args
+        else
+          case args.first
+          when Symbol then name = args.first
+          when Hash then options = args.first
+          end
+        end
+
+        options ||={}
+        options[:builder] = self
+        options[:attribute_name] = name if name
+
+        element.(options, &block)
       else
         super
       end
@@ -33,7 +53,7 @@ module Formular
       super || @elements.keys.include?(method)
     end
 
-    private
+    #these can be called from an element
     def path(appendix = nil)
       appendix ? Path[*@path, appendix] : Path[@path]
     end

@@ -19,29 +19,25 @@ module Formular
         end
 
         module InstanceMethods
+          def has_errors?
+            options[:error] || builder && builder.has_errors?(options[:attribute_name])
+          end
+
           def wrapper(&block)
-            wrapper_element = builder.has_errors?(options[:attribute_name]) ? :error_wrapper : :wrapper
-            builder.send(wrapper_element, options[:wrapper_options], &block)
+            wrapper_element = has_errors? ? :error_wrapper : :wrapper
+            builder.send(wrapper_element, Attributes[options[:wrapper_options]], &block)
           end
 
           def label
-            wrapped_element(:label)
+            return "" unless options[:label]
+            label_opts = Attributes[options[:label_options]].merge({ content: options[:label], labeled_control: self})
+            builder.label(label_opts).to_s
           end
 
           def error
-            wrapped_element(:error)
-          end
-
-          private
-          def wrapped_element(element)
-            return "" if options[element] == false
-            element_opts = wrapped_element_options(options[element], options["#{element}_options".to_sym])
-            builder.send(element, options[:attribute_name], element_opts).to_s
-          end
-
-          def wrapped_element_options(element_label, element_options)
-            opts = element_options || {}
-            element_label.is_a?(String) ? opts.merge({ content: element_label }) : opts
+            return "" unless has_errors?
+            error_opts = Attributes[options[:error_options]].merge({ content: options[:error] })
+            builder.error(error_opts).to_s
           end
         end #module InstanceMethods
       end #module WrappedControl

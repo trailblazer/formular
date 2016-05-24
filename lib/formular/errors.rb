@@ -16,7 +16,7 @@ module Formular
       :first
     end
 
-    def errors_on_attribute
+    def errors_on_attribute(attribute_name)
       @attribute_errors ||= errors[attribute_name]
     end
   end

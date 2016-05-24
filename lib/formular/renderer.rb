@@ -5,7 +5,8 @@ module Formular
     end
 
     def call(element)
-      @output = ""
+      @output = "" #I'm sure there are better ways of doing this but if we don't clear it before a
+                   # call then we get everything else called to this element class
       @element = element
       instance_exec element, &@fn
     end
@@ -24,5 +25,5 @@ module Formular
     def closing_tag
       "</#{@element.tag}>"
     end
-  end
-end
+  end #class Renderer
+end #module Formular

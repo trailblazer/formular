@@ -7,10 +7,7 @@ class PathTest < Minitest::Spec
       path = Formular::Path[nil]
       path.to_encoded_name.must_equal ""
     end
-    it "should convert basic class" do
-      path = Formular::Path[:comment]
-      path.to_encoded_name.must_equal %(comment)
-    end
+
     it "should convert basic sym" do
       path = Formular::Path[:comment]
       path.to_encoded_name.must_equal %(comment)

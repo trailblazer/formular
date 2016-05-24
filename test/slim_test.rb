@@ -21,7 +21,7 @@ class SlimTest < Minitest::Spec
     let (:model) { Comment.new(1, "Nice!", [Reply.new(1, "some exciting words"), Reply.new], Owner.new(1, "Joe Blog", "joe@somewhere.com"), "0x") }
 
     it do
-      Comment::SlimCell.new(model).().must_equal %{<div>New</div><form method="post" action="/posts"><input type="text" name="comment[id]" id="comment_id" value="1"/><textarea name="comment[body]" id="comment_body">Nice!</textarea><input type="text" name="comment[replies][][content]" id="comment_replies_0_content" value="some exciting words"/><input type="text" name="comment[replies][][content]" id="comment_replies_1_content" value=""/><input type="text" name="comment[owner][name]" id="comment_owner_name" value="Joe Blog"/><input type="text" name="comment[owner][email]" id="comment_owner_email" value="joe@somewhere.com"/><input type="text" name="comment[uuid]" id="comment_uuid" value="0x"/><input type="submit" value="Submit"/></form>}
+      Comment::SlimCell.new(model).().must_equal %{<div>New</div><form method="post" action="/posts"><input name="comment[id]" id="comment_id" value="1" type="text"/><textarea name="comment[body]" id="comment_body">Nice!</textarea><input name="comment[replies][][content]" id="comment_replies_0_content" value="some exciting words" type="text"/><input name="comment[replies][][content]" id="comment_replies_1_content" value="" type="text"/><input name="comment[owner][name]" id="comment_owner_name" value="Joe Blog" type="text"/><input name="comment[owner][email]" id="comment_owner_email" value="joe@somewhere.com" type="text"/><input name="comment[uuid]" id="comment_uuid" value="0x" type="text"/><input type="submit" value="Submit"/></form>}
     end
   end
 end

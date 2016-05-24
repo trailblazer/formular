@@ -3,6 +3,8 @@ require "formular/elements"
 require "formular/errors"
 module Formular
   module Builders
+    #I'm not quite sure why I made this a seperate class
+    #But I kind of see myself having Builder as a generic viewbuilder and this basic class as Form
     class Basic < Formular::Builder
       include Formular::Errors
 
@@ -16,41 +18,12 @@ module Formular
         select: Formular::Elements::Select
       }
 
-      def capture(*args)
-        yield(*args)
-      end
-
-      def call(&block)
-        capture(self, &block)
-      end
-
-      def label(name, options={})
-        opts = { for: path(name).to_encoded_id }.merge(Attributes[options])
-        opts[:content] ||= name.to_s.split(/ |\_|\-/).map(&:capitalize).join(" ")
-        method_missing(:label, opts)
-      end
-
-      def input(name, options={})
-        opts = { attribute_name: name, name: path(name).to_encoded_name, id: path(name).to_encoded_id, value: reader_value(name)}.merge(Attributes[options])
-        method_missing(:input, opts)
-      end
-
-      def error(name, options={})
-        message = options[:content] || error_message(name)
-        return "" unless message
-        opts = { attribute_name: name, content: message }.merge(Attributes[options])
-        method_missing(:error, opts)
-      end
-
-      def select(name, collection_array, options={})
-        opts = { name: path(name).to_encoded_name, id: path(name).to_encoded_id, collection: collection_array, value: reader_value(name), attribute_name: name }.merge(Attributes[options])
-        method_missing(:select, opts)
-      end
-
-      def textarea(name, options={})
-        opts = { attribute_name: name, name: path(name).to_encoded_name, id: path(name).to_encoded_id }.merge(Attributes[options])
-        opts[:content] = opts.delete(:value) || reader_value(name)
-        method_missing(:textarea, opts)
+      #FIXME!!This should be removed
+      #select must be defined somewhere else as if I don't explicitly do this we get TypeError
+      #when called from a container
+      #TypeError: wrong argument type Symbol (expected Array)
+      def select(*attrs)
+        method_missing(:select, *attrs)
       end
 
       def collection(name, models = nil, &block)

@@ -6,6 +6,9 @@ require "formular/elements/module"
 module Formular
   module Elements
     module Bootstrap3
+      Label = Class.new(Formular::Elements::Label) { attribute :class, ["control-label"] }
+      Submit = Class.new(Formular::Elements::Submit) { attribute :class, ["btn", "btn-default"] }
+
       class Error < Formular::Element
         include Formular::Elements::Modules::Container
         tag :span
@@ -19,7 +22,7 @@ module Formular
         attribute :class, ["form-control"]
 
         def control_html
-          Renderer.new(Proc.new {opening_tag(true)}).call(self)
+          Formular::Elements::Input.renderer.call(self)
         end
       end #class Input
 
@@ -29,7 +32,7 @@ module Formular
         attribute :class, ["form-control"]
 
         def control_html
-          Renderer.new(Proc.new { |input| [opening_tag,input.option_tags,closing_tag].join("") }).call(self)
+          Formular::Elements::Select.renderer.call(self)
         end
       end #class Select
 
@@ -38,7 +41,7 @@ module Formular
 
         add_option_keys [:error_options, :label_options, :wrapper_options]
 
-        attribute :class, []
+        attribute :class, [] #we need to remove this class from an input
         attribute :type, "file"
       end #class File
 
@@ -47,7 +50,7 @@ module Formular
         attribute :class, ["form-control"]
 
         def control_html
-          Renderer.new(Proc.new { |input| [opening_tag,input.content,closing_tag].join("") }).call(self)
+          Formular::Elements::Textarea.renderer.call(self)
         end
       end #class Textarea
 
@@ -61,9 +64,6 @@ module Formular
         tag "div"
         attribute :class, ["has-error"]
       end #class Wrapper
-
-      Label = Class.new(Formular::Elements::Label) { attribute :class, ["control-label"] }
-      Submit = Class.new(Formular::Elements::Submit) { attribute :class, ["btn", "btn-default"] }
     end #module Bootstrap3
   end #module Elements
 end #module Formular

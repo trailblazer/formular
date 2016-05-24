@@ -1,6 +1,8 @@
 require "formular/element"
 require "formular/elements/module"
 require "formular/elements/modules/container"
+require "formular/elements/modules/control"
+
 module Formular
   module Elements
     Container = Class.new(Formular::Element) { include Formular::Elements::Modules::Container }
@@ -8,9 +10,38 @@ module Formular
     OptGroup = Class.new(Container)
     Fieldset = Class.new(Container)
     Form = Class.new(Container) { attribute :method, "post" }
-    Textarea = Class.new(Container) { add_option_keys [:attribute_name] }
-    Error = Class.new(Container) { tag "p" }
-    Label = Class.new(Container)
+
+    class Error < Container
+      tag "p"
+      add_option_keys [:attribute_name]
+      attribute :content, :error_message
+
+
+      def error_message
+        (options[:attribute_name] && builder) ? builder.error_message(options[:attribute_name]) : nil
+      end
+    end #class Error
+
+    class Textarea < Container
+      add_option_keys [:value]
+      include Formular::Elements::Modules::Control
+
+      def content
+        options[:value] || super
+      end
+    end #class Textarea
+
+    class Label < Container
+      add_option_keys [:labeled_control]
+      attribute :for, :labeled_control_id
+
+      #as per MDN A label element can have both a for attribute and a contained control element,
+      #as long as the for attribute points to the contained control element.
+      def labeled_control_id
+        return nil unless options[:labeled_control]
+        options[:labeled_control].attributes[:id]
+      end
+    end #class Label
 
     class Submit < Formular::Element
       tag "input"
@@ -21,13 +52,14 @@ module Formular
     end #class Submit
 
     class Input < Formular::Element
+      include Formular::Elements::Modules::Control
       attribute :type, "text"
-      add_option_keys [:attribute_name]
       html { opening_tag(true) }
     end # class Input
 
     class Select < Formular::Element
-      add_option_keys [:collection, :value, :attribute_name]
+      include Formular::Elements::Modules::Control
+      add_option_keys [:collection, :value]
 
       html do |input|
         concat opening_tag
