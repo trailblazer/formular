@@ -17,11 +17,11 @@ module Formular
 
         html do |element|
           if element.content
-            concat opening_tag
+            concat start_tag
             concat element.content
-            concat closing_tag
+            concat end_tag
           else
-            opening_tag
+            start_tag
           end
         end
 
@@ -34,9 +34,10 @@ module Formular
           #I'd link be able to define end html in the same way as you
           #can opening (though I can't think of a use case right now...)
           def end
-            Renderer.new(Proc.new {closing_tag}).call(self)
+            Renderer.new(Proc.new {end_tag}).call(self)
           end
 
+          #FIXME
           #I really really don't like this, but we need a way of
           #calling builder methods.
           def method_missing(method, *args, &block)

@@ -1,15 +1,19 @@
 require "formular/elements/module"
+require "formular/elements/modules/errors"
 module Formular
   module Elements
     module Modules
       #include this module in an element to set the id, name &value based on the attribute name
       module Control
         include Formular::Elements::Module
+        include Formular::Elements::Modules::Errors
+
         add_option_keys [:attribute_name]
 
-        attribute :name, :form_encoded_name
-        attribute :id, :form_encoded_id
-        attribute :value, :reader_value
+        set_default :name, :form_encoded_name
+        set_default :id, :form_encoded_id
+        set_default :value, :reader_value
+
         module InstanceMethods
           def attribute_name
             options[:attribute_name]

@@ -1,25 +1,28 @@
 require "formular/element"
 require "formular/elements/module"
 require "formular/elements/modules/container"
+require "formular/elements/modules/wrapped_control"
 require "formular/elements/modules/control"
+require "formular/elements/modules/errors"
 
 module Formular
   module Elements
+    #These three are really just provided for convenience when creating other elements
     Container = Class.new(Formular::Element) { include Formular::Elements::Modules::Container }
     Control = Class.new(Formular::Element) { include Formular::Elements::Modules::Control }
+    WrappedControl = Class.new(Formular::Element) { include Formular::Elements::Modules::WrappedControl }
+
     Option = Class.new(Container)
     OptGroup = Class.new(Container)
     Fieldset = Class.new(Container)
-    Form = Class.new(Container) { attribute :method, "post" }
+    Form = Class.new(Container) { set_default :method, "post" }
 
     class Error < Container
+      include Formular::Elements::Modules::Errors
+
       tag "p"
       add_option_keys [:attribute_name]
-      attribute :content, :error_message
-
-      def error_message
-        (options[:attribute_name] && builder) ? builder.error_message(options[:attribute_name]) : nil
-      end
+      set_default :content, :error_message
     end #class Error
 
     class Textarea < Control
@@ -33,7 +36,7 @@ module Formular
 
     class Label < Container
       add_option_keys [:labeled_control]
-      attribute :for, :labeled_control_id
+      set_default :for, :labeled_control_id
 
       #as per MDN A label element can have both a for attribute and a contained control element,
       #as long as the for attribute points to the contained control element.
@@ -46,23 +49,23 @@ module Formular
     class Submit < Formular::Element
       tag "input"
 
-      attribute :type, "submit"
+      set_default :type, "submit"
 
-      html { opening_tag(true) }
+      html { closed_start_tag }
     end #class Submit
 
     class Input < Control
-      attribute :type, "text"
-      html { opening_tag(true) }
+      set_default :type, "text"
+      html { closed_start_tag }
     end # class Input
 
     class Select < Control
       add_option_keys [:collection, :value]
 
       html do |input|
-        concat opening_tag
+        concat start_tag
         concat input.option_tags
-        concat closing_tag
+        concat end_tag
       end
 
       #convert the collection array into option tags also supports option groups

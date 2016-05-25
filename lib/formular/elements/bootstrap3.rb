@@ -6,20 +6,20 @@ require "formular/elements/module"
 module Formular
   module Elements
     module Bootstrap3
-      Label = Class.new(Formular::Elements::Label) { attribute :class, ["control-label"] }
-      Submit = Class.new(Formular::Elements::Submit) { attribute :class, ["btn", "btn-default"] }
+      Label = Class.new(Formular::Elements::Label) { set_default :class, ["control-label"] }
+      Submit = Class.new(Formular::Elements::Submit) { set_default :class, ["btn", "btn-default"] }
 
       class Error < Formular::Element
         include Formular::Elements::Modules::Container
         tag :span
-        attribute :class, ["help-block"]
+        set_default :class, ["help-block"]
 
       end #class Error
 
       class Input < Formular::Elements::Input
         include Formular::Elements::Modules::WrappedControl
 
-        attribute :class, ["form-control"]
+        set_default :class, ["form-control"]
 
         def control_html
           Formular::Elements::Input.renderer.call(self)
@@ -29,7 +29,7 @@ module Formular
       class Select < Formular::Elements::Select
         include Formular::Elements::Modules::WrappedControl
 
-        attribute :class, ["form-control"]
+        set_default :class, ["form-control"]
 
         def control_html
           Formular::Elements::Select.renderer.call(self)
@@ -41,13 +41,13 @@ module Formular
 
         add_option_keys [:error_options, :label_options, :wrapper_options]
 
-        attribute :class, [] #we need to remove this class from an input
-        attribute :type, "file"
+        set_default :class, [] #we need to remove this class from an input
+        set_default :type, "file"
       end #class File
 
       class Textarea < Formular::Elements::Textarea
         include Formular::Elements::Modules::WrappedControl
-        attribute :class, ["form-control"]
+        set_default :class, ["form-control"]
 
         def control_html
           Formular::Elements::Textarea.renderer.call(self)
@@ -57,12 +57,12 @@ module Formular
       class Wrapper < Formular::Element
         include Formular::Elements::Modules::Container
         tag "div"
-        attribute :class, ["form-group"]
+        set_default :class, ["form-group"]
       end #class Wrapper
 
       class ErrorWrapper < Formular::Elements::Bootstrap3::Wrapper
         tag "div"
-        attribute :class, ["has-error"]
+        set_default :class, ["has-error"]
       end #class Wrapper
     end #module Bootstrap3
   end #module Elements

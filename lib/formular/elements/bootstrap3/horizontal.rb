@@ -18,14 +18,14 @@ module Formular
           end
         end
 
-        Form = Class.new(Formular::Elements::Form) { attribute :class, ["form-horizontal"] }
+        Form = Class.new(Formular::Elements::Form) { set_default :class, ["form-horizontal"] }
         Select = Class.new(Formular::Elements::Bootstrap3::Select) { include WrappedControl }
         Textarea = Class.new(Formular::Elements::Bootstrap3::Textarea) { include WrappedControl }
         Input = Class.new(Formular::Elements::Bootstrap3::Input) { include WrappedControl }
         File = Class.new(Formular::Elements::Bootstrap3::File) { include WrappedControl }
 
         class InputColumnWrapper < Formular::Elements::Container
-          attribute :class, :column_class
+          set_default :class, :column_class
           tag "div"
 
           def column_class
@@ -34,7 +34,7 @@ module Formular
         end #class InputColumnWrapper
 
         class Label < Formular::Elements::Bootstrap3::Label
-          attribute :class, :column_class
+          set_default :class, :column_class
 
           def column_class
             builder.class.column_classes[:left_column] + ["control-label"]
@@ -42,7 +42,7 @@ module Formular
         end #class Label
 
         class Submit < Formular::Elements::Bootstrap3::Submit
-          attribute :class, :column_class
+          set_default :class, :column_class
 
           def column_class
             builder.class.column_classes[:left_offset] + builder.class.column_classes[:left_column]

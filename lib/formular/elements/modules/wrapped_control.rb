@@ -1,4 +1,5 @@
 require "formular/elements/module"
+require "formular/elements/modules/control"
 module Formular
   module Elements
     module Modules
@@ -8,7 +9,10 @@ module Formular
       #  enable hints
       module WrappedControl
         include Formular::Elements::Module
-        add_option_keys [:error_options, :label_options, :wrapper_options, :label, :error]
+        include Formular::Elements::Modules::Control
+
+        add_option_keys [:error_options, :label_options, :wrapper_options, :label]
+        set_default :error, :error_message
 
         html do |input|
           input.wrapper do
@@ -19,12 +23,8 @@ module Formular
         end
 
         module InstanceMethods
-          def has_errors?
-            options[:error] || builder && builder.has_errors?(options[:attribute_name])
-          end
-
           def wrapper(&block)
-            wrapper_element = has_errors? ? :error_wrapper : :wrapper
+            wrapper_element = options[:error] ? :error_wrapper : :wrapper
             builder.send(wrapper_element, Attributes[options[:wrapper_options]], &block)
           end
 

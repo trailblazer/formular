@@ -63,7 +63,7 @@ module Formular
     end
 
     def reader_value(name)
-      model? ? model.send(name) || "" : ""
+      model? ? model.send(name) : nil
     end
   end #class Builder
 end #module Formular
