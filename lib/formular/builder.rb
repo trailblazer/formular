@@ -1,4 +1,4 @@
-require "formular/path"
+require 'formular/path'
 require 'uber/inheritable_attr'
 module Formular
   class Builder
@@ -10,9 +10,9 @@ module Formular
       define_element_methods(elements)
     end
 
-    #this defines a method for each element in the set.
-    #This might be a little magical, but I did it in the interests of dryness as I had many
-    #methods with exactly the same code... Happy to revert if this is code smell!
+    # this defines a method for each element in the set.
+    # This might be a little magical, but I did it in the interests of dryness as I had many
+    # methods with exactly the same code... Happy to revert if this is code smell!
     def self.define_element_methods(elements)
       elements.each do |element_name, element_class|
         define_method(element_name) do |*args, &block|
@@ -34,7 +34,7 @@ module Formular
       end
     end
 
-    #this is where we start...
+    # this is where we start...
     def initialize(model: nil, path: nil, errors: nil, elements: nil)
       @model = model
       @path = path
@@ -57,7 +57,7 @@ module Formular
 
     attr_reader :model, :errors, :elements
 
-    #these can be called from an element
+    # these can be called from an element
     def path(appendix = nil)
       appendix ? Path[*@path, appendix] : Path[@path]
     end
@@ -65,5 +65,5 @@ module Formular
     def reader_value(name)
       model? ? model.send(name) : nil
     end
-  end #class Builder
-end #module Formular
+  end # class Builder
+end # module Formular

@@ -1,15 +1,15 @@
-require "formular/elements/module"
+require 'formular/elements/module'
 module Formular
   module Elements
     module Modules
-      #this module provides error methods to a control when included.
+      # this module provides error methods to a control when included.
       module Errors
         include Formular::Elements::Module
         add_option_keys [:error]
 
-        #options functionality (same as SimpleForm):
-        #options[:error] == false NO ERROR regardless of model errors
-        #options[:error] == String return the string, regardless of model errors
+        # options functionality (same as SimpleForm):
+        # options[:error] == false NO ERROR regardless of model errors
+        # options[:error] == String return the string, regardless of model errors
         module InstanceMethods
           def error_message
             has_custom_error? ? options[:error] : errors_on_attribute.send(error_method) if has_errors?
@@ -20,15 +20,16 @@ module Formular
           end
 
           protected
-          #attribute_errors is an array, what method should we use to return a
-          #string? (:first, :last, :join etc.)
-          #ideally this should be configurable via the builder...
+
+          # attribute_errors is an array, what method should we use to return a
+          # string? (:first, :last, :join etc.)
+          # ideally this should be configurable via the builder...
           def error_method
             :first
           end
 
-          #I bet we could clean this up alot but it needs to be flexible enought not to error
-          #with nils
+          # I bet we could clean this up alot but it needs to be flexible
+          # enough not to error with nils
           def has_attribute_errors?
             builder != nil && builder.errors != nil && errors_on_attribute != nil && errors_on_attribute.size > 0
           end
@@ -40,8 +41,8 @@ module Formular
           def errors_on_attribute
             @errors ||= builder.errors[options[:attribute_name]]
           end
-        end
-      end #module Errors
-    end #module Modules
-  end #module Elements
-end #module Formular
+        end # module InstanceMethods
+      end # module Errors
+    end # module Modules
+  end # module Elements
+end # module Formular

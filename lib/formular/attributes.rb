@@ -18,9 +18,9 @@ module Formular
       super
     end
 
-    #converts the hash into a string k1=v1 k2=v2
-    #replaces underscores with - so we can use regular keys
-    #allows one layer of nestedhashes so we can define data options as a hash.
+    # converts the hash into a string k1=v1 k2=v2
+    # replaces underscores with - so we can use regular keys
+    # allows one layer of nestedhashes so we can define data options as a hash.
     def to_html
       map do |key,val|
         if val.is_a?(Hash)
@@ -41,5 +41,5 @@ module Formular
     def val_to_string(value)
       value.is_a?(Array) ? value.join(" ") : value
     end
-  end #class Attributes
-end #module Formular
+  end # class Attributes
+end # module Formular

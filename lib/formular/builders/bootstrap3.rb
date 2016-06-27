@@ -1,8 +1,8 @@
-require "formular/builders/basic"
-require "formular/elements"
-require "formular/elements/bootstrap3"
-require "formular/elements/bootstrap3/horizontal"
-require "formular/elements/bootstrap3/inline"
+require 'formular/builders/basic'
+require 'formular/elements'
+require 'formular/elements/bootstrap3'
+require 'formular/elements/bootstrap3/horizontal'
+require 'formular/elements/bootstrap3/inline'
 module Formular
   module Builders
     class Bootstrap3 < Formular::Builders::Basic
@@ -18,7 +18,7 @@ module Formular
         error_wrapper: Formular::Elements::Bootstrap3::ErrorWrapper,
         submit: Formular::Elements::Bootstrap3::Submit
       })
-    end #class Bootstrap3
+    end # class Bootstrap3
 
     class Bootstrap3Inline < Formular::Builders::Basic
       element_set({
@@ -33,7 +33,7 @@ module Formular
         error_wrapper: Formular::Elements::Bootstrap3::ErrorWrapper,
         submit: Formular::Elements::Bootstrap3::Submit
       })
-    end #class Bootstrap3Inline
+    end # class Bootstrap3Inline
 
     class Bootstrap3Horizontal < Formular::Builders::Bootstrap3
       element_set({
@@ -51,7 +51,12 @@ module Formular
       })
       inheritable_attr :column_classes
 
-      self.column_classes = {left_column: ["col-sm-2"], right_column: ["col-sm-10"], left_offset: ["col-sm-offset-2"]}
-    end #class Bootstrap3Horizontal
-  end #module Builders
-end #module Formular
+      #these options should be easily configurable
+      self.column_classes = {
+        left_column: ['col-sm-2'],
+        right_column: ['col-sm-10'],
+        left_offset: ['col-sm-offset-2']
+      }
+    end # class Bootstrap3Horizontal
+  end # module Builders
+end # module Formular
