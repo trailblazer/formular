@@ -3,6 +3,7 @@ require 'formular/elements/module'
 require 'formular/elements/modules/container'
 require 'formular/elements/modules/wrapped_control'
 require 'formular/elements/modules/control'
+require 'formular/elements/modules/checkable'
 require 'formular/elements/modules/errors'
 
 module Formular
@@ -10,6 +11,7 @@ module Formular
     # These three are really just provided for convenience when creating other elements
     Container = Class.new(Formular::Element) { include Formular::Elements::Modules::Container }
     Control = Class.new(Formular::Element) { include Formular::Elements::Modules::Control }
+    Checkable = Class.new(Formular::Element) { include Formular::Elements::Modules::Checkable }
     WrappedControl = Class.new(Formular::Element) { include Formular::Elements::Modules::WrappedControl }
 
     Option = Class.new(Container)
@@ -109,5 +111,19 @@ module Formular
         Formular::Elements::Option.new(opts).to_s
       end
     end # class Select
+
+    class Checkbox < Checkable
+      tag 'input'
+      set_default :type, 'checkbox'
+
+      html { closed_start_tag }
+    end # class Checkbox
+
+    class Radio < Checkable
+      tag 'input'
+      set_default :type, 'radio'
+
+      html { closed_start_tag }
+    end # class Radio
   end # module Elements
 end # module Formular

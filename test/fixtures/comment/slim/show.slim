@@ -2,6 +2,7 @@ div New
 = form action: "/posts", model: model do |f|
   = f.input :id
   = f.textarea :body
+  = f.checkbox :public, value: true
   = f.collection :replies do |reply|
     = reply.input :content
   = f.nested :owner do |owner|

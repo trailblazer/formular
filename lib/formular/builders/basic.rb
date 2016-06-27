@@ -13,7 +13,9 @@ module Formular
         error: Formular::Elements::Error,
         textarea: Formular::Elements::Textarea,
         submit: Formular::Elements::Submit,
-        select: Formular::Elements::Select
+        select: Formular::Elements::Select,
+        checkbox: Formular::Elements::Checkbox,
+        radio: Formular::Elements::Radio
       })
 
       def collection(name, models = nil, &block)
