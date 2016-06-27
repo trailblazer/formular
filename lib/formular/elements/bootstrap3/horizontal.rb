@@ -18,6 +18,25 @@ module Formular
           end
         end
 
+        module WrappedCheckableControl
+          include Formular::Elements::Module
+
+          html do |input|
+            input.wrapper do |wrapper|
+              wrapper.input_column_wrapper(class: input.column_class) do
+                concat input.inner_wrapper { input.checkable_label }
+                concat input.error
+              end.to_s
+            end.to_s
+          end
+
+          module InstanceMethods
+            def column_class
+              builder.class.column_classes[:left_offset]
+            end
+          end
+        end
+
         Form = Class.new(Formular::Elements::Form) { set_default :class, ['form-horizontal'] }
         Select = Class.new(Formular::Elements::Bootstrap3::Select) { include WrappedControl }
         Textarea = Class.new(Formular::Elements::Bootstrap3::Textarea) { include WrappedControl }
@@ -47,6 +66,18 @@ module Formular
             builder.class.column_classes[:left_offset] + builder.class.column_classes[:left_column]
           end
         end # class Submit
+
+        class Checkbox < Formular::Elements::Bootstrap3::Checkbox
+          include WrappedCheckableControl
+
+          tag "input"
+        end
+
+        class Radio < Formular::Elements::Bootstrap3::Radio
+          include WrappedCheckableControl
+
+          tag "input"
+        end
       end # module Horizontal
     end # module Bootstrap3
   end # module Elements

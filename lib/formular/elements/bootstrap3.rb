@@ -30,6 +30,62 @@ module Formular
         end
       end # class Input
 
+      module Checkable
+        include Formular::Elements::Module
+
+        class InnerWrapper < Formular::Elements::Container
+          tag 'div'
+        end
+
+        html do |input|
+          input.wrapper do
+            concat input.inner_wrapper { input.checkable_label }
+            concat input.error
+          end.to_s
+        end
+
+        module InstanceMethods
+          def inner_wrapper(&block)
+            InnerWrapper.(class: inner_wrapper_class, &block).to_s
+          end
+
+          def checkable_label
+            content = options[:label] ? "#{control_html} #{options[:label]}" : control_html.to_s
+            Formular::Elements::Label.(content: content).to_s
+          end
+        end
+      end
+
+      class Checkbox < Formular::Elements::Checkbox
+        include Formular::Elements::Modules::WrappedControl
+        include Checkable
+
+        tag 'input'
+
+        def inner_wrapper_class
+          ['checkbox']
+        end
+
+        def control_html
+          Formular::Elements::Checkbox.renderer.call(self)
+        end
+      end # class Checkbox
+
+      class Radio < Formular::Elements::Radio
+        include Formular::Elements::Modules::WrappedControl
+        include Checkable
+
+        tag 'input'
+
+        def inner_wrapper_class
+          ['radio']
+        end
+
+        def control_html
+          Formular::Elements::Radio.renderer.call(self)
+        end
+      end # class Radio
+
       class Select < Formular::Elements::Select
         include Formular::Elements::Modules::WrappedControl
 

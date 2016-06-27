@@ -113,7 +113,7 @@ module Formular
       val = condition.values[0]
       condition_result = val.is_a?(Symbol) ? self.send(val) : val
 
-      case operator
+      case operator.to_sym
       when :if
         condition_result
       when :unless

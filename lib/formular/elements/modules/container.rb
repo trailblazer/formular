@@ -31,7 +31,7 @@ module Formular
           # I'd link be able to define end html in the same way as you
           # can opening (though I can't think of a use case right now...)
           def end
-            Renderer.new(Proc.new {end_tag}).call(self)
+            Renderer.new(Proc.new { end_tag }).call(self)
           end
 
           # FIXME

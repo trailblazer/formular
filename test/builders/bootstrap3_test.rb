@@ -51,6 +51,22 @@ describe Formular::Builders::Bootstrap3 do
     form.select(:public, collection: [[1,"Yes"], [0, "No"]], label: "Public").class.must_equal Formular::Elements::Bootstrap3::Select
   end
 
+  it "checkbox renders correctly" do
+    form = builder.form(action: "/questions/13") do |f|
+      f.checkbox(:public, value: 1, label: "Public").to_s
+    end
+
+    form.to_s.must_equal %(<form method="post" action="/questions/13"><div class="form-group"><div class="checkbox"><label><input name="comment[public]" id="comment_public" value="1" checked="checked" type="checkbox"/> Public</label></div></div></form>)
+  end
+
+  it "radio renders correctly" do
+    form = builder.form(action: "/questions/13") do |f|
+      f.radio(:public, value: 1, label: "Public").to_s
+    end
+
+    form.to_s.must_equal %(<form method="post" action="/questions/13"><div class="form-group"><div class="radio"><label><input name="comment[public]" id="comment_public" value="1" checked="checked" type="radio"/> Public</label></div></div></form>)
+  end
+
   it "file field has correct class" do
     form = builder.form(action: "/questions/13") { |f| f.input(:body, type: "file", label: "Body").to_s }
 
@@ -75,6 +91,22 @@ describe Formular::Builders::Bootstrap3Horizontal do
       html << form.end
 
       html.must_equal %(<form method="put" class="form-horizontal" action="/questions/13"><div class="form-group"><label for="comment_body" class="col-sm-2 control-label">Body</label><div class="col-sm-10"><input name="comment[body]" id="comment_body" value="Something exciting" type="text" class="form-control"/></div></div></form>)
+    end
+
+    it "checkbox renders correctly" do
+      form = builder.form(action: "/questions/13") do |f|
+        f.checkbox(:public, value: 1, label: "Public").to_s
+      end
+
+      form.to_s.must_equal %(<form method="post" class=\"form-horizontal\" action="/questions/13"><div class="form-group"><div class="col-sm-offset-2 col-sm-10"><div class="checkbox"><label><input name="comment[public]" id="comment_public" type="checkbox" value="1"/> Public</label></div></div></div></form>)
+    end
+
+    it "radio renders correctly" do
+      form = builder.form(action: "/questions/13") do |f|
+        f.radio(:public, value: 1, label: "Public").to_s
+      end
+
+      form.to_s.must_equal %(<form method="post" class=\"form-horizontal\" action="/questions/13"><div class="form-group"><div class="col-sm-offset-2 col-sm-10"><div class="radio"><label><input name="comment[public]" id="comment_public" type="radio" value="1"/> Public</label></div></div></div></form>)
     end
   end
 end
