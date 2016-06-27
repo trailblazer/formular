@@ -9,15 +9,27 @@ module Formular
       Label = Class.new(Formular::Elements::Label) { set_default :class, ['control-label'] }
       Submit = Class.new(Formular::Elements::Submit) { set_default :class, ['btn', 'btn-default'] }
 
-      class Error < Formular::Element
-        include Formular::Elements::Modules::Container
+      module WrappedControl
+        include Formular::Elements::Module
+        include Formular::Elements::Modules::WrappedControl
+
+        html do |input|
+          input.wrapper do
+            concat input.label
+            concat input.control_html
+            concat input.error
+          end.to_s
+        end
+      end
+
+      class Error < Formular::Elements::Container
         tag :span
         set_default :class, ['help-block']
 
       end # class Error
 
       class Input < Formular::Elements::Input
-        include Formular::Elements::Modules::WrappedControl
+        include WrappedControl
 
         set_default :class, ['form-control'], unless: :file_input?
 
@@ -35,7 +47,8 @@ module Formular
 
         html do |input|
           input.wrapper do
-            input.controls_collection.each do |control|
+            concat input.group_label
+            input.collection.each do |control|
               concat control.checkable_label
             end
             concat input.error
@@ -48,7 +61,8 @@ module Formular
 
         html do |input|
           input.wrapper do
-            input.controls_collection.each do |control|
+            concat input.group_label
+            input.collection.each do |control|
               concat control.inner_wrapper { control.checkable_label }
             end
             concat input.error
@@ -67,11 +81,12 @@ module Formular
       end
 
       class InlineRadio < Formular::Elements::Radio
-        include Formular::Elements::Modules::WrappedControl
+        include WrappedControl
         include InlineCheckable
 
         tag "input"
-        set_default :label_options, { class: "radio-inline" }
+        add_option_keys [:control_label_options]
+        set_default :control_label_options, { class: ["radio-inline"] }
 
         def control_html
           Formular::Elements::Radio.renderer.call(self)
@@ -79,15 +94,11 @@ module Formular
       end
 
       class InlineCheckbox < Formular::Elements::Checkbox
-        include Formular::Elements::Modules::WrappedControl
+        include WrappedControl
         include InlineCheckable
 
         tag 'input'
-        set_default :label_options, { class: "checkbox-inline" }
-
-        def checkable_label_class
-          ['checkbox-inline']
-        end
+        set_default :control_label_options, { class: ["checkbox-inline"] }
 
         def control_html
           Formular::Elements::Checkbox.renderer.call(self)
@@ -95,7 +106,7 @@ module Formular
       end # class Checkbox
 
       class Checkbox < Formular::Elements::Checkbox
-        include Formular::Elements::Modules::WrappedControl
+        include WrappedControl
         include StackedCheckable
 
         tag 'input'
@@ -110,7 +121,7 @@ module Formular
       end # class Checkbox
 
       class Radio < Formular::Elements::Radio
-        include Formular::Elements::Modules::WrappedControl
+        include WrappedControl
         include StackedCheckable
 
         tag 'input'
@@ -125,7 +136,7 @@ module Formular
       end # class Radio
 
       class Select < Formular::Elements::Select
-        include Formular::Elements::Modules::WrappedControl
+        include WrappedControl
 
         set_default :class, ['form-control']
 
@@ -135,7 +146,7 @@ module Formular
       end # class Select
 
       class Textarea < Formular::Elements::Textarea
-        include Formular::Elements::Modules::WrappedControl
+        include WrappedControl
         set_default :class, ['form-control']
 
         def control_html

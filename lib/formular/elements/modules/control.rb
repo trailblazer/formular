@@ -6,7 +6,7 @@ module Formular
       # include this module in an element to set the id, name &value based on the attribute name
       module Control
         include Formular::Elements::Module
-        include Formular::Elements::Modules::Errors
+        include Errors
 
         add_option_keys [:attribute_name]
 

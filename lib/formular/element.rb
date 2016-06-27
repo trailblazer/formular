@@ -108,10 +108,8 @@ module Formular
     # set_default :class, ["form-control"], unless: :file_input?
     def evaluate_option_condition?(condition = {})
       return true if condition.empty?
-
       operator = condition.keys[0]
-      val = condition.values[0]
-      condition_result = val.is_a?(Symbol) ? self.send(val) : val
+      condition_result = Uber::Options::Value.new(condition.values[0]).evaluate(self)
 
       case operator.to_sym
       when :if

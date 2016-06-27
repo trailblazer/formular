@@ -9,18 +9,10 @@ module Formular
       # - enable hints
       module WrappedControl
         include Formular::Elements::Module
-        include Formular::Elements::Modules::Control
+        include Control
 
         add_option_keys [:error_options, :label_options, :wrapper_options, :label]
         set_default :error, :error_message
-
-        html do |input|
-          input.wrapper do
-            concat input.label
-            concat input.control_html
-            concat input.error
-          end.to_s
-        end
 
         module InstanceMethods
           def wrapper(&block)
@@ -29,9 +21,13 @@ module Formular
           end
 
           def label
-            return '' unless options[:label]
-            label_opts = Attributes[options[:label_options]].merge({ content: options[:label], labeled_control: self})
+            return '' unless label_text
+            label_opts = Attributes[options[:label_options]].merge({ content: label_text, labeled_control: self})
             builder.label(label_opts).to_s
+          end
+
+          def label_text
+            options[:label]
           end
 
           def error

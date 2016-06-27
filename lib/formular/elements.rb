@@ -17,6 +17,8 @@ module Formular
     Option = Class.new(Container)
     OptGroup = Class.new(Container)
     Fieldset = Class.new(Container)
+    Legend = Class.new(Container)
+    Div = Class.new(Container)
     Form = Class.new(Container) { set_default :method, "post" }
 
     class Error < Container
@@ -117,6 +119,10 @@ module Formular
       set_default :type, 'checkbox'
 
       html { closed_start_tag }
+
+      def form_encoded_name
+        builder.path(attribute_name).to_encoded_name + '[]' if attribute_name && builder
+      end
     end # class Checkbox
 
     class Radio < Checkable

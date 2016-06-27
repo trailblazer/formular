@@ -21,19 +21,44 @@ module Formular
         module WrappedCheckableControl
           include Formular::Elements::Module
 
-          html do |input|
-            input.wrapper do |wrapper|
-              wrapper.input_column_wrapper(class: input.column_class) do
-                concat input.inner_wrapper { input.checkable_label }
-                concat input.error
-              end.to_s
-            end.to_s
-          end
-
           module InstanceMethods
             def column_class
-              builder.class.column_classes[:left_offset]
+              has_group_label? ? [] : builder.class.column_classes[:left_offset]
             end
+          end
+        end
+
+        module StackedCheckableControl
+          include Formular::Elements::Module
+          include WrappedCheckableControl
+
+          html do |input|
+            input.wrapper do |wrapper|
+              concat input.group_label
+              concat(wrapper.input_column_wrapper(class: input.column_class) do
+                input.collection.each do |control|
+                  concat control.inner_wrapper { control.checkable_label }
+                end
+                concat input.error
+              end.to_s)
+            end.to_s
+          end
+        end
+
+        module InlineCheckableControl
+          include Formular::Elements::Module
+          include WrappedCheckableControl
+
+          html do |input|
+            input.wrapper do |wrapper|
+              concat input.group_label
+              concat(wrapper.input_column_wrapper(class: input.column_class) do
+                input.collection.each do |control|
+                  concat control.checkable_label
+                end
+                concat input.error
+              end.to_s)
+            end.to_s
           end
         end
 
@@ -68,13 +93,25 @@ module Formular
         end # class Submit
 
         class Checkbox < Formular::Elements::Bootstrap3::Checkbox
-          include WrappedCheckableControl
+          include StackedCheckableControl
 
           tag "input"
         end
 
         class Radio < Formular::Elements::Bootstrap3::Radio
-          include WrappedCheckableControl
+          include StackedCheckableControl
+
+          tag "input"
+        end
+
+        class InlineCheckbox < Formular::Elements::Bootstrap3::InlineCheckbox
+          include InlineCheckableControl
+
+          tag "input"
+        end
+
+        class InlineRadio < Formular::Elements::Bootstrap3::InlineRadio
+          include InlineCheckableControl
 
           tag "input"
         end
