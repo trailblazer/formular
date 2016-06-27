@@ -62,14 +62,6 @@ module Formular
 
     attr_reader :tag, :renderers, :builder, :attributes, :options
 
-    # until we can isolate the output buffer in the renderer sufficiently,
-    # we need a fresh instance of each renderer for every element instance
-    def dup_class_renderers
-      renderers = {}
-      self.class.renderers.each { |k, v| renderers[k] = v.dup }
-      renderers
-    end
-
     def render(context = nil)
       context ||= self.class.render_context
       renderers[context].call(self)
@@ -81,6 +73,14 @@ module Formular
     alias_method :to_s, :to_html
 
     private
+
+    # until we can isolate the output buffer in the renderer sufficiently,
+    # we need a fresh instance of each renderer for every element instance
+    def dup_class_renderers
+      renderers = {}
+      self.class.renderers.each { |k, v| renderers[k] = v.dup }
+      renderers
+    end
 
     # I'm not convinced by this method but essentially we split the options hash
     # between options and attributes based on the option_keys defined on the class
