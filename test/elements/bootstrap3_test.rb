@@ -1,4 +1,5 @@
 require 'test_helper'
+require "formular/builders/bootstrap3"
 require "formular/elements/bootstrap3"
 
 #if we can test that each input renders the expected html here

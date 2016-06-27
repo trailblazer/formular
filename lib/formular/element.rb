@@ -1,6 +1,7 @@
 require "formular/attributes"
 require "formular/renderer"
 require 'uber/inheritable_attr'
+require 'uber/options'
 
 module Formular
   # The Element class is responsible for defining what the html should look like.
@@ -8,6 +9,7 @@ module Formular
   # actual rendering is done via a Renderer class
   class Element
     extend Uber::InheritableAttr
+
     inheritable_attr :renderer
     inheritable_attr :default_hash
     inheritable_attr :option_keys
@@ -73,9 +75,9 @@ module Formular
       @attributes = options
       @options = @attributes.select { |k, v| @attributes.delete(k) || true if option_key?(k) }
 
-      default_attributes = get_defaults
-      default_options = default_attributes.select do |k,v|
-        default_attributes.delete(k) || true  if option_key?(k)
+      default_attributes = default_hash
+      default_options = default_attributes.select do |k, v|
+        default_attributes.delete(k) || true if option_key?(k)
       end
 
       @options = default_options.merge(@options)
@@ -85,20 +87,15 @@ module Formular
     # default values will either be an array of classes, a string, or symbol.
     # symbols are treated as method names and we attempt to call them on self.
     # if not then we simply return the symbol
-    def get_defaults
+    def default_hash
       attrs = {}
       self.class.default_hash.each do |k, v|
         next unless evaluate_option_condition?(v[:condition])
 
-        value = v[:value]
-        attrs[k] = (value.is_a?(Symbol) && self.respond_to?(value)) ? self.send(value) : value
+        attrs[k] = v[:value]
       end
-      attrs.select{ |k, v| v != nil }
-    end
 
-    # could probably use Uber::Options here
-    def option_value(v)
-      (v.is_a?(Symbol) && self.respond_to?(v)) ? self.send(v) : v
+      Uber::Options.new(attrs).evaluate(self).select{ |k, v| v != nil }
     end
 
     def option_key?(k)
@@ -113,7 +110,8 @@ module Formular
       return true if condition.empty?
 
       operator = condition.keys[0]
-      condition_result = option_value(condition.values[0])
+      val = condition.values[0]
+      condition_result = val.is_a?(Symbol) ? self.send(val) : val
 
       case operator
       when :if
