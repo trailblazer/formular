@@ -8,6 +8,8 @@ module Formular
         include Formular::Elements::Module
         include Control
 
+        add_option_keys [:collection]
+
         set_default :value, nil # instead of reader value
         set_default :checked, 'checked', if: :is_checked?
 
@@ -21,18 +23,18 @@ module Formular
             label_opts[:content] = options[:label] ? "#{control_html} #{options[:label]}" : control_html.to_s
             Formular::Elements::Label.(label_opts).to_s
           end
+
+          def controls_collection
+            return [self] unless options[:collection]
+
+            options[:collection].map do |array|
+              value, label = array
+              name = attribute_name ? "#{attribute_name}_#{value}" : value
+              self.class.(id: name, name: name, label: label, value: value)
+            end
+          end
         end
       end
-
-      # this module is used for generating groups of
-      # radios or checkbox controls from an array.
-      module Checkable::Group
-        include Formular::Elements::Module
-
-
-        # we need to accept an array of options e.g. [["Option 1", 1], ["Option 2", 2]]
-        # and convert into an array of controls,
-      end # module Checkable::Group
     end # module Modules
   end # module Elements
 end # module Formular

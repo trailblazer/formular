@@ -35,7 +35,9 @@ module Formular
 
         html do |input|
           input.wrapper do
-            concat input.checkable_label
+            input.controls_collection.each do |control|
+              concat control.checkable_label
+            end
             concat input.error
           end.to_s
         end
@@ -46,7 +48,9 @@ module Formular
 
         html do |input|
           input.wrapper do
-            concat input.inner_wrapper { input.checkable_label }
+            input.controls_collection.each do |control|
+              concat control.inner_wrapper { control.checkable_label }
+            end
             concat input.error
           end.to_s
         end
