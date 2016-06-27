@@ -34,19 +34,11 @@ module Formular
             Renderer.new(Proc.new { end_tag }).call(self)
           end
 
-          # FIXME
-          # I really really don't like this, but we need a way of
-          # calling builder methods.
+          # Delegate missing methods to the builder
           def method_missing(method, *args, &block)
-            if builder && builder.respond_to?(method)
-              builder.send(method, *args, &block)
-            else
-              super
-            end
-          end
+            return super unless builder
 
-          def respond_to?(method, include_private = false)
-            super || (builder ? builder.respond_to?(method, include_private) : false)
+            builder.send(method, *args, &block)
           end
         end # module InstanceMethods
       end # module Container
