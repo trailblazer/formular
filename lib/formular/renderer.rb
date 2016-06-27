@@ -14,15 +14,15 @@ module Formular
     # but if we don't clear it before a call then we get everything rendered to any instance of
     # this element class
     def call(element)
-      @output = ""
+      @output = ''
       @element = element
-      instance_exec element, &@fn
+      instance_exec(element, &@fn).to_s
     end
 
     # append a string to the output buffer.
     # Useful when your html block is a bit more than one line
-    def concat(string)
-      @output << string
+    def concat(content)
+      @output << content.to_s
     end
 
     # return the start/opening tag with the elements

@@ -12,10 +12,10 @@ module Formular
         include Formular::Elements::Module
         include Formular::Elements::Modules::WrappedControl
 
-        html do |input|
+        html(:wrapped) do |input|
           input.wrapper do
             concat input.label_text
-            concat input.control_html
+            concat input.render(:default)
             concat input.error
           end.to_s
         end
@@ -27,12 +27,10 @@ module Formular
         set_default :label_options, { class: ['is-invalid-label'] }, if: :has_errors?
         set_default :control_label_options, { class: ['is-invalid-label'] }, if: :has_errors?
 
-        html do |input|
+        html(:wrapped) do |input|
           input.wrapper do
             concat input.group_label
-            input.collection.each do |control|
-              concat control.checkable_label
-            end
+            input.collection.each { |control| concat control.checkable_label }
             concat input.error
           end.to_s
         end
@@ -48,7 +46,7 @@ module Formular
         include Formular::Elements::Module
         include Checkable
 
-        html do |input|
+        html(:wrapped) do |input|
           input.wrapper do
             concat input.group_label
             input.collection.each do |control|
@@ -82,9 +80,6 @@ module Formular
         set_default :label_options, { class: ['is-invalid-label'] }, if: :has_errors?
         set_default :control_label_options, { class: ['is-invalid-label'] }, if: :has_errors?
 
-        def control_html
-          Formular::Elements::Checkbox.renderer.call(self)
-        end
       end # class Input
 
       class Radio < Formular::Elements::Radio
@@ -92,10 +87,6 @@ module Formular
         include Checkable
 
         tag 'input'
-
-        def control_html
-          Formular::Elements::Radio.renderer.call(self)
-        end
       end
 
       class StackedRadio < Radio
@@ -111,10 +102,6 @@ module Formular
       class Input < Formular::Elements::Input
         include WrappedControl
         include InputWithErrors
-
-        def control_html
-          Formular::Elements::Input.renderer.call(self)
-        end
       end # class Input
 
       class File < Input
@@ -123,9 +110,11 @@ module Formular
         set_default :class, ['show-for-sr']
         set_default :label_options, { class: ['button'] }
 
-        html do |input|
+        self.render_context = :wrapped
+
+        html(:wrapped) do |input|
           concat input.label
-          concat input.control_html
+          concat input.render(:default)
           concat input.error
         end
       end # class Input
@@ -133,19 +122,11 @@ module Formular
       class Select < Formular::Elements::Select
         include WrappedControl
         include InputWithErrors
-
-        def control_html
-          Formular::Elements::Select.renderer.call(self)
-        end
       end # class Select
 
       class Textarea < Formular::Elements::Textarea
         include WrappedControl
         include InputWithErrors
-
-        def control_html
-          Formular::Elements::Textarea.renderer.call(self)
-        end
       end # class Select
     end # module Foundation6
   end # module Elements

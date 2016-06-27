@@ -10,25 +10,27 @@ module Formular
   class Element
     extend Uber::InheritableAttr
 
-    inheritable_attr :renderer
+    inheritable_attr :render_context
+    inheritable_attr :renderers
     inheritable_attr :default_hash
     inheritable_attr :option_keys
 
     # I actually don't want to merge default classes...
     # it get's complicated with inheritance when you want to remove one
     self.default_hash = {}
-
+    self.renderers = {}
     self.option_keys = []
+    self.render_context = :default
 
     # set the default value of an option or attribute
     # you can make this conditional by providing a conditions
     # e.g. if: :some_method or unless: :some_method
     def self.set_default(key, value, conditions = {})
-      self.default_hash.merge!(key => { value: value, condition: conditions })
+      self.default_hash[key] = { value: value, condition: conditions }
     end
 
-    def self.html(&block)
-      self.renderer = Renderer.new(block)
+    def self.html(context = :default, &block)
+      self.renderers[context] = Renderer.new(block)
     end
 
     # whitelist the keys that should NOT end up as html attributes
@@ -55,13 +57,26 @@ module Formular
       normalize_attributes(options)
       @block = block
       @tag = self.class.tag_name
-      @renderer = self.class.renderer
+      @renderers = dup_class_renderers
     end
 
-    attr_reader :tag, :renderer, :builder, :attributes, :options
+    attr_reader :tag, :renderers, :builder, :attributes, :options
+
+    # until we can isolate the output buffer in the renderer sufficiently,
+    # we need a fresh instance of each renderer for every element instance
+    def dup_class_renderers
+      renderers = {}
+      self.class.renderers.each { |k, v| renderers[k] = v.dup }
+      renderers
+    end
+
+    def render(context = nil)
+      context ||= self.class.render_context
+      renderers[context].call(self)
+    end
 
     def to_html
-      renderer.call(self)
+      render
     end
     alias_method :to_s, :to_html
 

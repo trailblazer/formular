@@ -20,7 +20,7 @@ module Formular
 
           def checkable_label
             label_opts = Attributes[options[:label_options]]
-            label_opts[:content] = options[:label] ? "#{control_html} #{options[:label]}" : control_html.to_s
+            label_opts[:content] = options[:label] ? "#{render(:default)} #{options[:label]}" : render(:default).to_s
             Formular::Elements::Label.(label_opts).to_s
           end
 

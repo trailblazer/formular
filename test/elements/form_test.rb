@@ -19,7 +19,7 @@ describe Formular::Elements::Form do
     it "#to_s" do
       element = Formular::Elements::Form.() do |f|
         concat "<h1>Edit Form</h1>"
-        concat Formular::Elements::Label.(class: ["control-label"], content: "A handy label").to_s
+        concat Formular::Elements::Label.(class: ["control-label"], content: "A handy label")
       end
       element.to_s.must_equal %(<form method="post"><h1>Edit Form</h1><label class="control-label">A handy label</label></form>)
     end

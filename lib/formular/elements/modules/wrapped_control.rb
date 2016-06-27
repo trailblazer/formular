@@ -14,6 +14,16 @@ module Formular
         add_option_keys [:error_options, :label_options, :wrapper_options, :label]
         set_default :error, :error_message
 
+        self.render_context = :wrapped
+
+        html(:wrapped) do |input|
+          input.wrapper do
+            concat input.label
+            concat input.render(:default)
+            concat input.error
+          end
+        end
+
         module InstanceMethods
           def wrapper(&block)
             wrapper_element = options[:error] ? :error_wrapper : :wrapper

@@ -10,16 +10,28 @@ module Formular
         module WrappedControl
           include Formular::Elements::Module
 
-          html do |input|
+          html(:input_column) do |input|
+            concat input.render(:default)
+            concat input.error
+          end
+
+          html(:wrapped) do |input|
             input.wrapper do |wrapper|
               concat input.label
-              concat wrapper.input_column_wrapper(content: input.control_html + input.error).to_s
-            end.to_s
+              concat wrapper.input_column_wrapper(content: input.render(:input_column))
+            end
           end
         end
 
         module WrappedCheckableControl
           include Formular::Elements::Module
+
+          html(:wrapped) do |input|
+            input.wrapper do |wrapper|
+              concat input.group_label
+              concat wrapper.input_column_wrapper(class: input.column_class, content: input.render(:input_column))
+            end
+          end
 
           module InstanceMethods
             def column_class
@@ -32,16 +44,11 @@ module Formular
           include Formular::Elements::Module
           include WrappedCheckableControl
 
-          html do |input|
-            input.wrapper do |wrapper|
-              concat input.group_label
-              concat(wrapper.input_column_wrapper(class: input.column_class) do
-                input.collection.each do |control|
-                  concat control.inner_wrapper { control.checkable_label }
-                end
-                concat input.error
-              end.to_s)
-            end.to_s
+          html(:input_column) do |input|
+            input.collection.each do |control|
+              concat control.inner_wrapper { control.checkable_label }
+            end
+            concat input.error
           end
         end
 
@@ -49,16 +56,9 @@ module Formular
           include Formular::Elements::Module
           include WrappedCheckableControl
 
-          html do |input|
-            input.wrapper do |wrapper|
-              concat input.group_label
-              concat(wrapper.input_column_wrapper(class: input.column_class) do
-                input.collection.each do |control|
-                  concat control.checkable_label
-                end
-                concat input.error
-              end.to_s)
-            end.to_s
+          html(:input_column) do |input|
+            input.collection.each { |control| concat control.checkable_label }
+            concat input.error
           end
         end
 

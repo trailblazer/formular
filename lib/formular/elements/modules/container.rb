@@ -13,13 +13,17 @@ module Formular
         add_option_keys [:content]
 
         html do |element|
-          if element.content
-            concat start_tag
-            concat element.content
-            concat end_tag
-          else
-            start_tag
-          end
+          element.content ? element.render(:with_content) : start_tag
+        end
+
+        html(:with_content) do |element|
+          concat start_tag
+          concat element.content
+          concat end_tag
+        end
+
+        html(:end) do
+          end_tag
         end
 
         module InstanceMethods
@@ -27,11 +31,8 @@ module Formular
             @block ? Renderer.new(@block).call(self) : options[:content]
           end
 
-          # I don't like this...
-          # I'd link be able to define end html in the same way as you
-          # can opening (though I can't think of a use case right now...)
           def end
-            Renderer.new(Proc.new { end_tag }).call(self)
+            render(:end)
           end
 
           # Delegate missing methods to the builder
