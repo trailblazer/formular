@@ -6,23 +6,25 @@ require 'formular/elements/bootstrap3/inline'
 module Formular
   module Builders
     class Bootstrap3 < Formular::Builders::Basic
-      element_set({
+      element_set(
         form: Formular::Elements::Form,
         error: Formular::Elements::Bootstrap3::Error,
         input: Formular::Elements::Bootstrap3::Input,
         checkbox: Formular::Elements::Bootstrap3::Checkbox,
         radio: Formular::Elements::Bootstrap3::Radio,
         select: Formular::Elements::Bootstrap3::Select,
+        inline_radio: Formular::Elements::Bootstrap3::InlineRadio,
+        inline_checkbox: Formular::Elements::Bootstrap3::InlineCheckbox,
         label: Formular::Elements::Bootstrap3::Label,
         textarea: Formular::Elements::Bootstrap3::Textarea,
         wrapper: Formular::Elements::Bootstrap3::Wrapper,
         error_wrapper: Formular::Elements::Bootstrap3::ErrorWrapper,
         submit: Formular::Elements::Bootstrap3::Submit
-      })
+      )
     end # class Bootstrap3
 
     class Bootstrap3Inline < Formular::Builders::Basic
-      element_set({
+      element_set(
         form: Formular::Elements::Bootstrap3::Inline::Form,
         error: Formular::Elements::Bootstrap3::Error,
         input: Formular::Elements::Bootstrap3::Input,
@@ -34,11 +36,11 @@ module Formular
         wrapper: Formular::Elements::Bootstrap3::Wrapper,
         error_wrapper: Formular::Elements::Bootstrap3::ErrorWrapper,
         submit: Formular::Elements::Bootstrap3::Submit
-      })
+      )
     end # class Bootstrap3Inline
 
     class Bootstrap3Horizontal < Formular::Builders::Bootstrap3
-      element_set({
+      element_set(
         form: Formular::Elements::Bootstrap3::Horizontal::Form,
         error: Formular::Elements::Bootstrap3::Error,
         input: Formular::Elements::Bootstrap3::Horizontal::Input,
@@ -51,7 +53,7 @@ module Formular
         error_wrapper: Formular::Elements::Bootstrap3::ErrorWrapper,
         input_column_wrapper: Formular::Elements::Bootstrap3::Horizontal::InputColumnWrapper,
         submit: Formular::Elements::Bootstrap3::Horizontal::Submit
-      })
+      )
       inheritable_attr :column_classes
 
       #these options should be easily configurable

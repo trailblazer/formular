@@ -95,7 +95,7 @@ module Formular
         attrs[k] = v[:value]
       end
 
-      Uber::Options.new(attrs).evaluate(self).select{ |k, v| v != nil }
+      Uber::Options.new(attrs).evaluate(self).select{ |k, v| !v.nil? }
     end
 
     def option_key?(k)

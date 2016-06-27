@@ -11,8 +11,16 @@ module Formular
         set_default :value, nil # instead of reader value
         set_default :checked, 'checked', if: :is_checked?
 
-        def is_checked?
-          !options[:checked].nil? || reader_value == attributes[:value]
+        module InstanceMethods
+          def is_checked?
+            !options[:checked].nil? || reader_value == attributes[:value]
+          end
+
+          def checkable_label
+            label_opts = Attributes[options[:label_options]]
+            label_opts[:content] = options[:label] ? "#{control_html} #{options[:label]}" : control_html.to_s
+            Formular::Elements::Label.(label_opts).to_s
+          end
         end
       end
 

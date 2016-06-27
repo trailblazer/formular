@@ -30,12 +30,19 @@ module Formular
         end
       end # class Input
 
-      module Checkable
+      module InlineCheckable
         include Formular::Elements::Module
 
-        class InnerWrapper < Formular::Elements::Container
-          tag 'div'
+        html do |input|
+          input.wrapper do
+            concat input.checkable_label
+            concat input.error
+          end.to_s
         end
+      end
+
+      module StackedCheckable
+        include Formular::Elements::Module
 
         html do |input|
           input.wrapper do
@@ -44,21 +51,48 @@ module Formular
           end.to_s
         end
 
+        class InnerWrapper < Formular::Elements::Container
+          tag 'div'
+        end
+
         module InstanceMethods
           def inner_wrapper(&block)
             InnerWrapper.(class: inner_wrapper_class, &block).to_s
           end
-
-          def checkable_label
-            content = options[:label] ? "#{control_html} #{options[:label]}" : control_html.to_s
-            Formular::Elements::Label.(content: content).to_s
-          end
         end
       end
 
+      class InlineRadio < Formular::Elements::Radio
+        include Formular::Elements::Modules::WrappedControl
+        include InlineCheckable
+
+        tag "input"
+        set_default :label_options, { class: "radio-inline" }
+
+        def control_html
+          Formular::Elements::Radio.renderer.call(self)
+        end
+      end
+
+      class InlineCheckbox < Formular::Elements::Checkbox
+        include Formular::Elements::Modules::WrappedControl
+        include InlineCheckable
+
+        tag 'input'
+        set_default :label_options, { class: "checkbox-inline" }
+
+        def checkable_label_class
+          ['checkbox-inline']
+        end
+
+        def control_html
+          Formular::Elements::Checkbox.renderer.call(self)
+        end
+      end # class Checkbox
+
       class Checkbox < Formular::Elements::Checkbox
         include Formular::Elements::Modules::WrappedControl
-        include Checkable
+        include StackedCheckable
 
         tag 'input'
 
@@ -73,7 +107,7 @@ module Formular
 
       class Radio < Formular::Elements::Radio
         include Formular::Elements::Modules::WrappedControl
-        include Checkable
+        include StackedCheckable
 
         tag 'input'
 
