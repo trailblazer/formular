@@ -50,6 +50,12 @@ describe Formular::Builders::Bootstrap3 do
     form.input(:body, label: "Body").class.must_equal Formular::Elements::Bootstrap3::Input
     form.select(:public, collection: [[1,"Yes"], [0, "No"]], label: "Public").class.must_equal Formular::Elements::Bootstrap3::Select
   end
+
+  it "file field has correct class" do
+    form = builder.form(action: "/questions/13") { |f| f.input(:body, type: "file", label: "Body").to_s }
+
+    form.to_s.must_equal %(<form method="post" action="/questions/13"><div class="form-group"><label for="comment_body" class="control-label">Body</label><input name="comment[body]" id="comment_body" value="Something exciting" type="file"/></div></form>)
+  end
 end
 
 describe Formular::Builders::Bootstrap3Horizontal do

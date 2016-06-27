@@ -22,7 +22,6 @@ module Formular
         Select = Class.new(Formular::Elements::Bootstrap3::Select) { include WrappedControl }
         Textarea = Class.new(Formular::Elements::Bootstrap3::Textarea) { include WrappedControl }
         Input = Class.new(Formular::Elements::Bootstrap3::Input) { include WrappedControl }
-        File = Class.new(Formular::Elements::Bootstrap3::File) { include WrappedControl }
 
         class InputColumnWrapper < Formular::Elements::Container
           set_default :class, :column_class

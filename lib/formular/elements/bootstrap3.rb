@@ -19,10 +19,14 @@ module Formular
       class Input < Formular::Elements::Input
         include Formular::Elements::Modules::WrappedControl
 
-        set_default :class, ['form-control']
+        set_default :class, ['form-control'], unless: :file_input?
 
         def control_html
           Formular::Elements::Input.renderer.call(self)
+        end
+
+        def file_input?
+          attributes[:type] == "file"
         end
       end # class Input
 
@@ -35,15 +39,6 @@ module Formular
           Formular::Elements::Select.renderer.call(self)
         end
       end # class Select
-
-      class File < Formular::Elements::Bootstrap3::Input
-        include Formular::Elements::Modules::WrappedControl
-
-        add_option_keys [:error_options, :label_options, :wrapper_options]
-
-        set_default :class, [] # we need to remove this class from an input
-        set_default :type, 'file'
-      end # class File
 
       class Textarea < Formular::Elements::Textarea
         include Formular::Elements::Modules::WrappedControl

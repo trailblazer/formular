@@ -19,15 +19,17 @@ module Formular
     self.option_keys = []
 
     # set the default value of an option or attribute
-    def self.set_default(key, value)
-      self.default_hash.merge!( {key => value} )
+    # you can make this conditional by providing a conditions
+    # e.g. if: :some_method or unless: :some_method
+    def self.set_default(key, value, conditions = {})
+      self.default_hash.merge!(key => { value: value, condition: conditions })
     end
 
     def self.html(&block)
       self.renderer = Renderer.new(block)
     end
 
-    # whitelist the keys that should end up as html attributes
+    # whitelist the keys that should NOT end up as html attributes
     def self.add_option_keys(keys)
       self.option_keys += keys
     end
@@ -69,7 +71,7 @@ module Formular
     # the users options & attributes are then merged with the default options & attributes
     def normalize_attributes(options={})
       @attributes = options
-      @options = @attributes.select { |k,v| @attributes.delete(k) || true if option_key?(k) }
+      @options = @attributes.select { |k, v| @attributes.delete(k) || true if option_key?(k) }
 
       default_attributes = get_defaults
       default_options = default_attributes.select do |k,v|
@@ -85,18 +87,40 @@ module Formular
     # if not then we simply return the symbol
     def get_defaults
       attrs = {}
-      self.class.default_hash.each do |k,v|
-        attrs[k] = (v.is_a?(Symbol) && self.respond_to?(v)) ? self.send(v) : v
+      self.class.default_hash.each do |k, v|
+        next unless evaluate_option_condition?(v[:condition])
+
+        value = v[:value]
+        attrs[k] = (value.is_a?(Symbol) && self.respond_to?(value)) ? self.send(value) : value
       end
-      attrs.select{ |k,v| v != nil }
+      attrs.select{ |k, v| v != nil }
     end
 
+    # could probably use Uber::Options here
     def option_value(v)
       (v.is_a?(Symbol) && self.respond_to?(v)) ? self.send(v) : v
     end
 
     def option_key?(k)
       self.class.option_keys.include?(k)
+    end
+
+    # this evaluates any conditons placed on our defaults returning true or false
+    # e.g.
+    # set_default :checked, "checked", if: :is_checked?
+    # set_default :class, ["form-control"], unless: :file_input?
+    def evaluate_option_condition?(condition = {})
+      return true if condition.empty?
+
+      operator = condition.keys[0]
+      condition_result = option_value(condition.values[0])
+
+      case operator
+      when :if
+        condition_result
+      when :unless
+        !condition_result
+      end
     end
   end # class Element
 end # module Formular
