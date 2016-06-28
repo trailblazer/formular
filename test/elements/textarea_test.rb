@@ -28,11 +28,7 @@ describe Formular::Elements::Textarea do
     let(:element) { Formular::Elements::Textarea.(rows: 3) }
 
     it "#to_s" do
-      element.to_s.must_equal %(<textarea rows="3">)
-    end
-
-    it "#end" do
-      element.end.must_equal %(</textarea>)
+      element.to_s.must_equal %(<textarea rows="3"></textarea>)
     end
   end
 end

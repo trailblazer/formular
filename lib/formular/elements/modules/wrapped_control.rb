@@ -31,13 +31,17 @@ module Formular
           end
 
           def label
-            return '' unless label_text
-            label_opts = Attributes[options[:label_options]].merge({ content: label_text, labeled_control: self})
+            return '' unless has_label?
+            label_opts = Attributes[options[:label_options]].merge({ content: label_text, labeled_control: self })
             builder.label(label_opts).to_s
           end
 
           def label_text
             options[:label]
+          end
+
+          def has_label?
+            label_text.is_a?(String)
           end
 
           def error

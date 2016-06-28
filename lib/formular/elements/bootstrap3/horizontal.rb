@@ -10,6 +10,10 @@ module Formular
         module WrappedControl
           include Formular::Elements::Module
 
+          html(:label_column) do |input|
+            input.label
+          end
+
           html(:input_column) do |input|
             concat input.render(:default)
             concat input.error
@@ -17,20 +21,24 @@ module Formular
 
           html(:wrapped) do |input|
             input.wrapper do |wrapper|
-              concat input.label
-              concat wrapper.input_column_wrapper(content: input.render(:input_column))
+              concat input.render(:label_column)
+              concat wrapper.input_column_wrapper(class: input.column_class, content: input.render(:input_column))
+            end
+          end
+
+          module InstanceMethods
+            def column_class
+              has_label? ? [] : builder.class.column_classes[:left_offset]
             end
           end
         end
 
         module WrappedCheckableControl
           include Formular::Elements::Module
+          include WrappedControl
 
-          html(:wrapped) do |input|
-            input.wrapper do |wrapper|
-              concat input.group_label
-              concat wrapper.input_column_wrapper(class: input.column_class, content: input.render(:input_column))
-            end
+          html(:label_column) do |input|
+            input.group_label
           end
 
           module InstanceMethods
@@ -66,6 +74,7 @@ module Formular
         Select = Class.new(Formular::Elements::Bootstrap3::Select) { include WrappedControl }
         Textarea = Class.new(Formular::Elements::Bootstrap3::Textarea) { include WrappedControl }
         Input = Class.new(Formular::Elements::Bootstrap3::Input) { include WrappedControl }
+        Submit = Class.new(Formular::Elements::Bootstrap3::Submit) { include WrappedControl }
 
         class InputColumnWrapper < Formular::Elements::Container
           set_default :class, :column_class
@@ -83,14 +92,6 @@ module Formular
             builder.class.column_classes[:left_column] + ['control-label']
           end
         end # class Label
-
-        class Submit < Formular::Elements::Bootstrap3::Submit
-          set_default :class, :column_class
-
-          def column_class
-            builder.class.column_classes[:left_offset] + builder.class.column_classes[:left_column]
-          end
-        end # class Submit
 
         class Checkbox < Formular::Elements::Bootstrap3::Checkbox
           include StackedCheckableControl

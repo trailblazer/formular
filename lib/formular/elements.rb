@@ -33,6 +33,12 @@ module Formular
       include Formular::Elements::Modules::Container
       add_option_keys [:value]
 
+      # we should always render complete element tags
+      # we don't want opens without closes for textareas
+      html do |element|
+        element.render(:with_content)
+      end
+
       def content
         options[:value] || super
       end

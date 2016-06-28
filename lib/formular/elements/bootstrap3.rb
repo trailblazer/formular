@@ -8,9 +8,21 @@ module Formular
     module Bootstrap3
       Label = Class.new(Formular::Elements::Label) { set_default :class, ['control-label'] }
 
-      class Submit < Formular::Elements::Submit
+      class Submit < Formular::Elements::Container
         tag 'button'
         set_default :class, ['btn', 'btn-default']
+        set_default :type, "submit"
+        add_option_keys [:value]
+
+        # could dry this up into a containiner control module
+        # we use the same thing for textareas
+        html do |element|
+          element.render(:with_content)
+        end
+
+        def content
+          options[:value] || super
+        end
       end # class Submit
 
       class Error < Formular::Elements::Container

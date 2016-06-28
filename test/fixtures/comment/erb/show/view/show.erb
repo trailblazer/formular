@@ -1,7 +1,7 @@
 <div>New</div>
 <%= f = form action: "/posts", model: model %>
 <%= f.input :id %>
-<%= f.textarea :body %>
+<%= f.textarea :body, placeholder: "And your story...", rows: 9 %>
 <%= f.checkbox :public, value: true %>
 <%= f.collection :replies do |reply| %>
 <%= reply.input :content %>

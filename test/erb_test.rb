@@ -22,13 +22,13 @@ end
 class Erb < Minitest::Spec
   #FIXME don't ask me why erb makes so much white space...
   describe "valid, initial rendering" do
-    let (:model) { Comment.new(1, "Nice!", [Reply.new(1, "some exciting words"), Reply.new], Owner.new(1, "Joe Blog", "joe@somewhere.com"), "0x", true) }
+    let (:model) { Comment.new(1, nil, [Reply.new(1, "some exciting words"), Reply.new], Owner.new(1, "Joe Blog", "joe@somewhere.com"), "0x", true) }
 
     it do
       Comment::Erb::Show.new(model).().must_equal %{<div>New</div>
 <form method="post" action="/posts">
 <input name="comment[id]" id="comment_id" value="1" type="text"/>
-<textarea name="comment[body]" id="comment_body">Nice!</textarea>
+<textarea name="comment[body]" id="comment_body" placeholder="And your story..." rows="9"></textarea>
 <input name="comment[public][]" id="comment_public" checked="checked" type="checkbox" value="true"/>
 
 <input name="comment[replies][][content]" id="comment_replies_0_content" value="some exciting words" type="text"/>
