@@ -59,7 +59,7 @@ module Formular
           InputGroupWrapper.(content: content)
         end
 
-        def input_addon(content = nil, option_key: nil)
+        def group_addon(content = nil, option_key: nil)
           return '' unless content || option_key
           addon_content = content || options[option_key]
           return '' unless addon_content
@@ -67,7 +67,7 @@ module Formular
           InputAddon.(content: addon_content)
         end
 
-        def input_btn(content = nil, option_key: nil)
+        def group_btn(content = nil, option_key: nil)
           return '' unless content || option_key
           addon_content = content || options[option_key]
           return '' unless addon_content
@@ -75,16 +75,16 @@ module Formular
           InputBtn.(content: addon_content)
         end
 
-        def input
+        def control
           render(:raw_input)
         end
 
         html(:with_options) do |input|
-          concat input.input_addon(option_key: :left_addon)
-          concat input.input_btn(option_key: :left_btn)
-          concat input.input
-          concat input.input_addon(option_key: :right_addon)
-          concat input.input_btn(option_key: :right_btn)
+          concat input.group_addon(option_key: :left_addon)
+          concat input.group_btn(option_key: :left_btn)
+          concat input.control
+          concat input.group_addon(option_key: :right_addon)
+          concat input.group_btn(option_key: :right_btn)
         end
       end
 
