@@ -7,12 +7,15 @@ module Formular
   module Elements
     module Bootstrap3
       Label = Class.new(Formular::Elements::Label) { set_default :class, ['control-label'] }
-      Submit = Class.new(Formular::Elements::Submit) { set_default :class, ['btn', 'btn-default'] }
+
+      class Submit < Formular::Elements::Submit
+        tag 'button'
+        set_default :class, ['btn', 'btn-default']
+      end # class Submit
 
       class Error < Formular::Elements::Container
         tag :span
         set_default :class, ['help-block']
-
       end # class Error
 
       class Input < Formular::Elements::Input
