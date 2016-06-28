@@ -16,4 +16,6 @@ gem "minitest-line"
 
 gem "uber"
 gem "declarative"
+gem "trailblazer-cells"
 gem "cells-slim"
+gem "cells-erb"
