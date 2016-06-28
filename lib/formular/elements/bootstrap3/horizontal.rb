@@ -74,6 +74,7 @@ module Formular
         Select = Class.new(Formular::Elements::Bootstrap3::Select) { include WrappedControl }
         Textarea = Class.new(Formular::Elements::Bootstrap3::Textarea) { include WrappedControl }
         Input = Class.new(Formular::Elements::Bootstrap3::Input) { include WrappedControl }
+        InputGroup = Class.new(Formular::Elements::Bootstrap3::InputGroup) { tag 'input'; include WrappedControl }
         Submit = Class.new(Formular::Elements::Bootstrap3::Submit) { include WrappedControl }
 
         class InputColumnWrapper < Formular::Elements::Container

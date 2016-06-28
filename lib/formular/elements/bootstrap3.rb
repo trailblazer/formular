@@ -7,6 +7,9 @@ module Formular
   module Elements
     module Bootstrap3
       Label = Class.new(Formular::Elements::Label) { set_default :class, ['control-label'] }
+      InputGroupWrapper = Class.new(Formular::Elements::Container) { tag :div; set_default :class, ['input-group'] }
+      InputAddon = Class.new(Formular::Elements::Container) { tag :span; set_default :class, ['input-group-addon'] }
+      InputBtn = Class.new(Formular::Elements::Container) { tag :span; set_default :class, ['input-group-btn'] }
 
       class Submit < Formular::Elements::Container
         tag 'button'
@@ -40,16 +43,70 @@ module Formular
         end
       end # class Input
 
+      class InputGroup < Formular::Elements::Input
+        include Formular::Elements::Modules::WrappedControl
+        include Formular::Elements::Modules::Container
+
+        tag :input
+        set_default :class, ['form-control']
+
+        add_option_keys [:left_addon, :right_addon, :left_btn, :right_btn]
+
+        html(:raw_input) { closed_start_tag }
+
+        html do |input|
+          content = input.content || input.render(:with_options)
+          InputGroupWrapper.(content: content)
+        end
+
+        def input_addon(content = nil, option_key: nil)
+          return '' unless content || option_key
+          addon_content = content || options[option_key]
+          return '' unless addon_content
+
+          InputAddon.(content: addon_content)
+        end
+
+        def input_btn(content = nil, option_key: nil)
+          return '' unless content || option_key
+          addon_content = content || options[option_key]
+          return '' unless addon_content
+
+          InputBtn.(content: addon_content)
+        end
+
+        def input
+          render(:raw_input)
+        end
+
+        html(:with_options) do |input|
+          concat input.input_addon(option_key: :left_addon)
+          concat input.input_btn(option_key: :left_btn)
+          concat input.input
+          concat input.input_addon(option_key: :right_addon)
+          concat input.input_btn(option_key: :right_btn)
+        end
+      end
+
       module InlineCheckable
         include Formular::Elements::Module
 
-        html(:wrapped) do |input|
+        html(:with_group_label) do |input|
           input.wrapper do
             concat input.group_label
-            input.collection.each do |control|
-              concat control.checkable_label
-            end
+            concat Formular::Elements::Div.(content: input.collection.map(&:checkable_label).join(''))
             concat input.error
+          end
+        end
+
+        html(:wrapped) do |input|
+          if input.has_group_label?
+            input.render(:with_group_label)
+          else
+            input.wrapper do
+              concat input.collection.map(&:checkable_label).join('')
+              concat input.error
+            end
           end
         end
       end
