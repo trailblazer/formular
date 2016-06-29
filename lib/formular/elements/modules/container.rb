@@ -13,7 +13,7 @@ module Formular
         add_option_keys [:content]
 
         html do |element|
-          element.content ? element.render(:with_content) : element.start_tag
+          element.has_content? ? element.to_html(context: :with_content) : element.start_tag
         end
 
         html(:with_content) do |element, output|
@@ -26,11 +26,15 @@ module Formular
 
         module InstanceMethods
           def content
-            @block ? Renderer.new(@block).call(self) : options[:content]
+            @block ? HtmlBlock.new(@block).call(self) : options[:content]
+          end
+
+          def has_content?
+            @block || options[:content]
           end
 
           def end
-            render(:end)
+            to_html(context: :end)
           end
 
           # Delegate missing methods to the builder

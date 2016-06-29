@@ -15,7 +15,7 @@ module Formular
         html(:wrapped) do |input|
           input.wrapper do |_, output|
             output.concat input.label_text
-            output.concat input.render(:default)
+            output.concat input.to_html(context: :default)
             output.concat input.error
           end.to_s
         end
@@ -110,11 +110,11 @@ module Formular
         set_default :class, ['show-for-sr']
         set_default :label_options, { class: ['button'] }
 
-        self.render_context = :wrapped
+        self.html_context = :wrapped
 
         html(:wrapped) do |input, output|
           output.concat input.label
-          output.concat input.render(:default)
+          output.concat input.to_html(context: :default)
           output.concat input.error
         end
       end # class Input

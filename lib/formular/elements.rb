@@ -36,7 +36,7 @@ module Formular
       # we should always render complete element tags
       # we don't want opens without closes for textareas
       html do |element|
-        element.render(:with_content)
+        element.to_html(context: :with_content)
       end
 
       def content

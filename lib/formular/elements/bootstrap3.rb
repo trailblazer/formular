@@ -20,7 +20,7 @@ module Formular
         # could dry this up into a containiner control module
         # we use the same thing for textareas
         html do |element|
-          element.render(:with_content)
+          element.to_html(context: :with_content)
         end
 
         def content
@@ -55,7 +55,7 @@ module Formular
         html(:raw_input) { |input| input.closed_start_tag }
 
         html do |input|
-          content = input.content || input.render(:with_options)
+          content = input.content || input.to_html(context: :with_options)
           InputGroupWrapper.(content: content)
         end
 
@@ -76,7 +76,7 @@ module Formular
         end
 
         def control
-          render(:raw_input)
+          to_html(context: :raw_input)
         end
 
         html(:with_options) do |input, output|
@@ -101,7 +101,7 @@ module Formular
 
         html(:wrapped) do |input|
           if input.has_group_label?
-            input.render(:with_group_label)
+            input.to_html(context: :with_group_label)
           else
             input.wrapper do |_, output|
               output.concat input.collection.map(&:checkable_label).join('')

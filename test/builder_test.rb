@@ -4,7 +4,13 @@ require "formular/elements"
 
 describe Formular::Builder do
   let(:model) { Comment.new(nil, nil, [Reply.new]) }
-  let(:builder) { Formular::Builder.new(model: model, elements: {label: Formular::Elements::Label, input: Formular::Elements::Input, form: Formular::Elements::Form}) }
+  let(:builder) {
+    Formular::Builder.new(model: model, elements: {
+      label: Formular::Elements::Label,
+      input: Formular::Elements::Input,
+      form: Formular::Elements::Form
+    })
+  }
 
   describe "#method_missing" do
     it "should pass self to element" do
@@ -24,8 +30,8 @@ describe Formular::Builder do
   describe "returns html correctly" do
     it "#outputs with block" do
       form = builder.form(action: "/questions/13") do |f, output|
-        output.concat f.label(class: ["control-label"], content: "What colour is the sky?").to_s
-        output.concat f.input(type: "text", value: "Something exciting").to_s
+        output.concat f.label(class: ["control-label"], content: "What colour is the sky?")
+        output.concat f.input(type: "text", value: "Something exciting")
       end
       form.to_s.must_equal %(<form method="post" action="/questions/13"><label class="control-label">What colour is the sky?</label><input type="text" value="Something exciting"/></form>)
     end

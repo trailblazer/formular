@@ -14,12 +14,12 @@ module Formular
         add_option_keys [:error_options, :label_options, :wrapper_options, :label]
         set_default :error, :error_message
 
-        self.render_context = :wrapped
+        self.html_context = :wrapped
 
         html(:wrapped) do |input, output|
           input.wrapper do
             output.concat input.label
-            output.concat input.render(:default)
+            output.concat input.to_html(context: :default)
             output.concat input.error
           end
         end

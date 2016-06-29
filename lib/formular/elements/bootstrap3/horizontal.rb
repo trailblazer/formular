@@ -15,14 +15,17 @@ module Formular
           end
 
           html(:input_column) do |input, output|
-            output.concat input.render(:default)
+            output.concat input.to_html(context: :default)
             output.concat input.error
           end
 
           html(:wrapped) do |input|
             input.wrapper do |wrapper, output|
-              output.concat input.render(:label_column)
-              output.concat wrapper.input_column_wrapper(class: input.column_class, content: input.render(:input_column))
+              output.concat input.to_html(context: :label_column)
+              output.concat wrapper.input_column_wrapper(
+                              class: input.column_class,
+                              content: input.to_html(context: :input_column)
+                            )
             end
           end
 

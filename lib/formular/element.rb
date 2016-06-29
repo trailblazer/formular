@@ -1,26 +1,26 @@
 require "formular/attributes"
-require "formular/renderer"
+require "formular/html_block"
 require 'uber/inheritable_attr'
 require 'uber/options'
 
 module Formular
   # The Element class is responsible for defining what the html should look like.
   # This includes default attributes, and the function to use to render the html
-  # actual rendering is done via a Renderer class
+  # actual rendering is done via a HtmlBlock class
   class Element
     extend Uber::InheritableAttr
 
-    inheritable_attr :render_context
-    inheritable_attr :renderers
+    inheritable_attr :html_context
+    inheritable_attr :html_blocks
     inheritable_attr :default_hash
     inheritable_attr :option_keys
 
     # I actually don't want to merge default classes...
     # it get's complicated with inheritance when you want to remove one
     self.default_hash = {}
-    self.renderers = {}
+    self.html_blocks = {}
+    self.html_context = :default
     self.option_keys = []
-    self.render_context = :default
 
     # set the default value of an option or attribute
     # you can make this conditional by providing a conditions
@@ -30,7 +30,7 @@ module Formular
     end
 
     def self.html(context = :default, &block)
-      self.renderers[context] = Renderer.new(block)
+      self.html_blocks[context] = block
     end
 
     # whitelist the keys that should NOT end up as html attributes
@@ -57,18 +57,13 @@ module Formular
       normalize_attributes(options)
       @block = block
       @tag = self.class.tag_name
-      @renderers = dup_class_renderers
+      @html_blocks = define_html_block_instances
     end
+    attr_reader :tag, :html_blocks, :builder, :attributes, :options
 
-    attr_reader :tag, :renderers, :builder, :attributes, :options
-
-    def render(context = nil)
-      context ||= self.class.render_context
-      renderers[context].call(self)
-    end
-
-    def to_html
-      render
+    def to_html(context: nil)
+      context ||= self.class.html_context
+      html_blocks[context].call(self)
     end
     alias_method :to_s, :to_html
 
@@ -90,12 +85,10 @@ module Formular
 
     private
 
-    # until we can isolate the output buffer in the renderer sufficiently,
-    # we need a fresh instance of each renderer for every element instance
-    def dup_class_renderers
-      renderers = {}
-      self.class.renderers.each { |k, v| renderers[k] = v.dup }
-      renderers
+    def define_html_block_instances
+      html_blocks = {}
+      self.class.html_blocks.each { |context, block| html_blocks[context] = HtmlBlock.new(block) }
+      html_blocks
     end
 
     # I'm not convinced by this method but essentially we split the options hash
