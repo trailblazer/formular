@@ -28,6 +28,14 @@ describe Formular::Elements::Foundation6 do
         element.to_s.must_equal %(<label class="is-invalid-label">Name<input name="name" id="name" type="text" class="is-invalid-input" value="Joseph Smith"/><span class="form-error is-visible">Something terrible happened</span></label>)
       end
     end
+
+    describe "with hint" do
+      let(:element) { builder.input(:name, label: "Name", value: "Joseph Smith", hint: "Something helpful") }
+
+      it "#to_s" do
+        element.to_s.must_equal %(<label>Name<input name="name" id="name" type="text" aria-describedby="name_hint" value="Joseph Smith"/><p class="help-text" id="name_hint">Something helpful</p></label>)
+      end
+    end
   end
 
   describe Formular::Elements::Foundation6::File do

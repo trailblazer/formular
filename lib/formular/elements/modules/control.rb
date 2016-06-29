@@ -1,12 +1,10 @@
 require 'formular/elements/module'
-require 'formular/elements/modules/errors'
 module Formular
   module Elements
     module Modules
       # include this module in an element to set the id, name &value based on the attribute name
       module Control
         include Formular::Elements::Module
-        include Errors
 
         add_option_keys [:attribute_name]
 
@@ -19,12 +17,17 @@ module Formular
             options[:attribute_name]
           end
 
+          private
+          def path
+            @path ||= builder.path(attribute_name) if attribute_name && builder
+          end
+
           def form_encoded_name
-            builder.path(attribute_name).to_encoded_name if attribute_name && builder
+            path.to_encoded_name if path
           end
 
           def form_encoded_id
-            builder.path(attribute_name).to_encoded_id if attribute_name && builder
+            path.to_encoded_id if path
           end
 
           def reader_value

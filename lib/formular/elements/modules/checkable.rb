@@ -48,7 +48,8 @@ module Formular
             @collection ||= options[:collection].map do |array|
               el_value, el_label = array
               id = attributes[:id] ? "#{attributes[:id]}_#{el_value}" : "#{attribute_name || attributes[:name]}_#{el_value}"
-              self.class.(
+
+              opts = attributes.select{ |k, v| ![:name, :id, :checked].include?(k) }.merge(
                 id: id,
                 attribute_name: attribute_name,
                 builder: builder,
@@ -56,6 +57,7 @@ module Formular
                 value: el_value,
                 label_options: options[:control_label_options]
               )
+              self.class.(opts)
             end
           end
         end

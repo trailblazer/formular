@@ -28,10 +28,15 @@ module Formular
         end
       end # class Submit
 
-      class Error < Formular::Elements::Container
+      class Error < Formular::Elements::Error
         tag :span
         set_default :class, ['help-block']
-      end # class Error
+      end # class HelpBlock
+
+      class Hint < Formular::Elements::Hint
+        tag :span
+        set_default :class, ['help-block']
+      end # class HelpBlock
 
       class Input < Formular::Elements::Input
         include Formular::Elements::Modules::WrappedControl
@@ -95,6 +100,7 @@ module Formular
           input.wrapper do |_, output|
             output.concat input.group_label
             output.concat Formular::Elements::Div.(content: input.collection.map(&:checkable_label).join(''))
+            output.concat input.hint
             output.concat input.error
           end
         end
@@ -105,6 +111,7 @@ module Formular
           else
             input.wrapper do |_, output|
               output.concat input.collection.map(&:checkable_label).join('')
+              output.concat input.hint
               output.concat input.error
             end
           end
@@ -120,6 +127,7 @@ module Formular
             input.collection.each do |control|
               output.concat control.inner_wrapper { control.checkable_label }
             end
+            output.concat input.hint
             output.concat input.error
           end
         end

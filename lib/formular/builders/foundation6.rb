@@ -20,6 +20,7 @@ module Formular
         wrapper: Formular::Elements::Label,
         error_wrapper: Formular::Elements::Foundation6::LabelWithError,
         error: Formular::Elements::Foundation6::Error,
+        hint: Formular::Elements::Foundation6::Hint,
         submit: Formular::Elements::Foundation6::Submit,
         div: Formular::Elements::Div
       )

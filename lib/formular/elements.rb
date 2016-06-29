@@ -26,8 +26,12 @@ module Formular
 
       tag 'p'
       add_option_keys [:attribute_name]
-      set_default :content, :error_message
+      set_default :content, :error_text
     end # class Error
+
+    class Hint < Container
+      tag 'p'
+    end # class Hint
 
     class Textarea < Control
       include Formular::Elements::Modules::Container

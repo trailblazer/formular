@@ -11,7 +11,7 @@ module Formular
         # options[:error] == false NO ERROR regardless of model errors
         # options[:error] == String return the string, regardless of model errors
         module InstanceMethods
-          def error_message
+          def error_text
             has_custom_error? ? options[:error] : errors_on_attribute.send(error_method) if has_errors?
           end
 

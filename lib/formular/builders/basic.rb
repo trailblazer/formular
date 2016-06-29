@@ -11,11 +11,14 @@ module Formular
         input: Formular::Elements::Input,
         label: Formular::Elements::Label,
         error: Formular::Elements::Error,
+        hint: Formular::Elements::Hint,
         textarea: Formular::Elements::Textarea,
         submit: Formular::Elements::Submit,
         select: Formular::Elements::Select,
         checkbox: Formular::Elements::Checkbox,
-        radio: Formular::Elements::Radio
+        radio: Formular::Elements::Radio,
+        wrapper: Formular::Elements::Div,
+        error_wrapper: Formular::Elements::Div
       })
 
       def collection(name, models = nil, &block)

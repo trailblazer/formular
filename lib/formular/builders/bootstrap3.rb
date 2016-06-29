@@ -9,6 +9,7 @@ module Formular
       element_set(
         form: Formular::Elements::Form,
         error: Formular::Elements::Bootstrap3::Error,
+        hint: Formular::Elements::Bootstrap3::Hint,
         input: Formular::Elements::Bootstrap3::Input,
         input_group: Formular::Elements::Bootstrap3::InputGroup,
         checkbox: Formular::Elements::Bootstrap3::Checkbox,
@@ -29,6 +30,7 @@ module Formular
       element_set(
         form: Formular::Elements::Bootstrap3::Inline::Form,
         error: Formular::Elements::Bootstrap3::Error,
+        hint: Formular::Elements::Bootstrap3::Hint,
         input: Formular::Elements::Bootstrap3::Input,
         input_group: Formular::Elements::Bootstrap3::InputGroup,
         select: Formular::Elements::Bootstrap3::Select,
@@ -49,6 +51,7 @@ module Formular
       element_set(
         form: Formular::Elements::Bootstrap3::Horizontal::Form,
         error: Formular::Elements::Bootstrap3::Error,
+        hint: Formular::Elements::Bootstrap3::Hint,
         input: Formular::Elements::Bootstrap3::Horizontal::Input,
         input_group: Formular::Elements::Bootstrap3::Horizontal::InputGroup,
         select: Formular::Elements::Bootstrap3::Horizontal::Select,

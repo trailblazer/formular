@@ -16,6 +16,7 @@ module Formular
           input.wrapper do |_, output|
             output.concat input.label_text
             output.concat input.to_html(context: :default)
+            output.concat input.hint
             output.concat input.error
           end.to_s
         end
@@ -31,6 +32,7 @@ module Formular
           input.wrapper do |_, output|
             output.concat input.group_label
             input.collection.each { |control| output.concat control.checkable_label }
+            output.concat input.hint
             output.concat input.error
           end.to_s
         end
@@ -52,6 +54,7 @@ module Formular
             input.collection.each do |control|
               output.concat input.builder.div(content: control.checkable_label).to_s
             end
+            output.concat input.hint
             output.concat input.error
           end.to_s
         end
@@ -67,10 +70,15 @@ module Formular
         set_default :class, ['is-invalid-label']
       end
 
-      class Error < Formular::Elements::Container
+      class Error < Formular::Elements::Error
         tag :span
-        set_default :class, ['form-error is-visible']
+        set_default :class, ['form-error', 'is-visible']
       end # class Error
+
+      class Hint < Formular::Elements::Hint
+        tag :p
+        set_default :class, ['help-text']
+      end
 
       class Checkbox < Formular::Elements::Checkbox
         include WrappedControl
@@ -115,6 +123,7 @@ module Formular
         html(:wrapped) do |input, output|
           output.concat input.label
           output.concat input.to_html(context: :default)
+          output.concat input.hint
           output.concat input.error
         end
       end # class Input
