@@ -2,6 +2,15 @@ require 'test_helper'
 require "formular/elements"
 
 describe Formular::Elements::Label do
+  describe "through builder" do
+    let(:builder) { Formular::Builders::Basic.new }
+
+    it "with attribute_name" do
+      element = builder.label(:body, content: "Body")
+      element.to_s.must_equal %(<label for="body">Body</label>)
+    end
+  end
+
   it "::tag" do
     element = Formular::Elements::Label.()
     element.tag.must_equal("label")

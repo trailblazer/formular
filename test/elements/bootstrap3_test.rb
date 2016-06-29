@@ -248,4 +248,11 @@ describe Formular::Elements::Bootstrap3 do
       element.to_s.must_equal %(<span class="help-block">Something helpful</span>)
     end
   end
+
+  describe "independent labels" do
+    it "#error should return the error element for :body" do
+      element = builder.label(:body, content: "Some words...")
+      element.to_s.must_equal %(<label for="body" class="control-label">Some words...</label>)
+    end
+  end
 end

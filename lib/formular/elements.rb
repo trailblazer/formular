@@ -49,14 +49,14 @@ module Formular
     end # class Textarea
 
     class Label < Container
-      add_option_keys [:labeled_control]
+      add_option_keys [:labeled_control, :attribute_name]
       set_default :for, :labeled_control_id
 
       # as per MDN A label element can have both a 'for' attribute and a contained control element,
       # as long as the for attribute points to the contained control element.
       def labeled_control_id
-        return nil unless options[:labeled_control]
-        options[:labeled_control].attributes[:id]
+        return options[:labeled_control].attributes[:id] if options[:labeled_control]
+        return builder.path(options[:attribute_name]).to_encoded_id if options[:attribute_name] && builder
       end
     end # class Label
 
