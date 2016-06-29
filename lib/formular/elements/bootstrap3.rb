@@ -52,7 +52,7 @@ module Formular
 
         add_option_keys [:left_addon, :right_addon, :left_btn, :right_btn]
 
-        html(:raw_input) { closed_start_tag }
+        html(:raw_input) { |input| input.closed_start_tag }
 
         html do |input|
           content = input.content || input.render(:with_options)
@@ -79,12 +79,12 @@ module Formular
           render(:raw_input)
         end
 
-        html(:with_options) do |input|
-          concat input.group_addon(option_key: :left_addon)
-          concat input.group_btn(option_key: :left_btn)
-          concat input.control
-          concat input.group_addon(option_key: :right_addon)
-          concat input.group_btn(option_key: :right_btn)
+        html(:with_options) do |input, output|
+          output.concat input.group_addon(option_key: :left_addon)
+          output.concat input.group_btn(option_key: :left_btn)
+          output.concat input.control
+          output.concat input.group_addon(option_key: :right_addon)
+          output.concat input.group_btn(option_key: :right_btn)
         end
       end
 
@@ -92,10 +92,10 @@ module Formular
         include Formular::Elements::Module
 
         html(:with_group_label) do |input|
-          input.wrapper do
-            concat input.group_label
-            concat Formular::Elements::Div.(content: input.collection.map(&:checkable_label).join(''))
-            concat input.error
+          input.wrapper do |_, output|
+            output.concat input.group_label
+            output.concat Formular::Elements::Div.(content: input.collection.map(&:checkable_label).join(''))
+            output.concat input.error
           end
         end
 
@@ -103,9 +103,9 @@ module Formular
           if input.has_group_label?
             input.render(:with_group_label)
           else
-            input.wrapper do
-              concat input.collection.map(&:checkable_label).join('')
-              concat input.error
+            input.wrapper do |_, output|
+              output.concat input.collection.map(&:checkable_label).join('')
+              output.concat input.error
             end
           end
         end
@@ -115,12 +115,12 @@ module Formular
         include Formular::Elements::Module
 
         html(:wrapped) do |input|
-          input.wrapper do
-            concat input.group_label
+          input.wrapper do |_, output|
+            output.concat input.group_label
             input.collection.each do |control|
-              concat control.inner_wrapper { control.checkable_label }
+              output.concat control.inner_wrapper { control.checkable_label }
             end
-            concat input.error
+            output.concat input.error
           end
         end
 

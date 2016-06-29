@@ -16,9 +16,9 @@ describe Formular::Elements::Textarea do
 
   describe "contents as block" do
     it "#to_s" do
-      element = Formular::Elements::Textarea.() do
-        concat "Part 1 text; "
-        concat "Part 2 text"
+      element = Formular::Elements::Textarea.() do |_, output|
+        output.concat "Part 1 text; "
+        output.concat "Part 2 text"
       end
       element.to_s.must_equal %(<textarea>Part 1 text; Part 2 text</textarea>)
     end

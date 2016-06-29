@@ -13,10 +13,10 @@ module Formular
         include Formular::Elements::Modules::WrappedControl
 
         html(:wrapped) do |input|
-          input.wrapper do
-            concat input.label_text
-            concat input.render(:default)
-            concat input.error
+          input.wrapper do |_, output|
+            output.concat input.label_text
+            output.concat input.render(:default)
+            output.concat input.error
           end.to_s
         end
       end
@@ -28,10 +28,10 @@ module Formular
         set_default :control_label_options, { class: ['is-invalid-label'] }, if: :has_errors?
 
         html(:wrapped) do |input|
-          input.wrapper do
-            concat input.group_label
-            input.collection.each { |control| concat control.checkable_label }
-            concat input.error
+          input.wrapper do |_, output|
+            output.concat input.group_label
+            input.collection.each { |control| output.concat control.checkable_label }
+            output.concat input.error
           end.to_s
         end
 
@@ -47,12 +47,12 @@ module Formular
         include Checkable
 
         html(:wrapped) do |input|
-          input.wrapper do
-            concat input.group_label
+          input.wrapper do |_, output|
+            output.concat input.group_label
             input.collection.each do |control|
-              concat input.builder.div(content: control.checkable_label).to_s
+              output.concat input.builder.div(content: control.checkable_label).to_s
             end
-            concat input.error
+            output.concat input.error
           end.to_s
         end
       end
@@ -112,10 +112,10 @@ module Formular
 
         self.render_context = :wrapped
 
-        html(:wrapped) do |input|
-          concat input.label
-          concat input.render(:default)
-          concat input.error
+        html(:wrapped) do |input, output|
+          output.concat input.label
+          output.concat input.render(:default)
+          output.concat input.error
         end
       end # class Input
 

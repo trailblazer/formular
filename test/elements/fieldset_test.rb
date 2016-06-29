@@ -17,9 +17,9 @@ describe Formular::Elements::Fieldset do
 
   describe "contents as block" do
     it "#to_s" do
-      element = Formular::Elements::Fieldset.() do |f|
-        concat "<legend>Hello</legend>"
-        concat Formular::Elements::Label.(class: ["control-label"], content: "A handy label").to_s
+      element = Formular::Elements::Fieldset.() do |f, output|
+        output.concat "<legend>Hello</legend>"
+        output.concat Formular::Elements::Label.(class: ["control-label"], content: "A handy label").to_s
       end
       element.to_s.must_equal %(<fieldset><legend>Hello</legend><label class="control-label">A handy label</label></fieldset>)
     end

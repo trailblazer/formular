@@ -61,21 +61,21 @@ module Formular
 
       set_default :type, 'submit'
 
-      html { closed_start_tag }
+      html { |input| input.closed_start_tag }
     end # class Submit
 
     class Input < Control
       set_default :type, 'text'
-      html { closed_start_tag }
+      html { |input| input.closed_start_tag }
     end # class Input
 
     class Select < Control
       add_option_keys [:collection, :value]
 
-      html do |input|
-        concat start_tag
-        concat input.option_tags
-        concat end_tag
+      html do |input, output|
+        output.concat input.start_tag
+        output.concat input.option_tags
+        output.concat input.end_tag
       end
 
       # convert the collection array into option tags also supports option groups
@@ -124,7 +124,7 @@ module Formular
       tag 'input'
       set_default :type, 'checkbox'
 
-      html { closed_start_tag }
+      html { |input| input.closed_start_tag }
 
       def form_encoded_name
         builder.path(attribute_name).to_encoded_name + '[]' if attribute_name && builder
@@ -135,7 +135,7 @@ module Formular
       tag 'input'
       set_default :type, 'radio'
 
-      html { closed_start_tag }
+      html { |input| input.closed_start_tag }
     end # class Radio
   end # module Elements
 end # module Formular

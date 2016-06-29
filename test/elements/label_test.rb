@@ -17,10 +17,10 @@ describe Formular::Elements::Label do
 
   describe "contents as block" do
     it "#to_s" do
-      element = Formular::Elements::Label.() do
-        concat "something "
-        concat "super "
-        concat "dooper"
+      element = Formular::Elements::Label.() do |_, output|
+        output.concat "something "
+        output.concat "super "
+        output.concat "dooper"
       end
       element.to_s.must_equal %(<label>something super dooper</label>)
     end

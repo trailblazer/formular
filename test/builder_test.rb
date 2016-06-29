@@ -23,9 +23,9 @@ describe Formular::Builder do
 
   describe "returns html correctly" do
     it "#outputs with block" do
-      form = builder.form(action: "/questions/13") do |f|
-        concat f.label(class: ["control-label"], content: "What colour is the sky?").to_s
-        concat f.input(type: "text", value: "Something exciting").to_s
+      form = builder.form(action: "/questions/13") do |f, output|
+        output.concat f.label(class: ["control-label"], content: "What colour is the sky?").to_s
+        output.concat f.input(type: "text", value: "Something exciting").to_s
       end
       form.to_s.must_equal %(<form method="post" action="/questions/13"><label class="control-label">What colour is the sky?</label><input type="text" value="Something exciting"/></form>)
     end

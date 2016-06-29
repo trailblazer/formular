@@ -16,11 +16,11 @@ module Formular
 
         self.render_context = :wrapped
 
-        html(:wrapped) do |input|
+        html(:wrapped) do |input, output|
           input.wrapper do
-            concat input.label
-            concat input.render(:default)
-            concat input.error
+            output.concat input.label
+            output.concat input.render(:default)
+            output.concat input.error
           end
         end
 

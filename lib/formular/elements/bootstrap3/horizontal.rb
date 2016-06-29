@@ -14,15 +14,15 @@ module Formular
             input.label
           end
 
-          html(:input_column) do |input|
-            concat input.render(:default)
-            concat input.error
+          html(:input_column) do |input, output|
+            output.concat input.render(:default)
+            output.concat input.error
           end
 
           html(:wrapped) do |input|
-            input.wrapper do |wrapper|
-              concat input.render(:label_column)
-              concat wrapper.input_column_wrapper(class: input.column_class, content: input.render(:input_column))
+            input.wrapper do |wrapper, output|
+              output.concat input.render(:label_column)
+              output.concat wrapper.input_column_wrapper(class: input.column_class, content: input.render(:input_column))
             end
           end
 
@@ -52,11 +52,11 @@ module Formular
           include Formular::Elements::Module
           include WrappedCheckableControl
 
-          html(:input_column) do |input|
+          html(:input_column) do |input, output|
             input.collection.each do |control|
-              concat control.inner_wrapper { control.checkable_label }
+              output.concat control.inner_wrapper { control.checkable_label }
             end
-            concat input.error
+            output.concat input.error
           end
         end
 
@@ -64,9 +64,9 @@ module Formular
           include Formular::Elements::Module
           include WrappedCheckableControl
 
-          html(:input_column) do |input|
-            input.collection.each { |control| concat control.checkable_label }
-            concat input.error
+          html(:input_column) do |input, output|
+            input.collection.each { |control| output.concat control.checkable_label }
+            output.concat input.error
           end
         end
 

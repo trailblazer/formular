@@ -72,6 +72,22 @@ module Formular
     end
     alias_method :to_s, :to_html
 
+    # return the start/opening tag with the elements
+    # attributes hash converted into valid html attributes
+    def start_tag
+      attributes.empty? ? "<#{tag}>" : "<#{tag} #{attributes.to_html}>"
+    end
+
+    # return a closed start tag (e.g. <input name="body"/>)
+    def closed_start_tag
+      start_tag.gsub('>', '/>')
+    end
+
+    # returns the end/ closing tag for an element
+    def end_tag
+      "</#{tag}>"
+    end
+
     private
 
     # until we can isolate the output buffer in the renderer sufficiently,

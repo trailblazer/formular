@@ -27,10 +27,10 @@ describe Formular::Elements::Bootstrap3 do
 
     describe 'with block' do
       let(:element) {
-        builder.input_group(:title, label: "Title", value: "John Smith") do |input|
-          concat input.group_addon('<input name="default[]" id="default" type="checkbox" value="1">')
-          concat input.control
-          concat input.group_btn('<button type="submit" class="btn btn-default">Go!</button>')
+        builder.input_group(:title, label: "Title", value: "John Smith") do |input, output|
+          output.concat input.group_addon('<input name="default[]" id="default" type="checkbox" value="1">')
+          output.concat input.control
+          output.concat input.group_btn('<button type="submit" class="btn btn-default">Go!</button>')
         end
       }
 

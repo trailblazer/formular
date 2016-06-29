@@ -13,18 +13,16 @@ module Formular
         add_option_keys [:content]
 
         html do |element|
-          element.content ? element.render(:with_content) : start_tag
+          element.content ? element.render(:with_content) : element.start_tag
         end
 
-        html(:with_content) do |element|
-          concat start_tag
-          concat element.content
-          concat end_tag
+        html(:with_content) do |element, output|
+          output.concat element.start_tag
+          output.concat element.content
+          output.concat element.end_tag
         end
 
-        html(:end) do
-          end_tag
-        end
+        html(:end) { |element| element.end_tag }
 
         module InstanceMethods
           def content
