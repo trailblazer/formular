@@ -3,7 +3,7 @@ require "formular/builders/foundation6"
 
 describe Formular::Builders::Foundation6 do
   let(:model) { Comment.new(nil, "Something exciting", [Reply.new], Owner.new, nil, 1) }
-  let(:builder) { Formular::Builders::Foundation6.new(model: model, path: :comment) }
+  let(:builder) { Formular::Builders::Foundation6.new(model: model, path_prefix: :comment) }
 
 
   describe "independent errors" do

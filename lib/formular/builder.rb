@@ -35,9 +35,9 @@ module Formular
     end
 
     # this is where we start...
-    def initialize(model: nil, path: nil, errors: nil, elements: nil)
+    def initialize(model: nil, path_prefix: nil, errors: nil, elements: nil)
       @model = model
-      @path = path
+      @path_prefix = path_prefix
       @errors = errors || (model? ? model.errors : nil)
       @elements = elements || self.class.elements
       self.class.define_element_methods(elements) if elements
@@ -59,7 +59,7 @@ module Formular
 
     # these can be called from an element
     def path(appendix = nil)
-      appendix ? Path[*@path, appendix] : Path[@path]
+      appendix ? Path[*@path_prefix, appendix] : Path[@path_prefix]
     end
 
     def reader_value(name)

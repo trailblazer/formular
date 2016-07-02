@@ -3,7 +3,7 @@ require "formular/builders/bootstrap3"
 
 describe Formular::Builders::Bootstrap3 do
   let(:model) { Comment.new(nil, "Something exciting", [Reply.new], Owner.new, nil, 1) }
-  let(:builder) { Formular::Builders::Bootstrap3.new(model: model, path: :comment) }
+  let(:builder) { Formular::Builders::Bootstrap3.new(model: model, path_prefix: :comment) }
 
   describe "returns html correctly" do
     it "#outputs with block" do
@@ -60,7 +60,7 @@ end
 
 describe Formular::Builders::Bootstrap3Horizontal do
   let(:model) { Comment.new(nil, "Something exciting", [Reply.new], Owner.new) }
-  let(:builder) { Formular::Builders::Bootstrap3Horizontal.new(model: model, path: :comment) }
+  let(:builder) { Formular::Builders::Bootstrap3Horizontal.new(model: model, path_prefix: :comment) }
 
   describe "returns html correctly" do
     it "#outputs with block" do
@@ -113,7 +113,7 @@ end
 
 describe Formular::Builders::Bootstrap3Inline do
   let(:model) { Comment.new(nil, "Something exciting", [Reply.new], Owner.new) }
-  let(:builder) { Formular::Builders::Bootstrap3Inline.new(model: model, path: :comment) }
+  let(:builder) { Formular::Builders::Bootstrap3Inline.new(model: model, path_prefix: :comment) }
 
   describe "returns html correctly" do
     it "#outputs with block" do

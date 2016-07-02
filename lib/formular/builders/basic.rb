@@ -32,7 +32,7 @@ module Formular
       def nested(name, nested_model: nil, path_appendix: nil, &block)
         nested_model ||= model.send(name) if model?
         path_appendix ||= name
-        self.class.new(model: nested_model, path: path(path_appendix)).(&block)
+        self.class.new(model: nested_model, path_prefix: path(path_appendix)).(&block)
       end
     end # class Basic
   end # module Builders

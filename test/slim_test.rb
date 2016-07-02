@@ -12,7 +12,7 @@ class Comment::SlimCell < Cell::ViewModel
   end
 
   def form(model:nil, **options, &block)
-    Formular::Builders::Basic.new(model: model, path: :comment).form(options, &block)
+    Formular::Builders::Basic.new(model: model, path_prefix: :comment).form(options, &block)
   end
 end
 
