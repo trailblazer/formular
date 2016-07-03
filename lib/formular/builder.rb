@@ -4,15 +4,13 @@ module Formular
   class Builder
     extend Uber::InheritableAttr
     inheritable_attr :elements
+    self.elements = {}
 
     def self.element_set(elements)
       @elements = elements
       define_element_methods(elements)
     end
 
-    # this defines a method for each element in the set.
-    # This might be a little magical, but I did it in the interests of dryness as I had many
-    # methods with exactly the same code... Happy to revert if this is code smell!
     def self.define_element_methods(elements)
       elements.each do |element_name, element_class|
         define_method(element_name) do |*args, &block|
@@ -34,14 +32,11 @@ module Formular
       end
     end
 
-    # this is where we start...
-    def initialize(model: nil, path_prefix: nil, errors: nil, elements: nil)
-      @model = model
-      @path_prefix = path_prefix
-      @errors = errors || (model ? model.errors : nil)
-      @elements = elements || self.class.elements
+    def initialize(**elements)
+      @elements = self.class.elements.merge(elements)
       self.class.define_element_methods(elements) if elements
     end
+    attr_reader :elements
 
     def capture(*args)
       yield(*args)
@@ -49,17 +44,6 @@ module Formular
 
     def call(&block)
       capture(self, &block)
-    end
-
-    attr_reader :model, :errors, :elements
-
-    # these can be called from an element
-    def path(appendix = nil)
-      appendix ? Path[*@path_prefix, appendix] : Path[@path_prefix]
-    end
-
-    def reader_value(name)
-      model ? model.send(name) : nil
     end
   end # class Builder
 end # module Formular

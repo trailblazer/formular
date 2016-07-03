@@ -3,13 +3,12 @@ require "formular/builder"
 require "formular/elements"
 
 describe Formular::Builder do
-  let(:model) { Comment.new(nil, nil, [Reply.new]) }
   let(:builder) {
-    Formular::Builder.new(model: model, elements: {
+    Formular::Builder.new(
       label: Formular::Elements::Label,
       input: Formular::Elements::Input,
       form: Formular::Elements::Form
-    })
+    )
   }
 
   describe "#method_missing" do

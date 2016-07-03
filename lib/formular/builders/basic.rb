@@ -21,6 +21,14 @@ module Formular
         error_wrapper: Formular::Elements::Div
       })
 
+      def initialize(model: nil, path_prefix: nil, errors: nil, elements: {})
+        @model = model
+        @path_prefix = path_prefix
+        @errors = errors || (model ? model.errors : nil)
+        super(elements)
+      end
+      attr_reader :model, :errors
+
       def collection(name, models = nil, &block)
         models ||= model ? model.send(name) : []
 
@@ -33,6 +41,15 @@ module Formular
         nested_model ||= model.send(name) if model
         path_appendix ||= name
         self.class.new(model: nested_model, path_prefix: path(path_appendix)).(&block)
+      end
+
+      # these can be called from an element
+      def path(appendix = nil)
+        appendix ? Path[*@path_prefix, appendix] : Path[@path_prefix]
+      end
+
+      def reader_value(name)
+        model ? model.send(name) : nil
       end
     end # class Basic
   end # module Builders
