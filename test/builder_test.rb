@@ -11,7 +11,7 @@ describe Formular::Builder do
     )
   }
 
-  describe "#method_missing" do
+  describe "#define_element_methods" do
     it "should pass self to element" do
       builder.label(content: "H").builder.must_equal builder
     end

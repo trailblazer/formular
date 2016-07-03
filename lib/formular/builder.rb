@@ -12,23 +12,25 @@ module Formular
     end
 
     def self.define_element_methods(elements)
-      elements.each do |element_name, element_class|
-        define_method(element_name) do |*args, &block|
-          if args.size > 1
-            name, options = args
-          else
-            case args.first
-            when Symbol then name = args.first
-            when Hash then options = args.first
-            end
+      elements.each { |k, v| define_element_method(k, v) }
+    end
+
+    def self.define_element_method(element_name, element_class)
+      define_method(element_name) do |*args, &block|
+        if args.size > 1
+          name, options = args
+        else
+          case args.first
+          when Symbol then name = args.first
+          when Hash then options = args.first
           end
-
-          options ||= {}
-          options[:builder] = self
-          options[:attribute_name] = name if name
-
-          element_class.(options, &block)
         end
+
+        options ||= {}
+        options[:builder] = self
+        options[:attribute_name] = name if name
+
+        element_class.(options, &block)
       end
     end
 

@@ -136,10 +136,8 @@ module Formular
       condition_result = Uber::Options::Value.new(condition.values[0]).evaluate(self)
 
       case operator.to_sym
-      when :if
-        condition_result
-      when :unless
-        !condition_result
+      when :if     then condition_result
+      when :unless then !condition_result
       end
     end
   end # class Element
