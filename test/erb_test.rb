@@ -3,6 +3,7 @@ require "formular/builders/basic"
 require 'tilt'
 require "trailblazer/cell"
 require "cells-erb"
+
 class Comment::Erb
   class Show < Trailblazer::Cell
     include Cell::Erb
@@ -10,7 +11,7 @@ class Comment::Erb
     self.view_paths = ['test/fixtures']
 
     def show
-      render
+      render view: :show
     end
 
     def form(model:nil, **options, &block)
@@ -20,7 +21,7 @@ class Comment::Erb
 end
 
 class Erb < Minitest::Spec
-  #FIXME don't ask me why erb makes so much white space...
+  # FIXME don't ask me why erb makes so much white space...
   describe "valid, initial rendering" do
     let (:model) { Comment.new(1, nil, [Reply.new(1, "some exciting words"), Reply.new], Owner.new(1, "Joe Blog", "joe@somewhere.com"), "0x", true) }
 
