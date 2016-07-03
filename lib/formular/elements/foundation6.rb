@@ -6,7 +6,10 @@ require 'formular/elements/module'
 module Formular
   module Elements
     module Foundation6
-      Submit = Class.new(Formular::Elements::Submit) { set_default :class, ['success', 'button'] }
+      class Submit < Formular::Elements::Submit
+        set_default :class, ['success', 'button']
+        tag "input"
+      end
 
       module WrappedControl
         include Formular::Elements::Module
