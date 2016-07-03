@@ -2,12 +2,6 @@ require 'test_helper'
 require "formular/elements"
 
 describe Formular::Elements::Form do
-  it "::tag" do
-    element = Formular::Elements::Form.new
-    element.tag.must_equal("form")
-  end
-
-
   describe "contents as string" do
     it "#to_s" do
       element = Formular::Elements::Form.(content: "<h1>Edit Form</h1>")

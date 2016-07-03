@@ -3,9 +3,6 @@ require "formular/elements"
 
 describe Formular::Elements::Select do
   let(:element) {Formular::Elements::Select.(name: "public", collection: [[0, "False"], [1, "True"]], value: 0)}
-  it "#tag" do
-    element.tag.must_equal "select"
-  end
   it "#attributes" do
     element.attributes.must_equal({name: "public"})
   end
@@ -34,6 +31,4 @@ describe Formular::Elements::Select do
       end
     end
   end
-
-
 end

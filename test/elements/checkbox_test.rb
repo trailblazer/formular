@@ -5,10 +5,6 @@ describe Formular::Elements::Checkbox do
   describe "unchecked" do
     let(:element) {Formular::Elements::Checkbox.(name: "public", value: 1)}
 
-    it "#tag" do
-      element.tag.must_equal "input"
-    end
-
     it "#attributes" do
       element.attributes.must_equal(name: "public", type: "checkbox", value: 1)
     end
@@ -24,10 +20,6 @@ describe Formular::Elements::Checkbox do
 
   describe "checked" do
     let(:element) {Formular::Elements::Checkbox.(name: "public", value: 1, checked: 'checked')}
-
-    it "#tag" do
-      element.tag.must_equal "input"
-    end
 
     it "#attributes" do
       element.attributes.must_equal(name: "public", type: "checkbox", value: 1, checked: "checked")

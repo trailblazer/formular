@@ -2,11 +2,6 @@ require 'test_helper'
 require "formular/elements"
 
 describe Formular::Elements::Textarea do
-  it "::tag" do
-    element = Formular::Elements::Textarea.()
-    element.tag.must_equal("textarea")
-  end
-
   describe "contents as string" do
     it "#to_s" do
       element = Formular::Elements::Textarea.(content: "Some lovely words here...")

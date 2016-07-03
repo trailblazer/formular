@@ -2,12 +2,6 @@ require 'test_helper'
 require "formular/elements"
 
 describe Formular::Elements::Fieldset do
-  it "::tag" do
-    element = Formular::Elements::Fieldset.new
-    element.tag.must_equal("fieldset")
-  end
-
-
   describe "contents as string" do
     it "#to_s" do
       element = Formular::Elements::Fieldset.(content: "<legend>Hello</legend>")

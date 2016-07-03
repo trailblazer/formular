@@ -1,5 +1,6 @@
 require 'test_helper'
 require "formular/elements"
+require "formular/builders/basic"
 
 describe Formular::Elements::Label do
   describe "through builder" do
@@ -9,13 +10,12 @@ describe Formular::Elements::Label do
       element = builder.label(:body, content: "Body")
       element.to_s.must_equal %(<label for="body">Body</label>)
     end
-  end
 
-  it "::tag" do
-    element = Formular::Elements::Label.()
-    element.tag.must_equal("label")
+    it "without attribute_name" do
+      element = builder.label(for: 'some_element_id', content: "Body")
+      element.to_s.must_equal %(<label for="some_element_id">Body</label>)
+    end
   end
-
 
   describe "contents as string" do
     it "#to_s" do

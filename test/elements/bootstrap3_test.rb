@@ -10,7 +10,6 @@ describe Formular::Elements::Bootstrap3 do
     describe 'with addons as options' do
       let(:element) { builder.input_group(:url, label: 'URL', left_addon: 'http://', right_addon: '.com', value: 'www.trailblazer.to') }
 
-
       it "returns correct html" do
         element.to_s.must_equal %(<div class="form-group"><label for="url" class="control-label">URL</label><div class="input-group"><span class="input-group-addon">http://</span><input name="url" id="url" type="text" class="form-control" value="www.trailblazer.to"/><span class="input-group-addon">.com</span></div></div>)
       end
@@ -18,7 +17,6 @@ describe Formular::Elements::Bootstrap3 do
 
     describe 'with buttons as options' do
       let(:element) { builder.input_group(:url, label: 'URL', left_btn: '<a class="btn btn-default" href="/some_path">Click Me</a>', right_btn: '<a class="btn btn-default" href="/some_path">Click Me</a>', value: 'www.trailblazer.to') }
-
 
       it "returns correct html" do
         element.to_s.must_equal %(<div class="form-group"><label for="url" class="control-label">URL</label><div class="input-group"><span class="input-group-btn"><a class="btn btn-default" href="/some_path">Click Me</a></span><input name="url" id="url" type="text" class="form-control" value="www.trailblazer.to"/><span class="input-group-btn"><a class="btn btn-default" href="/some_path">Click Me</a></span></div></div>)
@@ -42,10 +40,6 @@ describe Formular::Elements::Bootstrap3 do
 
   describe Formular::Elements::Bootstrap3::Input do
     let(:element) { builder.input }
-
-    it "::tag" do
-      element.tag.must_equal("input")
-    end
 
     it "::attributes" do
       element.attributes.must_equal({type: "text", class: ["form-control"]})
@@ -81,10 +75,6 @@ describe Formular::Elements::Bootstrap3 do
 
   describe Formular::Elements::Bootstrap3::Checkbox do
     let(:element) { builder.checkbox(:public, value: 1, label: "Public") }
-
-    it "::tag" do
-      element.tag.must_equal("input")
-    end
 
     it "::attributes" do
       element.attributes.must_equal(name: "public[]", id: "public", type: "checkbox", value: 1)
@@ -143,10 +133,6 @@ describe Formular::Elements::Bootstrap3 do
   describe Formular::Elements::Bootstrap3::Radio do
     let(:element) { builder.radio(:public, value: true, label: "Public") }
 
-    it "::tag" do
-      element.tag.must_equal("input")
-    end
-
     it "::attributes" do
       element.attributes.must_equal(name: "public", id: "public", type: "radio", value: true)
     end
@@ -166,10 +152,6 @@ describe Formular::Elements::Bootstrap3 do
 
   describe Formular::Elements::Bootstrap3::InlineCheckbox do
     let(:element) { builder.inline_checkbox(:public, value: 1, label: "Public") }
-
-    it "::tag" do
-      element.tag.must_equal("input")
-    end
 
     it "::attributes" do
       element.attributes.must_equal(name: "public[]", id: "public", type: "checkbox", value: 1)
@@ -211,10 +193,6 @@ describe Formular::Elements::Bootstrap3 do
 
   describe Formular::Elements::Bootstrap3::InlineRadio do
     let(:element) { builder.inline_radio(:public, value: true, label: "Public") }
-
-    it "::tag" do
-      element.tag.must_equal("input")
-    end
 
     it "::attributes" do
       element.attributes.must_equal(name: "public", id: "public", type: "radio", value: true)
