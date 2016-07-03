@@ -15,7 +15,7 @@ module Formular
         tag 'button'
         set_default :class, ['btn', 'btn-default']
         set_default :type, "submit"
-        add_option_keys [:value]
+        add_option_keys :value
 
         # could dry this up into a containiner control module
         # we use the same thing for textareas
@@ -55,7 +55,7 @@ module Formular
         tag :input
         set_default :class, ['form-control']
 
-        add_option_keys [:left_addon, :right_addon, :left_btn, :right_btn]
+        add_option_keys :left_addon, :right_addon, :left_btn, :right_btn
 
         html(:raw_input) { |input| input.closed_start_tag }
 
@@ -148,7 +148,7 @@ module Formular
         include InlineCheckable
 
         tag "input"
-        add_option_keys [:control_label_options]
+        add_option_keys :control_label_options
         set_default :control_label_options, { class: ["radio-inline"] }
       end
 

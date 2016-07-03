@@ -6,7 +6,7 @@ module Formular
       module Control
         include Formular::Elements::Module
 
-        add_option_keys [:attribute_name]
+        add_option_keys :attribute_name
 
         set_default :name, :form_encoded_name
         set_default :id, :form_encoded_id

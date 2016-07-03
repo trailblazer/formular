@@ -5,7 +5,7 @@ module Formular
       # this module provides label to a control when included.
       module Labels
         include Formular::Elements::Module
-        add_option_keys [:label, :label_options]
+        add_option_keys :label, :label_options
 
         # options functionality (same as SimpleForm):
         # options[:hint] == String return the string

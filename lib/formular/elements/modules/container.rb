@@ -10,7 +10,7 @@ module Formular
       module Container
         include Formular::Elements::Module
 
-        add_option_keys [:content]
+        add_option_keys :content
 
         html do |element|
           element.has_content? ? element.to_html(context: :with_content) : element.start_tag

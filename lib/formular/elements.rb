@@ -25,7 +25,7 @@ module Formular
       include Formular::Elements::Modules::Errors
 
       tag 'p'
-      add_option_keys [:attribute_name]
+      add_option_keys :attribute_name
       set_default :content, :error_text
     end # class Error
 
@@ -35,7 +35,7 @@ module Formular
 
     class Textarea < Control
       include Formular::Elements::Modules::Container
-      add_option_keys [:value]
+      add_option_keys :value
 
       # we should always render complete element tags
       # we don't want opens without closes for textareas
@@ -49,7 +49,7 @@ module Formular
     end # class Textarea
 
     class Label < Container
-      add_option_keys [:labeled_control, :attribute_name]
+      add_option_keys :labeled_control, :attribute_name
       set_default :for, :labeled_control_id
 
       # as per MDN A label element can have both a 'for' attribute and a contained control element,
@@ -74,7 +74,7 @@ module Formular
     end # class Input
 
     class Select < Control
-      add_option_keys [:collection, :value]
+      add_option_keys :collection, :value
 
       html do |input, output|
         output.concat input.start_tag

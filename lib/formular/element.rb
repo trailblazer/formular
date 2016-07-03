@@ -34,7 +34,7 @@ module Formular
     end
 
     # whitelist the keys that should NOT end up as html attributes
-    def self.add_option_keys(keys)
+    def self.add_option_keys(*keys)
       self.option_keys += keys
     end
 

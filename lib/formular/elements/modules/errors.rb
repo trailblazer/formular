@@ -5,7 +5,7 @@ module Formular
       # this module provides error methods to a control when included.
       module Errors
         include Formular::Elements::Module
-        add_option_keys [:error]
+        add_option_keys :error
 
         # options functionality (same as SimpleForm):
         # options[:error] == false NO ERROR regardless of model errors

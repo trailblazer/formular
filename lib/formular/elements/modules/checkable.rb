@@ -8,7 +8,7 @@ module Formular
         include Formular::Elements::Module
         include Control
 
-        add_option_keys [:collection, :control_label_options]
+        add_option_keys :collection, :control_label_options
 
         set_default :value, nil # instead of reader value
         set_default :checked, 'checked', if: :is_checked?
