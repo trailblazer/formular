@@ -22,7 +22,7 @@ module Formular
       })
 
       def collection(name, models = nil, &block)
-        models ||= model? ? model.send(name) : []
+        models ||= model ? model.send(name) : []
 
         models.map.with_index do |model, i|
           nested(name, nested_model: model, path_appendix: [name,i], &block)
@@ -30,7 +30,7 @@ module Formular
       end
 
       def nested(name, nested_model: nil, path_appendix: nil, &block)
-        nested_model ||= model.send(name) if model?
+        nested_model ||= model.send(name) if model
         path_appendix ||= name
         self.class.new(model: nested_model, path_prefix: path(path_appendix)).(&block)
       end

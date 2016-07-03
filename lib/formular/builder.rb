@@ -38,13 +38,9 @@ module Formular
     def initialize(model: nil, path_prefix: nil, errors: nil, elements: nil)
       @model = model
       @path_prefix = path_prefix
-      @errors = errors || (model? ? model.errors : nil)
+      @errors = errors || (model ? model.errors : nil)
       @elements = elements || self.class.elements
       self.class.define_element_methods(elements) if elements
-    end
-
-    def model?
-      @model != nil
     end
 
     def capture(*args)
@@ -63,7 +59,7 @@ module Formular
     end
 
     def reader_value(name)
-      model? ? model.send(name) : nil
+      model ? model.send(name) : nil
     end
   end # class Builder
 end # module Formular
