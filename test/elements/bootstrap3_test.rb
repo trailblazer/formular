@@ -6,6 +6,15 @@ require "formular/elements/bootstrap3"
 #than all we need to do in the builders is test that the correct elements are included
 describe Formular::Elements::Bootstrap3 do
   let(:builder) { Formular::Builders::Bootstrap3.new() }
+
+  describe Formular::Elements::Bootstrap3::Submit do
+    let(:element) { builder.submit(value: 'Go Go Go!!') }
+
+    it "returns correct html" do
+      element.to_s.must_equal %(<button class="btn btn-default" type="submit">Go Go Go!!</button>)
+    end
+  end
+
   describe 'bs3 input groups' do
     describe 'with addons as options' do
       let(:element) { builder.input_group(:url, label: 'URL', left_addon: 'http://', right_addon: '.com', value: 'www.trailblazer.to') }

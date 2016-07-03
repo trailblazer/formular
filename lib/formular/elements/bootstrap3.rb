@@ -11,21 +11,10 @@ module Formular
       InputAddon = Class.new(Formular::Elements::Container) { tag :span; set_default :class, ['input-group-addon'] }
       InputBtn = Class.new(Formular::Elements::Container) { tag :span; set_default :class, ['input-group-btn'] }
 
-      class Submit < Formular::Elements::Container
+      class Submit < Formular::Elements::Button
         tag 'button'
         set_default :class, ['btn', 'btn-default']
         set_default :type, "submit"
-        add_option_keys :value
-
-        # could dry this up into a containiner control module
-        # we use the same thing for textareas
-        html do |element|
-          element.to_html(context: :with_content)
-        end
-
-        def content
-          options[:value] || super
-        end
       end # class Submit
 
       class Error < Formular::Elements::Error

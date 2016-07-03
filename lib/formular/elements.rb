@@ -68,6 +68,18 @@ module Formular
       html { |input| input.closed_start_tag }
     end # class Submit
 
+    class Button < Formular::Elements::Container
+      add_option_keys :value
+
+      html do |element|
+        element.to_html(context: :with_content)
+      end
+
+      def content
+        options[:value] || super
+      end
+    end # class Button
+
     class Input < Control
       set_default :type, 'text'
       html { |input| input.closed_start_tag }
