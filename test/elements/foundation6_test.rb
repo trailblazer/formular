@@ -190,4 +190,10 @@ describe Formular::Elements::Foundation6 do
       end
     end
   end
+
+  describe Formular::Elements::Foundation6::Submit do
+    it "#to_s" do
+      builder.submit(value: "Submit!").to_s.must_equal %(<button class="success button" type="submit">Submit!</button>)
+    end
+  end
 end
