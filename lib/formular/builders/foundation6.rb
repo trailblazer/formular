@@ -13,6 +13,7 @@ module Formular
         stacked_checkbox: Formular::Elements::Foundation6::StackedCheckbox,
         stacked_radio: Formular::Elements::Foundation6::StackedRadio,
         input: Formular::Elements::Foundation6::Input,
+        input_group: Formular::Elements::Foundation6::InputGroup,
         file: Formular::Elements::Foundation6::File,
         select: Formular::Elements::Foundation6::Select,
         textarea: Formular::Elements::Foundation6::Textarea,
