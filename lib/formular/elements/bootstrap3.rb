@@ -3,29 +3,42 @@ require 'formular/elements'
 require 'formular/elements/modules/container'
 require 'formular/elements/modules/wrapped_control'
 require 'formular/elements/module'
+
 module Formular
   module Elements
     module Bootstrap3
       Label = Class.new(Formular::Elements::Label) { set_default :class, ['control-label'] }
-      InputGroupWrapper = Class.new(Formular::Elements::Container) { tag :div; set_default :class, ['input-group'] }
-      InputAddon = Class.new(Formular::Elements::Container) { tag :span; set_default :class, ['input-group-addon'] }
-      InputBtn = Class.new(Formular::Elements::Container) { tag :span; set_default :class, ['input-group-btn'] }
+
+      class InputGroupWrapper < Formular::Elements::Container
+        tag :div
+        set_default :class, ['input-group']
+      end # class InputGroupWrapper
+
+      class InputAddon < Formular::Elements::Container
+        tag :span
+        set_default :class, ['input-group-addon']
+      end # class InputAddon
+
+      class InputBtn < Formular::Elements::Container
+        tag :span
+        set_default :class, ['input-group-btn']
+      end # class InputBtn
 
       class Submit < Formular::Elements::Button
         tag 'button'
         set_default :class, ['btn', 'btn-default']
-        set_default :type, "submit"
+        set_default :type, 'submit'
       end # class Submit
 
       class Error < Formular::Elements::Error
         tag :span
         set_default :class, ['help-block']
-      end # class HelpBlock
+      end # class Error
 
       class Hint < Formular::Elements::Hint
         tag :span
         set_default :class, ['help-block']
-      end # class HelpBlock
+      end # class Hint
 
       class Input < Formular::Elements::Input
         include Formular::Elements::Modules::WrappedControl
@@ -33,7 +46,7 @@ module Formular
         set_default :class, ['form-control'], unless: :file_input?
 
         def file_input?
-          attributes[:type] == "file"
+          attributes[:type] == 'file'
         end
       end # class Input
 

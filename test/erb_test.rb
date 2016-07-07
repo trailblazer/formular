@@ -1,8 +1,8 @@
-require "test_helper"
-require "formular/builders/basic"
+require 'test_helper'
+require 'formular/builders/basic'
 require 'tilt'
-require "trailblazer/cell"
-require "cells-erb"
+require 'trailblazer/cell'
+require 'cells-erb'
 
 class Comment::Erb
   class Show < Trailblazer::Cell
@@ -14,19 +14,19 @@ class Comment::Erb
       render view: :show
     end
 
-    def form(model:nil, **options, &block)
+    def form(model: nil, **options, &block)
       Formular::Builders::Basic.new(model: model, path_prefix: :comment).form(options, &block)
     end
   end
 end
 
 class Erb < Minitest::Spec
-  # FIXME don't ask me why erb makes so much white space...
-  describe "valid, initial rendering" do
-    let (:model) { Comment.new(1, nil, [Reply.new(1, "some exciting words"), Reply.new], Owner.new(1, "Joe Blog", "joe@somewhere.com"), "0x", true) }
+  # FIXME: don't ask me why erb makes so much white space...
+  describe 'valid, initial rendering' do
+    let(:model) { Comment.new(1, nil, [Reply.new(1, 'some exciting words'), Reply.new], Owner.new(1, 'Joe Blog', 'joe@somewhere.com'), '0x', true) }
 
     it do
-      Comment::Erb::Show.new(model).().must_equal %{<div>New</div>
+      Comment::Erb::Show.new(model).().must_equal %(<div>New</div>
 <form method="post" action="/posts">
 <input name="comment[id]" id="comment_id" value="1" type="text"/>
 <textarea name="comment[body]" id="comment_body" placeholder="And your story..." rows="9"></textarea>
@@ -43,11 +43,10 @@ class Erb < Minitest::Spec
 
 <input name="comment[uuid]" id="comment_uuid" value="0x" type="text"/>
 <input type="submit" value="Submit"/>
-</form>}
+</form>)
     end
   end
 end
-
 
 #   describe "with errors" do
 #     let (:model) do
@@ -68,4 +67,4 @@ end
 # </form>}
 #     end
 #   end
-#end
+# end
