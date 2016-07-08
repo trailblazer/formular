@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency             "declarative",    "< 1.0.0", ">= 0.0.8"
   spec.add_dependency             "uber",           "~> 0.0.11"
 
-  spec.add_development_dependency "bundler", "~> 1.10"
+  spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "reform"
   spec.add_development_dependency "dry-validation"
