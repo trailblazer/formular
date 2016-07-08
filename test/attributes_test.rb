@@ -9,8 +9,8 @@ class AttributesTest < Minitest::Spec
 
   describe "#merge!" do
     it do
-      attrs = Formular::Attributes["data-remote": true]
-      attrs.merge!(class: [:group]).must_equal("data-remote": true, class: [:group])
+      attrs = Formular::Attributes[:'data-remote' => true]
+      attrs.merge!(class: [:group]).must_equal(:'data-remote' => true, class: [:group])
     end
 
     it do
