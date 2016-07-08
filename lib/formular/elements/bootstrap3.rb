@@ -3,26 +3,16 @@ require 'formular/elements'
 require 'formular/elements/modules/container'
 require 'formular/elements/modules/wrapped_control'
 require 'formular/elements/module'
+require 'formular/elements/bootstrap3/input_groups'
+require 'formular/elements/bootstrap3/checkable_controls'
 
 module Formular
   module Elements
     module Bootstrap3
+      include InputGroups
+      include CheckableControls
+
       Label = Class.new(Formular::Elements::Label) { set_default :class, ['control-label'] }
-
-      class InputGroupWrapper < Formular::Elements::Container
-        tag :div
-        set_default :class, ['input-group']
-      end # class InputGroupWrapper
-
-      class InputAddon < Formular::Elements::Container
-        tag :span
-        set_default :class, ['input-group-addon']
-      end # class InputAddon
-
-      class InputBtn < Formular::Elements::Container
-        tag :span
-        set_default :class, ['input-group-btn']
-      end # class InputBtn
 
       class Submit < Formular::Elements::Button
         tag 'button'
@@ -49,140 +39,6 @@ module Formular
           attributes[:type] == 'file'
         end
       end # class Input
-
-      class InputGroup < Formular::Elements::Input
-        include Formular::Elements::Modules::WrappedControl
-        include Formular::Elements::Modules::Container
-
-        tag :input
-        set_default :class, ['form-control']
-
-        add_option_keys :left_addon, :right_addon, :left_btn, :right_btn
-
-        html(:raw_input) { |input| input.closed_start_tag }
-
-        html do |input|
-          content = input.content || input.to_html(context: :with_options)
-          InputGroupWrapper.(content: content)
-        end
-
-        def group_addon(content = nil, option_key: nil)
-          return '' unless content || option_key
-          addon_content = content || options[option_key]
-          return '' unless addon_content
-
-          InputAddon.(content: addon_content)
-        end
-
-        def group_btn(content = nil, option_key: nil)
-          return '' unless content || option_key
-          addon_content = content || options[option_key]
-          return '' unless addon_content
-
-          InputBtn.(content: addon_content)
-        end
-
-        def control
-          to_html(context: :raw_input)
-        end
-
-        html(:with_options) do |input, output|
-          output.concat input.group_addon(option_key: :left_addon)
-          output.concat input.group_btn(option_key: :left_btn)
-          output.concat input.control
-          output.concat input.group_addon(option_key: :right_addon)
-          output.concat input.group_btn(option_key: :right_btn)
-        end
-      end
-
-      module InlineCheckable
-        include Formular::Elements::Module
-
-        html(:with_group_label) do |input|
-          input.wrapper do |_, output|
-            output.concat input.group_label
-            output.concat Formular::Elements::Div.(content: input.collection.map(&:checkable_label).join(''))
-            output.concat input.hint
-            output.concat input.error
-          end
-        end
-
-        html(:wrapped) do |input|
-          if input.has_group_label?
-            input.to_html(context: :with_group_label)
-          else
-            input.wrapper do |_, output|
-              output.concat input.collection.map(&:checkable_label).join('')
-              output.concat input.hint
-              output.concat input.error
-            end
-          end
-        end
-      end
-
-      module StackedCheckable
-        include Formular::Elements::Module
-
-        html(:wrapped) do |input|
-          input.wrapper do |_, output|
-            output.concat input.group_label
-            input.collection.each do |control|
-              output.concat control.inner_wrapper { control.checkable_label }
-            end
-            output.concat input.hint
-            output.concat input.error
-          end
-        end
-
-        class InnerWrapper < Formular::Elements::Container
-          tag 'div'
-        end
-
-        module InstanceMethods
-          def inner_wrapper(&block)
-            InnerWrapper.(class: inner_wrapper_class, &block).to_s
-          end
-        end
-      end
-
-      class InlineRadio < Formular::Elements::Radio
-        include Formular::Elements::Modules::WrappedControl
-        include InlineCheckable
-
-        tag "input"
-        add_option_keys :control_label_options
-        set_default :control_label_options, { class: ["radio-inline"] }
-      end
-
-      class InlineCheckbox < Formular::Elements::Checkbox
-        include Formular::Elements::Modules::WrappedControl
-        include InlineCheckable
-
-        tag 'input'
-        set_default :control_label_options, { class: ["checkbox-inline"] }
-      end # class Checkbox
-
-      class Checkbox < Formular::Elements::Checkbox
-        include Formular::Elements::Modules::WrappedControl
-        include StackedCheckable
-
-        tag 'input'
-
-        def inner_wrapper_class
-          ['checkbox']
-        end
-      end # class Checkbox
-
-      class Radio < Formular::Elements::Radio
-        include Formular::Elements::Modules::WrappedControl
-        include StackedCheckable
-
-        tag 'input'
-
-        def inner_wrapper_class
-          ['radio']
-        end
-      end # class Radio
 
       class Select < Formular::Elements::Select
         include Formular::Elements::Modules::WrappedControl

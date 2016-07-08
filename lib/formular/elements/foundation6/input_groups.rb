@@ -12,7 +12,7 @@ module Formular
           def wrapper(&block)
             builder.fieldset(Attributes[options[:wrapper_options]], &block)
           end
-        end
+        end # module WrappedGroup
 
         class InputGroup < Formular::Elements::Input
           include WrappedGroup
@@ -71,7 +71,7 @@ module Formular
             output.concat input.group_label(option_key: :right_label)
             output.concat input.group_button(option_key: :right_button)
           end
-        end
+        end # class InputGroup
 
         class Wrapper < Formular::Elements::Container
           tag :div
@@ -87,7 +87,7 @@ module Formular
           tag :div
           set_default :class, ['input-group-button']
         end # class Button
-      end
-    end
-  end
-end
+      end #module InputGroups
+    end #module Foundation6
+  end #module Elements
+end # module Foundation

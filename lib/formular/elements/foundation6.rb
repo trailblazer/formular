@@ -1,13 +1,19 @@
-require 'formular/element'
 require 'formular/elements'
-require 'formular/elements/modules/container'
 require 'formular/elements/modules/wrapped_control'
 require 'formular/elements/module'
 require 'formular/elements/foundation6/input_groups'
+require 'formular/elements/foundation6/checkable_controls'
+require 'formular/elements/foundation6/wrapped_control'
 module Formular
   module Elements
     module Foundation6
       include InputGroups
+      include CheckableControls
+
+      module InputWithErrors
+        include Formular::Elements::Module
+        set_default :class, ['is-invalid-input'], if: :has_errors?
+      end # module InputWithErrors
 
       class Submit < Formular::Elements::Button
         tag :button
@@ -15,67 +21,10 @@ module Formular
         set_default :type, 'submit'
       end # class Submit
 
-      module WrappedControl
-        include Formular::Elements::Module
-        include Formular::Elements::Modules::WrappedControl
-
-        html(:wrapped) do |input|
-          input.wrapper do |_, output|
-            output.concat input.label_text
-            output.concat input.to_html(context: :default)
-            output.concat input.hint
-            output.concat input.error
-          end.to_s
-        end
-      end
-
-      module Checkable
-        include Formular::Elements::Module
-
-        set_default :label_options, { class: ['is-invalid-label'] }, if: :has_errors?
-        set_default :control_label_options, { class: ['is-invalid-label'] }, if: :has_errors?
-
-        html(:wrapped) do |input|
-          input.wrapper do |_, output|
-            output.concat input.group_label
-            input.collection.each { |control| output.concat control.checkable_label }
-            output.concat input.hint
-            output.concat input.error
-          end.to_s
-        end
-
-        module InstanceMethods
-          def wrapper(&block)
-            builder.fieldset(Attributes[options[:wrapper_options]], &block)
-          end
-        end
-      end
-
-      module StackedCheckable
-        include Formular::Elements::Module
-        include Checkable
-
-        html(:wrapped) do |input|
-          input.wrapper do |_, output|
-            output.concat input.group_label
-            input.collection.each do |control|
-              output.concat input.builder.div(content: control.checkable_label).to_s
-            end
-            output.concat input.hint
-            output.concat input.error
-          end.to_s
-        end
-      end
-
-      module InputWithErrors
-        include Formular::Elements::Module
-        set_default :class, ['is-invalid-input'], if: :has_errors?
-      end
-
       class LabelWithError < Formular::Elements::Label
-        tag "label"
+        tag :label
         set_default :class, ['is-invalid-label']
-      end
+      end # class LabelWithError
 
       class Error < Formular::Elements::Error
         tag :span
@@ -85,34 +34,7 @@ module Formular
       class Hint < Formular::Elements::Hint
         tag :p
         set_default :class, ['help-text']
-      end
-
-      class Checkbox < Formular::Elements::Checkbox
-        include WrappedControl
-        include Checkable
-
-        tag 'input'
-        set_default :label_options, { class: ['is-invalid-label'] }, if: :has_errors?
-        set_default :control_label_options, { class: ['is-invalid-label'] }, if: :has_errors?
-
-      end # class Input
-
-      class Radio < Formular::Elements::Radio
-        include WrappedControl
-        include Checkable
-
-        tag 'input'
-      end
-
-      class StackedRadio < Radio
-        include StackedCheckable
-        tag 'input'
-      end
-
-      class StackedCheckbox < Checkbox
-        include StackedCheckable
-        tag 'input'
-      end
+      end # class Hint
 
       class Input < Formular::Elements::Input
         include WrappedControl
@@ -133,7 +55,7 @@ module Formular
           output.concat input.hint
           output.concat input.error
         end
-      end # class Input
+      end # class File
 
       class Select < Formular::Elements::Select
         include WrappedControl
@@ -143,7 +65,7 @@ module Formular
       class Textarea < Formular::Elements::Textarea
         include WrappedControl
         include InputWithErrors
-      end # class Select
+      end # class Textarea
     end # module Foundation6
   end # module Elements
 end # module Formular
