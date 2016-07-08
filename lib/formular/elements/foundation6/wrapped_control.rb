@@ -8,11 +8,11 @@ module Formular
         include Formular::Elements::Modules::WrappedControl
 
         html(:wrapped) do |input|
-          input.wrapper do |_, output|
-            output.concat input.label_text
-            output.concat input.to_html(context: :default)
-            output.concat input.hint
-            output.concat input.error
+          input.wrapper do
+            concat input.label_text
+            concat input.to_html(context: :default)
+            concat input.hint
+            concat input.error
           end.to_s
         end
       end # module WrappedControl

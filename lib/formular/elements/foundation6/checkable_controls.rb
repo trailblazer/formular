@@ -13,11 +13,11 @@ module Formular
           set_default :control_label_options, { class: ['is-invalid-label'] }, if: :has_errors?
 
           html(:wrapped) do |input|
-            input.wrapper do |_, output|
-              output.concat input.group_label
-              input.collection.each { |control| output.concat control.checkable_label }
-              output.concat input.hint
-              output.concat input.error
+            input.wrapper do
+              concat input.group_label
+              input.collection.each { |control| concat control.checkable_label }
+              concat input.hint
+              concat input.error
             end.to_s
           end
 
@@ -33,13 +33,13 @@ module Formular
           include Checkable
 
           html(:wrapped) do |input|
-            input.wrapper do |_, output|
-              output.concat input.group_label
+            input.wrapper do
+              concat input.group_label
               input.collection.each do |control|
-                output.concat input.builder.div(content: control.checkable_label).to_s
+                concat input.builder.div(content: control.checkable_label).to_s
               end
-              output.concat input.hint
-              output.concat input.error
+              concat input.hint
+              concat input.error
             end.to_s
           end
         end # class StackedCheckable

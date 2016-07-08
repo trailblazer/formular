@@ -49,11 +49,11 @@ module Formular
 
         self.html_context = :wrapped
 
-        html(:wrapped) do |input, output|
-          output.concat input.label
-          output.concat input.to_html(context: :default)
-          output.concat input.hint
-          output.concat input.error
+        html(:wrapped) do |input|
+          concat input.label
+          concat input.to_html(context: :default)
+          concat input.hint
+          concat input.error
         end
       end # class File
 

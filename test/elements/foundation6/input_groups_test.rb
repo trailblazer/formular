@@ -26,10 +26,10 @@ describe 'Foundation6::InputGroups' do
   end
 
   it '#to_s with block' do
-    element = builder.input_group(:title, value: 'John Smith') do |input, output|
-      output.concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
-      output.concat input.group_input
-      output.concat input.group_button(builder.submit(value: 'Go!'))
+    element = builder.input_group(:title, value: 'John Smith') do |input|
+      concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
+      concat input.group_input
+      concat input.group_button(builder.submit(value: 'Go!'))
     end
     element.to_s.must_equal %(<fieldset><div class="input-group"><span class="input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input name="title" id="title" type="text" class="input-group-field" value="John Smith"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div></fieldset>)
   end
@@ -58,10 +58,10 @@ describe 'Foundation6::InputGroups' do
     end
 
     it '#to_s with block' do
-      element = builder.input_group(:title, value: 'John Smith', label: 'Title') do |input, output|
-        output.concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
-        output.concat input.group_input
-        output.concat input.group_button(builder.submit(value: 'Go!'))
+      element = builder.input_group(:title, value: 'John Smith', label: 'Title') do |input|
+        concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
+        concat input.group_input
+        concat input.group_button(builder.submit(value: 'Go!'))
       end
       element.to_s.must_equal %(<fieldset><label for="title">Title</label><div class="input-group"><span class="input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input name="title" id="title" type="text" class="input-group-field" value="John Smith"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div></fieldset>)
     end
@@ -91,10 +91,10 @@ describe 'Foundation6::InputGroups' do
     end
 
     it '#to_s with block' do
-      element = builder.input_group(:title, value: 'John Smith') do |input, output|
-        output.concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
-        output.concat input.group_input
-        output.concat input.group_button(builder.submit(value: 'Go!'))
+      element = builder.input_group(:title, value: 'John Smith') do |input|
+        concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
+        concat input.group_input
+        concat input.group_button(builder.submit(value: 'Go!'))
       end
       element.to_s.must_equal %(<fieldset><div class="input-group"><span class="is-invalid-label input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input name="title" id="title" type="text" class="input-group-field is-invalid-input" value="John Smith"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div><span class="form-error is-visible">is missing</span></fieldset>)
     end
@@ -124,10 +124,10 @@ describe 'Foundation6::InputGroups' do
     end
 
     it '#to_s with block' do
-      element = builder.input_group(:title, value: 'John Smith', hint: 'Some handy hint') do |input, output|
-        output.concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
-        output.concat input.group_input
-        output.concat input.group_button(builder.submit(value: 'Go!'))
+      element = builder.input_group(:title, value: 'John Smith', hint: 'Some handy hint') do |input|
+        concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
+        concat input.group_input
+        concat input.group_button(builder.submit(value: 'Go!'))
       end
       element.to_s.must_equal %(<fieldset><div class="input-group"><span class="input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input name="title" id="title" type="text" aria-describedby=\"title_hint\" class="input-group-field" value="John Smith"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div><p class="help-text" id="title_hint">Some handy hint</p></fieldset>)
     end
@@ -161,10 +161,10 @@ describe 'Foundation6::InputGroups' do
     end
 
     it '#to_s with block' do
-      element = builder.input_group(:title, label: 'Title', value: 'John Smith', hint: 'Some handy hint') do |input, output|
-        output.concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
-        output.concat input.group_input
-        output.concat input.group_button(builder.submit(value: 'Go!'))
+      element = builder.input_group(:title, label: 'Title', value: 'John Smith', hint: 'Some handy hint') do |input|
+        concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
+        concat input.group_input
+        concat input.group_button(builder.submit(value: 'Go!'))
       end
       element.to_s.must_equal %(<fieldset><label for="title" class="is-invalid-label">Title</label><div class="input-group"><span class="is-invalid-label input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input name="title" id="title" type="text" aria-describedby=\"title_hint\" class="input-group-field is-invalid-input" value="John Smith"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div><p class="help-text" id="title_hint">Some handy hint</p><span class="form-error is-visible">is missing</span></fieldset>)
     end

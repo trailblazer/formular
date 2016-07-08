@@ -26,9 +26,9 @@ describe 'core elements' do
     end
 
     it '#to_s contents as block' do
-      element = Formular::Elements::Fieldset.() do |_, output|
-        output.concat '<legend>Hello</legend>'
-        output.concat Formular::Elements::Label.(
+      element = Formular::Elements::Fieldset.() do
+        concat '<legend>Hello</legend>'
+        concat Formular::Elements::Label.(
           class: ['control-label'],
           content: 'A handy label'
         )
@@ -56,9 +56,9 @@ describe 'core elements' do
     end
 
     it '#to_s contents as block' do
-      element = Formular::Elements::Form.() do |_, output|
-        output.concat '<h1>Edit Form</h1>'
-        output.concat Formular::Elements::Label.(
+      element = Formular::Elements::Form.() do
+        concat '<h1>Edit Form</h1>'
+        concat Formular::Elements::Label.(
           class: ['control-label'],
           content: 'A handy label'
         )
@@ -88,9 +88,9 @@ describe 'core elements' do
     end
 
     it '#to_s contents as block' do
-      element = Formular::Elements::Textarea.() do |_, output|
-        output.concat 'Part 1 text; '
-        output.concat 'Part 2 text'
+      element = Formular::Elements::Textarea.() do
+        concat 'Part 1 text; '
+        concat 'Part 2 text'
       end
       element.to_s.must_equal %(<textarea>Part 1 text; Part 2 text</textarea>)
     end
@@ -142,10 +142,10 @@ describe 'core elements' do
     end
 
     it '#to_s contents as block' do
-      element = Formular::Elements::Label.() do |_, output|
-        output.concat 'something '
-        output.concat 'super '
-        output.concat 'dooper'
+      element = Formular::Elements::Label.() do
+        concat 'something '
+        concat 'super '
+        concat 'dooper'
       end
       element.to_s.must_equal %(<label>something super dooper</label>)
     end

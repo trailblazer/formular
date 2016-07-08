@@ -24,13 +24,13 @@ module Formular
     class Error < Container
       include Formular::Elements::Modules::Errors
 
-      tag 'p'
+      tag :p
       add_option_keys :attribute_name
       set_default :content, :error_text
     end # class Error
 
     class Hint < Container
-      tag 'p'
+      tag :p
     end # class Hint
 
     class Textarea < Control
@@ -61,11 +61,11 @@ module Formular
     end # class Label
 
     class Submit < Formular::Element
-      tag 'input'
+      tag :input
 
       set_default :type, 'submit'
 
-      html { |input| input.closed_start_tag }
+      html { closed_start_tag }
     end # class Submit
 
     class Button < Formular::Elements::Container
@@ -82,16 +82,16 @@ module Formular
 
     class Input < Control
       set_default :type, 'text'
-      html { |input| input.closed_start_tag }
+      html { closed_start_tag }
     end # class Input
 
     class Select < Control
       add_option_keys :collection, :value
 
-      html do |input, output|
-        output.concat input.start_tag
-        output.concat input.option_tags
-        output.concat input.end_tag
+      html do |input|
+        concat start_tag
+        concat input.option_tags
+        concat end_tag
       end
 
       # convert the collection array into option tags also supports option groups
@@ -119,7 +119,7 @@ module Formular
       def collection_to_options(collection)
         collection.map do |array|
           if array.last.is_a?(Array)
-            opts = {label: array.first, content: collection_to_options(array.last)}
+            opts = { label: array.first, content: collection_to_options(array.last) }
             # we should probably call this through the builder incase people need to edit it?
             Formular::Elements::OptGroup.new(opts).to_s
           else
@@ -137,10 +137,10 @@ module Formular
     end # class Select
 
     class Checkbox < Checkable
-      tag 'input'
+      tag :input
       set_default :type, 'checkbox'
 
-      html { |input| input.closed_start_tag }
+      html { closed_start_tag }
 
       def form_encoded_name
         builder.path(attribute_name).to_encoded_name + '[]' if attribute_name && builder
@@ -148,10 +148,10 @@ module Formular
     end # class Checkbox
 
     class Radio < Checkable
-      tag 'input'
+      tag :input
       set_default :type, 'radio'
 
-      html { |input| input.closed_start_tag }
+      html { closed_start_tag }
     end # class Radio
   end # module Elements
 end # module Formular

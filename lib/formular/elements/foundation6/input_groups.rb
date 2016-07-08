@@ -23,7 +23,7 @@ module Formular
 
           add_option_keys :left_label, :right_label, :left_button, :right_button
 
-          html(:raw_input) { |input| input.closed_start_tag }
+          html(:raw_input) { closed_start_tag }
 
           html do |input|
             content = input.has_content? ? input.content : input.to_html(context: :with_options)
@@ -64,12 +64,12 @@ module Formular
             @label_options ||= Attributes[options[:label_options]].merge(class: ['is-invalid-label'])
           end
 
-          html(:with_options) do |input, output|
-            output.concat input.group_label(option_key: :left_label)
-            output.concat input.group_button(option_key: :left_button)
-            output.concat input.group_input
-            output.concat input.group_label(option_key: :right_label)
-            output.concat input.group_button(option_key: :right_button)
+          html(:with_options) do |input|
+            concat input.group_label(option_key: :left_label)
+            concat input.group_button(option_key: :left_button)
+            concat input.group_input
+            concat input.group_label(option_key: :right_label)
+            concat input.group_button(option_key: :right_button)
           end
         end # class InputGroup
 

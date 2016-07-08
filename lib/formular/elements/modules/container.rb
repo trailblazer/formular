@@ -13,20 +13,20 @@ module Formular
         add_option_keys :content
 
         html do |element|
-          element.has_content? ? element.to_html(context: :with_content) : element.start_tag
+          element.has_content? ? element.to_html(context: :with_content) : start_tag
         end
 
-        html(:with_content) do |element, output|
-          output.concat element.start_tag
-          output.concat element.content
-          output.concat element.end_tag
+        html(:with_content) do |element|
+          concat start_tag
+          concat element.content
+          concat end_tag
         end
 
-        html(:end) { |element| element.end_tag }
+        html(:end) { end_tag }
 
         module InstanceMethods
           def content
-            @block ? HtmlBlock.new(@block).call(self) : options[:content]
+            @block ? HtmlBlock.new(self, @block).call : options[:content]
           end
 
           def has_content?

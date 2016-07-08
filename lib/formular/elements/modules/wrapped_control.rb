@@ -20,12 +20,12 @@ module Formular
 
         self.html_context = :wrapped
 
-        html(:wrapped) do |input, output|
+        html(:wrapped) do |input|
           input.wrapper do
-            output.concat input.label
-            output.concat input.to_html(context: :default)
-            output.concat input.hint
-            output.concat input.error
+            concat input.label
+            concat input.to_html(context: :default)
+            concat input.hint
+            concat input.error
           end
         end
 

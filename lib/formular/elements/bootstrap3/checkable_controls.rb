@@ -11,11 +11,11 @@ module Formular
           include Formular::Elements::Module
 
           html(:with_group_label) do |input|
-            input.wrapper do |_, output|
-              output.concat input.group_label
-              output.concat Formular::Elements::Div.(content: input.collection.map(&:checkable_label).join(''))
-              output.concat input.hint
-              output.concat input.error
+            input.wrapper do
+              concat input.group_label
+              concat Formular::Elements::Div.(content: input.collection.map(&:checkable_label).join(''))
+              concat input.hint
+              concat input.error
             end
           end
 
@@ -23,10 +23,10 @@ module Formular
             if input.has_group_label?
               input.to_html(context: :with_group_label)
             else
-              input.wrapper do |_, output|
-                output.concat input.collection.map(&:checkable_label).join('')
-                output.concat input.hint
-                output.concat input.error
+              input.wrapper do
+                concat input.collection.map(&:checkable_label).join('')
+                concat input.hint
+                concat input.error
               end
             end
           end
@@ -53,13 +53,13 @@ module Formular
           include Formular::Elements::Module
 
           html(:wrapped) do |input|
-            input.wrapper do |_, output|
-              output.concat input.group_label
+            input.wrapper do
+              concat input.group_label
               input.collection.each do |control|
-                output.concat control.inner_wrapper { control.checkable_label }
+                concat control.inner_wrapper { control.checkable_label }
               end
-              output.concat input.hint
-              output.concat input.error
+              concat input.hint
+              concat input.error
             end
           end
 
