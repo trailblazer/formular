@@ -1,5 +1,5 @@
 div New
-= form action: "/posts", model: model do |f|
+= form model, "/posts", path_prefix: :comment do |f|
   = f.input :id
   = f.textarea :body
   = f.checkbox :public, value: true

@@ -1,5 +1,7 @@
 require 'test_helper'
 require 'formular/builders/bootstrap3'
+require 'formular/builders/bootstrap3_horizontal'
+require 'formular/builders/bootstrap3_inline'
 
 describe 'Bootstrap3 builders' do
   let(:model) { Comment.new(nil, 'Something exciting', [Reply.new], Owner.new) }

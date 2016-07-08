@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'formular/builders/basic'
+require 'formular/helper'
 require 'tilt'
 require 'trailblazer/cell'
 require 'cells-erb'
@@ -7,15 +7,12 @@ require 'cells-erb'
 class Comment::Erb
   class Show < Trailblazer::Cell
     include Cell::Erb
+    include Formular::Helper
 
     self.view_paths = ['test/fixtures']
 
     def show
       render view: :show
-    end
-
-    def form(model: nil, **options, &block)
-      Formular::Builders::Basic.new(model: model, path_prefix: :comment).form(options, &block)
     end
   end
 end

@@ -1,10 +1,11 @@
 require 'test_helper'
-require 'formular/builders/basic'
+require 'formular/helper'
 require 'cell/slim'
 
 class Comment::Slim
   class Show < Trailblazer::Cell
     include Cell::Slim
+    include Formular::Helper
 
     self.view_paths = ['test/fixtures']
 
@@ -12,9 +13,9 @@ class Comment::Slim
       render view: :show
     end
 
-    def form(model: nil, **options, &block)
-      Formular::Builders::Basic.new(model: model, path_prefix: :comment).form(options, &block)
-    end
+    # def form(model: nil, **options, &block)
+    #   Formular::Builders::Basic.new(model: model, path_prefix: :comment).form(options, &block)
+    # end
   end
 end
 
