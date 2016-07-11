@@ -19,7 +19,73 @@ module Formular
     Fieldset = Class.new(Container)
     Legend = Class.new(Container)
     Div = Class.new(Container)
-    Form = Class.new(Container) { set_default :method, "post" }
+    class Hidden < Control
+      tag :input
+      set_default :type, 'hidden'
+
+      html { closed_start_tag }
+    end
+
+    class Form < Container
+      add_option_keys :enforce_utf8, :csrf_token, :csrf_token_name
+
+      set_default :method, 'post'
+      set_default :accept_charset, 'utf-8'
+      set_default :enforce_utf8, true
+
+      html do |element|
+        if element.has_content?
+          element.to_html(context: :with_content)
+        else
+          hidden_tags = element.extra_hidden_tags
+          start_tag + hidden_tags
+        end
+      end
+
+      def content
+        extra_hidden_tags + super
+      end
+
+      def extra_hidden_tags
+        token_tag + utf8_enforcer_tag + method_tag
+      end
+
+      private
+
+      def token_tag
+        return '' unless options[:csrf_token].is_a? String
+
+        name = options[:csrf_token_name] || '_csrf_token'
+
+        Hidden.(value: options[:csrf_token], name: name).to_s
+      end
+
+      def utf8_enforcer_tag
+        return '' unless options[:enforce_utf8]
+
+        # Use raw HTML to ensure the value is written as an HTML entity; it
+        # needs to be the right character regardless of which encoding the
+        # browser infers.
+        %(<input name="utf8" type="hidden" value="✓"/>)
+      end
+
+      # because this mutates attributes, we have to call this before rendering the start_tag
+      def method_tag
+        method = attributes[:method]
+
+        case method
+        when /^get$/ # must be case-insensitive, but can't use downcase as might be nil
+          attributes[:method] = 'get'
+          ''
+        when /^post$/, '', nil
+          attributes[:method] = 'post'
+          ''
+        else
+          attributes[:method] = 'post'
+          Hidden.(value: method, name: '_method').to_s
+        end
+      end
+    end
 
     class Error < Container
       include Formular::Elements::Modules::Errors

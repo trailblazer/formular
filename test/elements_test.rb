@@ -52,7 +52,7 @@ describe 'core elements' do
   describe Formular::Elements::Form do
     it '#to_s contents as string' do
       element = Formular::Elements::Form.(content: '<h1>Edit Form</h1>')
-      element.to_s.must_equal %(<form method="post"><h1>Edit Form</h1></form>)
+      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><h1>Edit Form</h1></form>)
     end
 
     it '#to_s contents as block' do
@@ -63,16 +63,36 @@ describe 'core elements' do
           content: 'A handy label'
         )
       end
-      element.to_s.must_equal %(<form method="post"><h1>Edit Form</h1><label class="control-label">A handy label</label></form>)
+      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><h1>Edit Form</h1><label class="control-label">A handy label</label></form>)
+    end
+
+    it "enforce_utf8 option is false" do
+      element = Formular::Elements::Form.(enforce_utf8: false)
+      element.to_s.must_equal %(<form method="post" accept-charset="utf-8">)
+    end
+
+    it "custom method" do
+      element = Formular::Elements::Form.(method: 'put')
+      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><input type=\"hidden\" value="put" name="_method"/>)
+    end
+
+    it "csrf_token" do
+      element = Formular::Elements::Form.(csrf_token: 'token value...')
+      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input type=\"hidden\" value="token value..." name="_csrf_token"/><input name=\"utf8\" type=\"hidden\" value=\"✓\"/>)
+    end
+
+    it "csrf_token_name" do
+      element = Formular::Elements::Form.(csrf_token: 'token value...', csrf_token_name: '_authenticity_token')
+      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input type=\"hidden\" value="token value..." name="_authenticity_token"/><input name=\"utf8\" type=\"hidden\" value=\"✓\"/>)
     end
 
     describe 'no contents' do
       let(:element) do
-        Formular::Elements::Form.(method: 'put', class: ['grouping'])
+        Formular::Elements::Form.(class: ['grouping'])
       end
 
       it '#to_s' do
-        element.to_s.must_equal %(<form method="put" class="grouping">)
+        element.to_s.must_equal %(<form method="post" accept-charset="utf-8" class="grouping"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/>)
       end
 
       it '#end' do

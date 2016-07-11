@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency             "declarative",    "< 1.0.0", ">= 0.0.8"
+  spec.add_dependency             "declarative",    '~> 0.0.4'
   spec.add_dependency             "uber",           "~> 0.0.11"
 
   spec.add_development_dependency "bundler"

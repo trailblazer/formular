@@ -24,7 +24,7 @@ class Erb < Minitest::Spec
 
     it do
       Comment::Erb::Show.new(model).().must_equal %(<div>New</div>
-<form method="post" action="/posts">
+<form method="post" accept-charset="utf-8" action="/posts"><input name="utf8" type="hidden" value="✓"/>
 <input name="comment[id]" id="comment_id" value="1" type="text"/>
 <textarea name="comment[body]" id="comment_body" placeholder="And your story..." rows="9"></textarea>
 <input name="comment[public][]" id="comment_public" checked="checked" type="checkbox" value="true"/>

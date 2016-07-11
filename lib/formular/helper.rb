@@ -5,7 +5,6 @@ module Formular
       form_options = options
       builder_options = form_options.select { |k, v| form_options.delete(k) || true if [:builder, :model, :path_prefix, :errors, :elements].include?(k) }
 
-      form_options[:method] ||= :post
       form_options[:action] ||= url
       builder(model, builder_options).form(form_options, &block)
     end
@@ -19,12 +18,10 @@ module Formular
     }.freeze
 
     class << self
-      def _builder
-        @builder || Formular::Builders::Basic
-      end
       attr_writer :builder
 
-      def builder(name)
+      def builder(name = nil)
+        name ||= :basic
         require "formular/builders/#{name}"
         self.builder = Formular::Builders.const_get(BUILDERS.fetch(name)) # Formular::Builders::Bootstrap3
       end
@@ -33,11 +30,21 @@ module Formular
     private
 
     def builder(model, **options)
-      builder = options.delete(:builder)
-      builder = builder.nil? ? Formular::Helper._builder : Formular::Helper.builder(builder)
+      builder = Formular::Helper.builder(options.delete(:builder))
       options[:model] ||= model
 
       builder.new(options)
     end
   end # module Helper
+
+  module RailsHelper
+    include Helper
+
+    def trb_form_for(model, url, **options, &block)
+      options[:csrf_token] ||= form_authenticity_token
+      options[:csrf_token_name] ||= request_forgery_protection_token.to_s
+
+      form(model, url, options, &block)
+    end
+  end  # module RailsHelper
 end # module Formular

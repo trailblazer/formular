@@ -32,23 +32,23 @@ describe Formular::Builder do
         concat f.label(class: ['control-label'], content: 'What colour is the sky?')
         concat f.input(type: 'text', value: 'Something exciting')
       end
-      form.to_s.must_equal %(<form method="post" action="/questions/13"><label class="control-label">What colour is the sky?</label><input type="text" value="Something exciting"/></form>)
+      form.to_s.must_equal %(<form method="post" accept-charset=\"utf-8\" action="/questions/13"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><label class="control-label">What colour is the sky?</label><input type="text" value="Something exciting"/></form>)
     end
 
     it '#outputs without block (use end)' do
-      form = builder.form(action: '/questions/13', method: 'put')
+      form = builder.form(action: '/questions/13')
       html = form.to_s
       html << form.label(class: ['control-label'], content: 'What colour is the sky?').to_s
       html << form.input(type: 'text', value: 'Something exciting').to_s
       html << form.end
 
-      html.must_equal %(<form method="put" action="/questions/13"><label class="control-label">What colour is the sky?</label><input type="text" value="Something exciting"/></form>)
+      html.must_equal %(<form method="post" accept-charset=\"utf-8\" action="/questions/13"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><label class="control-label">What colour is the sky?</label><input type="text" value="Something exciting"/></form>)
     end
 
     it '#outputs without string' do
       form = builder.form(content: "<h1>Fab Form</h1>")
 
-      form.to_s.must_equal %(<form method="post"><h1>Fab Form</h1></form>)
+      form.to_s.must_equal %(<form method="post" accept-charset=\"utf-8\"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><h1>Fab Form</h1></form>)
     end
   end
 end
