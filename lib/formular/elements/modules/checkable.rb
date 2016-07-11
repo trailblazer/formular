@@ -1,4 +1,6 @@
 require 'formular/elements/module'
+require 'formular/elements/modules/control'
+require 'formular/elements/modules/collection'
 module Formular
   module Elements
     module Modules
@@ -7,17 +9,13 @@ module Formular
       module Checkable
         include Formular::Elements::Module
         include Control
+        include Collection
 
-        add_option_keys :collection, :control_label_options
+        add_option_keys :control_label_options, :label_options, :label
 
-        set_default :value, nil # instead of reader value
         set_default :checked, 'checked', if: :is_checked?
 
         module InstanceMethods
-          def is_checked?
-            !options[:checked].nil? || reader_value == attributes[:value]
-          end
-
           def checkable_label
             label_opts = Attributes[options[:label_options]]
             label_opts[:content] = if options[:label]
@@ -40,25 +38,47 @@ module Formular
           end
 
           def collection
-            unless options[:collection]
+            unless collection?
               options[:label_options] = options[:control_label_options]
               return [self]
             end
 
-            @collection ||= options[:collection].map do |array|
-              el_value, el_label = array
-              id = attributes[:id] ? "#{attributes[:id]}_#{el_value}" : "#{attribute_name || attributes[:name]}_#{el_value}"
+            base_options = collection_base_options
 
-              opts = attributes.select{ |k, v| ![:name, :id, :checked].include?(k) }.merge(
-                id: id,
-                attribute_name: attribute_name,
-                builder: builder,
-                label: el_label,
-                value: el_value,
-                label_options: options[:control_label_options]
-              )
+            @collection ||= options[:collection].map do |item|
+              opts = collection_base_options.dup
+              opts[:value] = item.send(options[:value_method])
+              opts[:label] = item.send(options[:label_method])
+
+              opts[:id] = if attributes[:id]
+                            "#{attributes[:id]}_#{opts[:value]}"
+                          else
+                            "#{attribute_name || attributes[:name].gsub('[]', '')}_#{opts[:value]}"
+                          end
+
               self.class.(opts)
             end
+          end
+
+          def collection?
+            options[:collection]
+          end
+
+          private
+
+          # we can't access other defaults
+          def is_checked?
+            !options[:checked].nil? || reader_value == attributes[:value]
+          end
+
+          def collection_base_options
+            opts = attributes.select { |k, v| ![:name, :id, :checked].include?(k) }
+            opts[:attribute_name] = attribute_name if attribute_name
+            opts[:builder]        = builder if builder
+            opts[:label_options]  = options[:control_label_options] if options[:control_label_options]
+            opts[:name]           = attributes[:name] if attributes[:name]
+
+            opts
           end
         end
       end

@@ -18,6 +18,7 @@ module Formular
           end
 
           private
+
           def path
             @path ||= builder.path(attribute_name) if attribute_name && builder
           end

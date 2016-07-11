@@ -102,7 +102,7 @@ describe 'Bootstrap3 builders' do
           f.checkbox(:public, value: 1, label: 'Public').to_s
         end
 
-        form.to_s.must_equal %(<form method="post" accept-charset="utf-8" class="form-horizontal" action="/questions/13"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group"><div class="col-sm-offset-2 col-sm-10"><div class="checkbox"><label><input name="comment[public][]" id="comment_public" type="checkbox" value="1"/> Public</label></div></div></div></form>)
+        form.to_s.must_equal %(<form method="post" accept-charset="utf-8" class="form-horizontal" action="/questions/13"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group"><div class="col-sm-offset-2 col-sm-10"><input type="hidden" value="0" name="comment[public]"/><div class="checkbox"><label><input name="comment[public]" id="comment_public" type="checkbox" value="1"/> Public</label></div></div></div></form>)
       end
 
       it 'radio renders correctly' do

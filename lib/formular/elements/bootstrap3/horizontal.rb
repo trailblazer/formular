@@ -56,9 +56,11 @@ module Formular
           include WrappedCheckableControl
 
           html(:input_column) do |input|
+            concat input.hidden_tag
             input.collection.each do |control|
               concat control.inner_wrapper { control.checkable_label }
             end
+            concat input.hint
             concat input.error
           end
         end
@@ -68,7 +70,9 @@ module Formular
           include WrappedCheckableControl
 
           html(:input_column) do |input|
+            concat input.hidden_tag
             input.collection.each { |control| concat control.checkable_label }
+            concat input.hint
             concat input.error
           end
         end

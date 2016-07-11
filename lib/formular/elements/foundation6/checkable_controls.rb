@@ -15,7 +15,9 @@ module Formular
           html(:wrapped) do |input|
             input.wrapper do
               concat input.group_label
+              concat input.hidden_tag unless input.collection?
               input.collection.each { |control| concat control.checkable_label }
+              concat input.hidden_tag if input.collection?
               concat input.hint
               concat input.error
             end.to_s
@@ -35,9 +37,11 @@ module Formular
           html(:wrapped) do |input|
             input.wrapper do
               concat input.group_label
+              concat input.hidden_tag unless input.collection?
               input.collection.each do |control|
                 concat input.builder.div(content: control.checkable_label).to_s
               end
+              concat input.hidden_tag if input.collection?
               concat input.hint
               concat input.error
             end.to_s
@@ -51,12 +55,18 @@ module Formular
 
           set_default :label_options, { class: ['is-invalid-label'] }, if: :has_errors?
           set_default :control_label_options, { class: ['is-invalid-label'] }, if: :has_errors?
+
+          html { closed_start_tag }
         end # class Checkbox
 
         class Radio < Formular::Elements::Radio
           include Checkable
 
           tag :input
+
+          def hidden_tag
+            ''
+          end
         end # class Radio
 
         class StackedRadio < Radio

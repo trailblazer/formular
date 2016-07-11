@@ -27,7 +27,7 @@ class Erb < Minitest::Spec
 <form method="post" accept-charset="utf-8" action="/posts"><input name="utf8" type="hidden" value="✓"/>
 <input name="comment[id]" id="comment_id" value="1" type="text"/>
 <textarea name="comment[body]" id="comment_body" placeholder="And your story..." rows="9"></textarea>
-<input name="comment[public][]" id="comment_public" checked="checked" type="checkbox" value="true"/>
+<input type="hidden" value="0" name="comment[public]"/><input name="comment[public]" id="comment_public" value="true" checked="checked" type="checkbox"/>
 
 <input name="comment[replies][][content]" id="comment_replies_0_content" value="some exciting words" type="text"/>
 

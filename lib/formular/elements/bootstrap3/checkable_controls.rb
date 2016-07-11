@@ -13,7 +13,9 @@ module Formular
           html(:with_group_label) do |input|
             input.wrapper do
               concat input.group_label
+              concat input.hidden_tag unless input.collection?
               concat Formular::Elements::Div.(content: input.collection.map(&:checkable_label).join(''))
+              concat input.hidden_tag if input.collection?
               concat input.hint
               concat input.error
             end
@@ -24,7 +26,9 @@ module Formular
               input.to_html(context: :with_group_label)
             else
               input.wrapper do
+                concat input.hidden_tag unless input.collection?
                 concat input.collection.map(&:checkable_label).join('')
+                concat input.hidden_tag if input.collection?
                 concat input.hint
                 concat input.error
               end
@@ -39,6 +43,10 @@ module Formular
           tag :input
           add_option_keys :control_label_options
           set_default :control_label_options, { class: ['radio-inline'] }
+
+          def hidden_tag
+            ''
+          end
         end# class InlineRadio
 
         class InlineCheckbox < Formular::Elements::Checkbox
@@ -47,6 +55,8 @@ module Formular
 
           tag :input
           set_default :control_label_options, { class: ['checkbox-inline'] }
+
+          html { closed_start_tag }
         end # class InlineCheckbox
 
         module StackedCheckable
@@ -55,9 +65,11 @@ module Formular
           html(:wrapped) do |input|
             input.wrapper do
               concat input.group_label
+              concat input.hidden_tag unless input.collection?
               input.collection.each do |control|
                 concat control.inner_wrapper { control.checkable_label }
               end
+              concat input.hidden_tag if input.collection?
               concat input.hint
               concat input.error
             end
@@ -80,6 +92,8 @@ module Formular
 
           tag :input
 
+          html { closed_start_tag }
+
           def inner_wrapper_class
             ['checkbox']
           end
@@ -93,6 +107,10 @@ module Formular
 
           def inner_wrapper_class
             ['radio']
+          end
+
+          def hidden_tag
+            ''
           end
         end # class Radio
       end # module CheckableControls

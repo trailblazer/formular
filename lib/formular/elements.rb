@@ -152,7 +152,9 @@ module Formular
     end # class Input
 
     class Select < Control
-      add_option_keys :collection, :value
+      include Formular::Elements::Modules::Collection
+
+      add_option_keys :value
 
       html do |input|
         concat start_tag
@@ -182,40 +184,83 @@ module Formular
         collection_to_options(options[:collection])
       end
 
+      private
+
       def collection_to_options(collection)
-        collection.map do |array|
-          if array.last.is_a?(Array)
-            opts = { label: array.first, content: collection_to_options(array.last) }
-            # we should probably call this through the builder incase people need to edit it?
+        collection.map do |item|
+          if item.last.is_a?(Array)
+            opts = { label: item.first, content: collection_to_options(item.last) }
+
             Formular::Elements::OptGroup.new(opts).to_s
           else
-            array_to_option(array)
+            item_to_option(item)
           end
         end.join ''
       end
 
-      def array_to_option(array)
-        opts = {value: array.first, content: array.last}
-        opts[:selected] = 'selected' if array.first == options[:value]
-        # we should probably call this through the builder incase people need to edit it?
+      def item_to_option(item)
+        value = item.send(options[:value_method])
+        label = item.send(options[:label_method])
+
+        opts = { value: value, content: label }
+        opts[:selected] = 'selected' if value == options[:value]
+
         Formular::Elements::Option.new(opts).to_s
       end
     end # class Select
 
     class Checkbox < Checkable
+      add_option_keys :unchecked_value, :include_hidden, :multiple
+
       tag :input
       set_default :type, 'checkbox'
+      set_default :unchecked_value, :default_unchecked_value
+      set_default :value, '1' # instead of reader value
 
-      html { closed_start_tag }
+      set_default :include_hidden, true
 
+      html do |element|
+        if element.collection?
+          element.to_html(context: :with_collection)
+        else
+          concat element.hidden_tag
+          concat closed_start_tag
+        end
+      end
+
+      html(:with_collection) do |element|
+        concat element.collection.map(&:checkable_label).join('')
+        concat element.hidden_tag
+      end
+
+      def hidden_tag
+        return '' unless options[:include_hidden]
+
+        Hidden.(value: options[:unchecked_value], name: attributes[:name]).to_s
+      end
+
+      private
+
+      def default_unchecked_value
+        options[:collection] ? '' : '0'
+      end
+
+      # only append the [] to name if part of a collection, or the multiple option is set
       def form_encoded_name
-        builder.path(attribute_name).to_encoded_name + '[]' if attribute_name && builder
+        return unless path
+
+        options[:multiple] || options[:collection] ? super + '[]' : super
+      end
+
+      def collection_base_options
+        super.merge(include_hidden: false)
       end
     end # class Checkbox
 
     class Radio < Checkable
       tag :input
       set_default :type, 'radio'
+      set_default :value, nil # instead of reader value
 
       html { closed_start_tag }
     end # class Radio
