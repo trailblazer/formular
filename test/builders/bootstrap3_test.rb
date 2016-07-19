@@ -5,7 +5,7 @@ require 'formular/builders/bootstrap3_inline'
 
 describe 'Bootstrap3 builders' do
   let(:model) { Comment.new(nil, 'Something exciting', [Reply.new], Owner.new) }
-  let(:collection_array) { [[1, 'Yes'], [0, 'No']] }
+  let(:collection_array) { [['Yes', 1], ['No', 0]] }
   describe Formular::Builders::Bootstrap3 do
     let(:builder) do
       Formular::Builders::Bootstrap3.new(model: model, path_prefix: :comment)

@@ -196,7 +196,7 @@ describe 'core elements' do
 
     describe "with collection" do
       it '#to_s default methods' do
-        element = Formular::Elements::Checkbox.(name: 'public[]',  collection: [[0, 'False'], [1, 'True']])
+        element = Formular::Elements::Checkbox.(name: 'public[]',  collection: [['False', 0], ['True', 1]])
         element.to_s.must_equal %(<label><input value="0" type="checkbox" name="public[]" id="public_0"/> False</label><label><input value="1" type="checkbox" name="public[]" id="public_1"/> True</label><input type="hidden" value="" name="public[]"/>)
       end
 
@@ -223,7 +223,7 @@ describe 'core elements' do
     let(:element) do
       Formular::Elements::Select.(
         name: 'public',
-        collection: [[0, 'False'], [1, 'True']],
+        collection: [['False', 0], ['True', 1]],
         value: 0
       )
     end
@@ -241,8 +241,8 @@ describe 'core elements' do
         element = Formular::Elements::Select.(
           name: 'public',
           collection: [
-            ['Genders', [%w(m Male), %w(f Female)]],
-            ['Booleans', [[1, 'True'], [0, 'False']]]
+            ['Genders', [%w(Male m), %w(Female f)]],
+            ['Booleans', [['True', 1], ['False', 0]]]
           ],
           value: 'm'
         )
