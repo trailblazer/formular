@@ -52,12 +52,12 @@ In your view, you're now ready to use Formular's API to render forms.
 
   .row
     .col-md-2
-      = f.collection :owner, [["Flori", 1], ["Konsti", 2]], type: :radio, label: "Owners"
+      = f.radio :owner, collection: [["Flori", 1], ["Konsti", 2]], label: "Owners"
     .col-md-3
-      = f.collection :owner, [["Flori", 1], ["Konsti", 2]], type: :radio, label: "Owners, inline", inline: true
-    = f.collection :roles, [["Admin", 1], ["Owner", 2], ["Maintainer", 3]], type: :checkbox, checked: model.contract.roles, label: "Roles", wrapper_attrs: { class: ["col-md-2"] }
+      = f.radio :owner, collection: [["Flori", 1], ["Konsti", 2]], label: "Owners, inline", inline: true
+    = f.checkbox :roles, collection: [["Admin", 1], ["Owner", 2], ["Maintainer", 3]], checked: model.contract.roles, label: "Roles"
 
-  = f.select :select_roles, [["Admin", 1], ["Owner", 2], ["Maintainer", 3]], selected: model.contract.select_roles, label: "Selectable Roles"
+  = f.select :select_roles, collection: [["Admin", 1], ["Owner", 2], ["Maintainer", 3]], selected: model.contract.select_roles, label: "Selectable Roles"
 
   .form-group
     = f.textarea :content, placeholder: "And your story...", rows: 9
