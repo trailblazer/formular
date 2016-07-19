@@ -13,20 +13,18 @@ module Formular
         add_option_keys :content
 
         html do |element|
-          element.has_content? ? element.to_html(context: :with_content) : start_tag
-        end
-
-        html(:with_content) do |element|
           concat start_tag
           concat element.content
           concat end_tag
         end
 
+        html(:start) { start_tag }
+
         html(:end) { end_tag }
 
         module InstanceMethods
           def content
-            @block ? HtmlBlock.new(self, @block).call : options[:content]
+            @block ? HtmlBlock.new(self, @block).call : options[:content].to_s
           end
 
           def has_content?
@@ -37,26 +35,13 @@ module Formular
             to_html(context: :end)
           end
 
-          # Delegate missing methods to the builder
-          # The only way to get rid of this is to make the builder available
-          # to the block.
-          # could we make html_blocks work without requiring block params?
-          # html do
-          #   has access to `builder`, `element` and `output`
-          #   variables without needing block
-          # end
+          def start
+            to_html(context: :start)
+          end
 
-          # People trying to use containers without blocks would need to store the builder
-          # as a variable, not the block element. E.g. this wont work
-          # f = Builder.new.form
-          #   f.some_form_element
-          # f.end
-          #
-          # You'd need to do this instead...
-          # f = Builder.new
-          # f.form
-          #   f.some_form_element
-          # f.end
+          # Delegate missing methods to the builder
+          # TODO:: @apotonick is going to do something fancy here to delegate
+          # the builder methods rather then using this method missing.
           def method_missing(method, *args, &block)
             return super unless builder
 
