@@ -4,7 +4,7 @@ require 'formular/elements/foundation6'
 
 describe Formular::Elements::Foundation6 do
   let(:builder) { Formular::Builders::Foundation6.new }
-  let(:collection_array) { [[1, 'Option 1'], [2, 'Option 2']] }
+  let(:collection_array) { [['Option 1', 1], ['Option 2', 2]] }
 
   describe Formular::Elements::Foundation6::Input do
     it '#to_s' do
@@ -139,7 +139,7 @@ describe Formular::Elements::Foundation6 do
       it '#to_s' do
         element = builder.stacked_checkbox(
           :public,
-          collection: [[1, 'Option 1'], [2, 'Option 2']]
+          collection: collection_array
         )
         element.to_s.must_equal %(<fieldset><div><label><input name="public[]" id="public_1" type="checkbox" value="1"/> Option 1</label></div><div><label><input name="public[]" id="public_2" type="checkbox" value="2"/> Option 2</label></div><input type="hidden" value="" name="public[]"/></fieldset>)
       end
@@ -147,7 +147,7 @@ describe Formular::Elements::Foundation6 do
       it '#to_s with errors' do
         element = builder.stacked_checkbox(
           :public,
-          collection: [[1, 'Option 1'], [2, 'Option 2']],
+          collection: collection_array,
           error: 'Something terrible happened'
         )
         element.to_s.must_equal %(<fieldset><div><label class="is-invalid-label"><input name="public[]" id="public_1" type="checkbox" value="1"/> Option 1</label></div><div><label class="is-invalid-label"><input name="public[]" id="public_2" type="checkbox" value="2"/> Option 2</label></div><input type="hidden" value="" name="public[]"/><span class="form-error is-visible">Something terrible happened</span></fieldset>)

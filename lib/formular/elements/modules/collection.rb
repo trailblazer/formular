@@ -9,8 +9,8 @@ module Formular
 
         add_option_keys :collection, :label_method, :value_method
 
-        set_default :label_method, 'last'
-        set_default :value_method, 'first'
+        set_default :label_method, 'first'
+        set_default :value_method, 'last'
       end
     end
   end
