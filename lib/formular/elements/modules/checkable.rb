@@ -31,9 +31,8 @@ module Formular
 
           def group_label
             return '' unless has_group_label?
-            label_opts = Attributes[options[:label_options]]
-            label_opts[:content] = options[:label]
-            builder.checkable_group_label(label_opts).to_s
+            label_options[:content] = options[:label]
+            builder.checkable_group_label(label_options).to_s
           end
 
           def has_group_label?
@@ -49,7 +48,7 @@ module Formular
             base_options = collection_base_options
 
             @collection ||= options[:collection].map do |item|
-              opts = collection_base_options.dup
+              opts = base_options.dup
               opts[:value] = item.send(options[:value_method])
               opts[:label] = item.send(options[:label_method])
 
