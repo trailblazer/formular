@@ -1,5 +1,4 @@
 require 'formular/elements/module'
-require 'formular/elements/modules/control'
 require 'formular/elements/modules/collection'
 module Formular
   module Elements
@@ -8,7 +7,6 @@ module Formular
       # based on the reader value
       module Checkable
         include Formular::Elements::Module
-        include Control
         include Collection
 
         add_option_keys :control_label_options, :label_options, :label
