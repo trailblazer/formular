@@ -33,7 +33,11 @@ module Formular
           html(:raw_input) { closed_start_tag }
 
           html do |input|
-            content = input.content || input.to_html(context: :with_options)
+            content = if input.has_content?
+                        input.content
+                      else
+                        input.to_html(context: :with_options)
+                      end
             Wrapper.(content: content)
           end
 

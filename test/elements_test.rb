@@ -40,7 +40,11 @@ describe 'core elements' do
       let(:element) { Formular::Elements::Fieldset.(class: ['grouping']) }
 
       it '#to_s' do
-        element.to_s.must_equal %(<fieldset class="grouping">)
+        element.to_s.must_equal %(<fieldset class="grouping"></fieldset>)
+      end
+
+      it '#start' do
+        element.start.must_equal %(<fieldset class="grouping">)
       end
 
       it '#end' do
@@ -68,22 +72,22 @@ describe 'core elements' do
 
     it "enforce_utf8 option is false" do
       element = Formular::Elements::Form.(enforce_utf8: false)
-      element.to_s.must_equal %(<form method="post" accept-charset="utf-8">)
+      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"></form>)
     end
 
     it "custom method" do
       element = Formular::Elements::Form.(method: 'put')
-      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><input type=\"hidden\" value="put" name="_method"/>)
+      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><input type=\"hidden\" value="put" name="_method"/></form>)
     end
 
     it "csrf_token" do
       element = Formular::Elements::Form.(csrf_token: 'token value...')
-      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input type=\"hidden\" value="token value..." name="_csrf_token"/><input name=\"utf8\" type=\"hidden\" value=\"✓\"/>)
+      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input type=\"hidden\" value="token value..." name="_csrf_token"/><input name=\"utf8\" type=\"hidden\" value=\"✓\"/></form>)
     end
 
     it "csrf_token_name" do
       element = Formular::Elements::Form.(csrf_token: 'token value...', csrf_token_name: '_authenticity_token')
-      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input type=\"hidden\" value="token value..." name="_authenticity_token"/><input name=\"utf8\" type=\"hidden\" value=\"✓\"/>)
+      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input type=\"hidden\" value="token value..." name="_authenticity_token"/><input name=\"utf8\" type=\"hidden\" value=\"✓\"/></form>)
     end
 
     describe 'no contents' do
@@ -92,7 +96,11 @@ describe 'core elements' do
       end
 
       it '#to_s' do
-        element.to_s.must_equal %(<form method="post" accept-charset="utf-8" class="grouping"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/>)
+        element.to_s.must_equal %(<form method="post" accept-charset="utf-8" class="grouping"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/></form>)
+      end
+
+      it '#start' do
+        element.start.must_equal %(<form method="post" accept-charset="utf-8" class="grouping"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/>)
       end
 
       it '#end' do
@@ -174,7 +182,7 @@ describe 'core elements' do
       let(:element) { Formular::Elements::Label.(class: ['control-label']) }
 
       it '#to_s' do
-        element.to_s.must_equal %(<label class="control-label">)
+        element.to_s.must_equal %(<label class="control-label"></label>)
       end
 
       it '#end' do

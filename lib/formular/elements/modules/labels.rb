@@ -15,7 +15,7 @@ module Formular
           end
 
           def has_label?
-            label_text.is_a?(String)
+            !label_text.nil? && label_text != false
           end
 
           private
