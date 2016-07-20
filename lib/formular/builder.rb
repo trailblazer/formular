@@ -45,7 +45,8 @@ module Formular
     end
 
     def call(&block)
-      capture(self, &block)
+      capture(self, &block) # works with template engines
+      # HtmlBlock.new(self, block).() # works without template engines
     end
   end # class Builder
 end # module Formular

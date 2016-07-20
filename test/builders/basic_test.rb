@@ -19,5 +19,19 @@ describe Formular::Builders::Basic do
         o.input :id
       end.to_s.must_equal %(<input name=\"replies[][id]\" id=\"replies_0_id\" type=\"text\"/>)
     end
+
+    it 'form and collection' do
+      model = OpenStruct.new(ble: 'blargh', coll: [OpenStruct.new(name: 1, id: 3), OpenStruct.new(name: 2, id: 5)])
+
+      f = Formular::Builders::Basic.new(model: model, path_prefix: 'blah' ).form(method: :post, action: '/ok') do |f|
+        concat f.input :ble
+        concat f.collection(:coll) { |g|
+          concat g.input :name
+          concat g.input :id
+        }
+      end
+
+      f.to_s.must_equal %(<form method="post" accept-charset="utf-8" action="/ok"><input name="utf8" type="hidden" value="✓"/><input name="blah[ble]" id="blah_ble" value="blargh" type="text"/><input name="blah[coll][][name]" id="blah_coll_0_name" value="1" type="text"/><input name="blah[coll][][id]" id="blah_coll_0_id" value="3" type="text"/><input name="blah[coll][][name]" id="blah_coll_1_name" value="2" type="text"/><input name="blah[coll][][id]" id="blah_coll_1_id" value="5" type="text"/></form>)
+    end
   end
 end
