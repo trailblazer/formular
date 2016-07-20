@@ -224,7 +224,7 @@ module Formular
       end
 
       html(:with_collection) do |element|
-        element.collection.each { |item| concat item.to_html(context: :checkable_label) }
+        concat element.to_html(context: :collection)
         concat element.hidden_tag
       end
 
