@@ -50,11 +50,11 @@ module Formular
       self.tag_name = name
     end
 
-    def self.call(options={}, &block)
-      new(options, &block)
+    def self.call(**options, &block)
+      new(**options, &block)
     end
 
-    def initialize(options={}, &block)
+    def initialize(**options, &block)
       @builder = options.delete(:builder)
       normalize_attributes(options)
       @block = block

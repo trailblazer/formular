@@ -20,7 +20,6 @@ module Formular
             !label_text.nil? && label_text != false
           end
 
-          private
           def label_options
             @label_options ||= Attributes[options[:label_options]]
           end

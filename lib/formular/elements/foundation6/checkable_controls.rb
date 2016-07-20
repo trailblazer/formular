@@ -16,7 +16,7 @@ module Formular
             input.wrapper do
               concat input.group_label
               concat input.hidden_tag unless input.collection?
-              input.collection.each { |control| concat control.checkable_label }
+              input.collection.each { |control| concat control.to_html(context: :checkable_label) }
               concat input.hidden_tag if input.collection?
               concat input.hint
               concat input.error
@@ -39,12 +39,12 @@ module Formular
               concat input.group_label
               concat input.hidden_tag unless input.collection?
               input.collection.each do |control|
-                concat input.builder.div(content: control.checkable_label).to_s
+                concat input.builder.div(content: control.to_html(context: :checkable_label))
               end
               concat input.hidden_tag if input.collection?
               concat input.hint
               concat input.error
-            end.to_s
+            end
           end
         end # class StackedCheckable
 

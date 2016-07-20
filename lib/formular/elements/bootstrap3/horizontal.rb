@@ -59,7 +59,7 @@ module Formular
           html(:input_column) do |input|
             concat input.hidden_tag
             input.collection.each do |control|
-              concat control.inner_wrapper { control.checkable_label }
+              concat control.inner_wrapper { control.to_html(context: :checkable_label) }
             end
             concat input.hint
             concat input.error
@@ -72,7 +72,7 @@ module Formular
 
           html(:input_column) do |input|
             concat input.hidden_tag
-            input.collection.each { |control| concat control.checkable_label }
+            input.collection.each { |control| concat control.to_html(context: :checkable_label) }
             concat input.hint
             concat input.error
           end

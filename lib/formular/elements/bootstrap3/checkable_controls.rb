@@ -14,7 +14,11 @@ module Formular
             input.wrapper do
               concat input.group_label
               concat input.hidden_tag unless input.collection?
-              concat Formular::Elements::Div.(content: input.collection.map(&:checkable_label).join(''))
+
+              concat Formular::Elements::Div.(content: input.collection.map{ |item|
+                item.to_html(context: :checkable_label)
+              }.join(''))
+
               concat input.hidden_tag if input.collection?
               concat input.hint
               concat input.error
@@ -27,7 +31,11 @@ module Formular
             else
               input.wrapper do
                 concat input.hidden_tag unless input.collection?
-                concat input.collection.map(&:checkable_label).join('')
+
+                input.collection.each { |item|
+                  concat item.to_html(context: :checkable_label)
+                }
+
                 concat input.hidden_tag if input.collection?
                 concat input.hint
                 concat input.error
@@ -66,7 +74,7 @@ module Formular
               concat input.group_label
               concat input.hidden_tag unless input.collection?
               input.collection.each do |control|
-                concat control.inner_wrapper { control.checkable_label }
+                concat control.inner_wrapper { control.to_html(context: :checkable_label) }
               end
               concat input.hidden_tag if input.collection?
               concat input.hint
