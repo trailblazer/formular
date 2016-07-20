@@ -13,11 +13,15 @@ module Formular
     Control = Class.new(Formular::Element) { include Formular::Elements::Modules::Control }
     WrappedControl = Class.new(Formular::Element) { include Formular::Elements::Modules::WrappedControl }
 
-    Option = Class.new(Container)
-    OptGroup = Class.new(Container)
-    Fieldset = Class.new(Container)
-    Legend = Class.new(Container)
-    Div = Class.new(Container)
+    # define some base classes to build from or easily use elsewhere
+    Option = Class.new(Container) { tag :option }
+    OptGroup = Class.new(Container) { tag :optgroup }
+    Fieldset = Class.new(Container) { tag :fieldset }
+    Legend = Class.new(Container) { tag :legend }
+    Div = Class.new(Container) { tag :div }
+    P = Class.new(Container) { tag :p }
+    Span = Class.new(Container) { tag :span }
+
     class Hidden < Control
       tag :input
       set_default :type, 'hidden'
@@ -26,6 +30,8 @@ module Formular
     end
 
     class Form < Container
+      tag :form
+
       add_option_keys :enforce_utf8, :csrf_token, :csrf_token_name
 
       set_default :method, 'post'
@@ -85,20 +91,15 @@ module Formular
       end
     end
 
-    class Error < Container
+    class Error < P
       include Formular::Elements::Modules::Errors
-
-      tag :p
       add_option_keys :attribute_name
       set_default :content, :error_text
     end # class Error
 
-    class Hint < Container
-      tag :p
-    end # class Hint
-
     class Textarea < Control
       include Formular::Elements::Modules::Container
+      tag :textarea
       add_option_keys :value
 
       def content
@@ -107,6 +108,7 @@ module Formular
     end # class Textarea
 
     class Label < Container
+      tag :label
       add_option_keys :labeled_control, :attribute_name
       set_default :for, :labeled_control_id
 
@@ -127,6 +129,7 @@ module Formular
     end # class Submit
 
     class Button < Formular::Elements::Container
+      tag :button
       add_option_keys :value
 
       def content
@@ -135,12 +138,14 @@ module Formular
     end # class Button
 
     class Input < Control
+      tag :input
       set_default :type, 'text'
       html { closed_start_tag }
     end # class Input
 
     class Select < Control
       include Formular::Elements::Modules::Collection
+      tag :select
 
       add_option_keys :value
 
@@ -198,9 +203,10 @@ module Formular
     end # class Select
 
     class Checkbox < Control
+      tag :input
+
       add_option_keys :unchecked_value, :include_hidden, :multiple
 
-      tag :input
       set_default :type, 'checkbox'
       set_default :unchecked_value, :default_unchecked_value
       set_default :value, '1' # instead of reader value
@@ -248,6 +254,7 @@ module Formular
 
     class Radio < Control
       tag :input
+
       set_default :type, 'radio'
       set_default :value, nil # instead of reader value
 

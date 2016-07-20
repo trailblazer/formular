@@ -51,9 +51,7 @@ module Formular
         class Checkbox < Formular::Elements::Checkbox
           include Checkable
 
-          tag :input
           set_default :value, '1' # instead of reader value
-
           set_default :label_options, { class: ['is-invalid-label'] }, if: :has_errors?
           set_default :control_label_options, { class: ['is-invalid-label'] }, if: :has_errors?
 
@@ -63,8 +61,6 @@ module Formular
         class Radio < Formular::Elements::Radio
           include Checkable
 
-          tag :input
-
           def hidden_tag
             ''
           end
@@ -72,14 +68,10 @@ module Formular
 
         class StackedRadio < Radio
           include StackedCheckable
-
-          tag :input
         end # class StackedRadio
 
         class StackedCheckbox < Checkbox
           include StackedCheckable
-
-          tag :input
         end # class StackedCheckbox
       end # module CheckableControls
     end #module Foundation6

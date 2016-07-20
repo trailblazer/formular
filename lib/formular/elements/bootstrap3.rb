@@ -15,7 +15,6 @@ module Formular
       Label = Class.new(Formular::Elements::Label) { set_default :class, ['control-label'] }
 
       class Submit < Formular::Elements::Button
-        tag 'button'
         set_default :class, ['btn', 'btn-default']
         set_default :type, 'submit'
       end # class Submit
@@ -25,8 +24,7 @@ module Formular
         set_default :class, ['help-block']
       end # class Error
 
-      class Hint < Formular::Elements::Hint
-        tag :span
+      class Hint < Formular::Elements::Span
         set_default :class, ['help-block']
       end # class Hint
 
@@ -51,14 +49,11 @@ module Formular
         set_default :class, ['form-control']
       end # class Textarea
 
-      class Wrapper < Formular::Element
-        include Formular::Elements::Modules::Container
-        tag 'div'
+      class Wrapper < Formular::Elements::Div
         set_default :class, ['form-group']
       end # class Wrapper
 
-      class ErrorWrapper < Formular::Elements::Bootstrap3::Wrapper
-        tag 'div'
+      class ErrorWrapper < Formular::Elements::Div
         set_default :class, ['form-group', 'has-error']
       end # class Wrapper
     end # module Bootstrap3

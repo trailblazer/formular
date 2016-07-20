@@ -6,18 +6,15 @@ module Formular
   module Elements
     module Bootstrap3
       module InputGroups
-        class Wrapper < Formular::Elements::Container
-          tag :div
+        class Wrapper < Formular::Elements::Div
           set_default :class, ['input-group']
         end # class Wrapper
 
-        class Addon < Formular::Elements::Container
-          tag :span
+        class Addon < Formular::Elements::Span
           set_default :class, ['input-group-addon']
         end # class Addon
 
-        class Btn < Formular::Elements::Container
-          tag :span
+        class Btn < Formular::Elements::Span
           set_default :class, ['input-group-btn']
         end # class Btn
 
@@ -25,7 +22,6 @@ module Formular
           include Formular::Elements::Modules::WrappedControl
           include Formular::Elements::Modules::Container
 
-          tag :input
           set_default :class, ['form-control']
 
           add_option_keys :left_addon, :right_addon, :left_btn, :right_btn

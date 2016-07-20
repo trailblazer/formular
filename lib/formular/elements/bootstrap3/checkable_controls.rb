@@ -40,7 +40,6 @@ module Formular
           include Formular::Elements::Modules::WrappedControl
           include InlineCheckable
 
-          tag :input
           add_option_keys :control_label_options
           set_default :control_label_options, { class: ['radio-inline'] }
 
@@ -53,7 +52,6 @@ module Formular
           include Formular::Elements::Modules::WrappedControl
           include InlineCheckable
 
-          tag :input
           set_default :control_label_options, { class: ['checkbox-inline'] }
           set_default :value, '1' # instead of reader value
 
@@ -76,13 +74,9 @@ module Formular
             end
           end
 
-          class InnerWrapper < Formular::Elements::Container
-            tag :div
-          end
-
           module InstanceMethods
             def inner_wrapper(&block)
-              InnerWrapper.(class: inner_wrapper_class, &block).to_s
+              Formular::Elements::Div.(class: inner_wrapper_class, &block).to_s
             end
           end
         end # module StackedCheckable
@@ -91,7 +85,6 @@ module Formular
           include Formular::Elements::Modules::WrappedControl
           include StackedCheckable
 
-          tag :input
           set_default :value, '1' # instead of reader value
 
           html { closed_start_tag }
@@ -104,8 +97,6 @@ module Formular
         class Radio < Formular::Elements::Radio
           include Formular::Elements::Modules::WrappedControl
           include StackedCheckable
-
-          tag :input
 
           def inner_wrapper_class
             ['radio']

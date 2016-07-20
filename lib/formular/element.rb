@@ -14,6 +14,7 @@ module Formular
     inheritable_attr :html_blocks
     inheritable_attr :default_hash
     inheritable_attr :option_keys
+    inheritable_attr :tag_name
 
     self.default_hash = {}
     self.html_blocks = {}
@@ -46,11 +47,7 @@ module Formular
     # based on the name of your class
     # Also, this is not inherited
     def self.tag(name)
-      @tag_name = name
-    end
-
-    def self.tag_name
-      @tag_name || name.split("::").last.downcase
+      self.tag_name = name
     end
 
     def self.call(options={}, &block)

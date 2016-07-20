@@ -16,13 +16,11 @@ module Formular
       end # module InputWithErrors
 
       class Submit < Formular::Elements::Button
-        tag :button
         set_default :class, ['success', 'button']
         set_default :type, 'submit'
       end # class Submit
 
       class LabelWithError < Formular::Elements::Label
-        tag :label
         set_default :class, ['is-invalid-label']
       end # class LabelWithError
 
@@ -31,8 +29,7 @@ module Formular
         set_default :class, ['form-error', 'is-visible']
       end # class Error
 
-      class Hint < Formular::Elements::Hint
-        tag :p
+      class Hint < Formular::Elements::P
         set_default :class, ['help-text']
       end # class Hint
 
@@ -42,7 +39,6 @@ module Formular
       end # class Input
 
       class File < Input
-        tag 'input'
         set_default :type, 'file'
         set_default :class, ['show-for-sr']
         set_default :label_options, { class: ['button'] }

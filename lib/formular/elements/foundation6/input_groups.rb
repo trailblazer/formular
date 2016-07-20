@@ -18,7 +18,6 @@ module Formular
           include WrappedGroup
           include Formular::Elements::Modules::Container
 
-          tag :input
           set_default :class, :input_class # we need to do classes better...
 
           add_option_keys :left_label, :right_label, :left_button, :right_button
@@ -73,18 +72,15 @@ module Formular
           end
         end # class InputGroup
 
-        class Wrapper < Formular::Elements::Container
-          tag :div
+        class Wrapper < Formular::Elements::Div
           set_default :class, ['input-group']
         end # class Wrapper
 
-        class Label < Formular::Elements::Container
-          tag :span
+        class Label < Formular::Elements::Span
           set_default :class, ['input-group-label']
         end # class Label
 
-        class Button < Formular::Elements::Container
-          tag :div
+        class Button < Formular::Elements::Div
           set_default :class, ['input-group-button']
         end # class Button
       end #module InputGroups

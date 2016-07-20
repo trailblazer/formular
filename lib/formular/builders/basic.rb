@@ -11,7 +11,7 @@ module Formular
         input: Formular::Elements::Input,
         label: Formular::Elements::Label,
         error: Formular::Elements::Error,
-        hint: Formular::Elements::Hint,
+        hint: Formular::Elements::P,
         textarea: Formular::Elements::Textarea,
         submit: Formular::Elements::Submit,
         select: Formular::Elements::Select,

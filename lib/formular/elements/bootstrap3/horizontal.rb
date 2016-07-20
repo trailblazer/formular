@@ -85,9 +85,8 @@ module Formular
         InputGroup = Class.new(Formular::Elements::Bootstrap3::InputGroup) { tag 'input'; include WrappedControl }
         Submit = Class.new(Formular::Elements::Bootstrap3::Submit) { include WrappedControl }
 
-        class InputColumnWrapper < Formular::Elements::Container
+        class InputColumnWrapper < Formular::Elements::Div
           set_default :class, :column_class
-          tag 'div'
 
           def column_class
             builder.class.column_classes[:right_column]
@@ -104,26 +103,18 @@ module Formular
 
         class Checkbox < Formular::Elements::Bootstrap3::Checkbox
           include StackedCheckableControl
-
-          tag :input
         end
 
         class Radio < Formular::Elements::Bootstrap3::Radio
           include StackedCheckableControl
-
-          tag :input
         end
 
         class InlineCheckbox < Formular::Elements::Bootstrap3::InlineCheckbox
           include InlineCheckableControl
-
-          tag :input
         end
 
         class InlineRadio < Formular::Elements::Bootstrap3::InlineRadio
           include InlineCheckableControl
-
-          tag :input
         end
       end # module Horizontal
     end # module Bootstrap3
