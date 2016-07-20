@@ -29,18 +29,19 @@ module Formular
       end
       attr_reader :model, :errors
 
-      def collection(name, models = nil, &block)
+      def collection(name, models: nil, builder: nil, &block)
         models ||= model ? model.send(name) : []
 
         models.map.with_index do |model, i|
-          nested(name, nested_model: model, path_appendix: [name,i], &block)
+          nested(name, nested_model: model, path_appendix: [name,i], builder: builder, &block)
         end.join('')
       end
 
-      def nested(name, nested_model: nil, path_appendix: nil, &block)
+      def nested(name, nested_model: nil, path_appendix: nil, builder: nil, &block)
         nested_model ||= model.send(name) if model
         path_appendix ||= name
-        self.class.new(model: nested_model, path_prefix: path(path_appendix)).(&block)
+        builder ||= self.class
+        builder.new(model: nested_model, path_prefix: path(path_appendix)).(&block)
       end
 
       # these can be called from an element
