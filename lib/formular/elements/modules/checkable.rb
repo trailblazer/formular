@@ -14,29 +14,36 @@ module Formular
         include Collection
         include Labels
 
-        add_option_keys :control_label_options, :label_options, :label
+        add_option_keys :control_label_options
 
         set_default :checked, 'checked', if: :is_checked?
 
-        module InstanceMethods
-          def checkable_label
-            label_options[:content] = if has_label?
-                                        "#{to_html(context: :default)} #{label_text}"
-                                      else
-                                        to_html(context: :default).to_s
-                                      end
-
-            Formular::Elements::Label.(label_options).to_s
+        html(:checkable_label) do |input|
+          Formular::Elements::Label.(input.label_options) do
+            if has_label?
+              concat input.to_html(context: :default)
+              concat " #{input.label_text}"
+            else
+              to_html(context: :default)
+            end
           end
+        end
 
+        html(:collection) do |input|
+          input.collection.map { |item|
+            item.to_html(context: :checkable_label)
+          }.join('')
+        end
+
+        module InstanceMethods
           def group_label
             return '' unless has_group_label?
-            label_options[:content] = options[:label]
+            label_options[:content] = label_text
             builder.checkable_group_label(label_options).to_s
           end
 
           def has_group_label?
-            collection.size > 1 && !options[:label].nil?
+            collection.size > 1 && has_label?
           end
 
           def collection
