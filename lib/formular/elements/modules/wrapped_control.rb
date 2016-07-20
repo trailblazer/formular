@@ -37,6 +37,7 @@ module Formular
 
           def label
             return '' unless has_label?
+
             label_options[:content] = label_text
             label_options[:labeled_control] = self
             builder.label(label_options).to_s
@@ -44,12 +45,14 @@ module Formular
 
           def error
             return '' unless has_errors?
+
             error_options[:content] = error_text
             builder.error(error_options).to_s
           end
 
           def hint
             return '' unless has_hint?
+
             hint_options[:content] = hint_text
             hint_options[:id] ||= hint_id
             builder.hint(hint_options).to_s

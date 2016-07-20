@@ -12,10 +12,6 @@ module Formular
 
     # this calls our html function passing the element instance as a variable.
     # It returns our html as a string
-
-    # FIXME must be a better way of handling the output buffer
-    # but if we don't clear it before a call then we get everything rendered to any instance of
-    # this element class
     def call
       @output = ''
       instance_exec(element, &fn).to_s

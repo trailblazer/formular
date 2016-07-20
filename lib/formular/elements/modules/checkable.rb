@@ -6,7 +6,9 @@ module Formular
   module Elements
     module Modules
       # this module is used to correctly set the :checked attribute
-      # based on the reader value
+      # based on the reader value.
+      # It also provides an API to assist in generating checkable html (e.g. checkable labels)
+      # and create collections of checkable controls from an enumerable variable.
       module Checkable
         include Formular::Elements::Module
         include Collection

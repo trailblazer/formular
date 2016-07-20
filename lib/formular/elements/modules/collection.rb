@@ -2,8 +2,8 @@ require 'formular/elements/module'
 module Formular
   module Elements
     module Modules
-      # this module is used to correctly set the :checked attribute
-      # based on the reader value
+      # This module adds the relevant option keys and defaults
+      # for elements that support collections
       module Collection
         include Formular::Elements::Module
 

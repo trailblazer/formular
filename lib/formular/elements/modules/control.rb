@@ -2,7 +2,8 @@ require 'formular/elements/module'
 module Formular
   module Elements
     module Modules
-      # include this module in an element to set the id, name &value based on the attribute name
+      # include this module in an element to set the id,
+      # name & value based on the attribute name
       module Control
         include Formular::Elements::Module
 

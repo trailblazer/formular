@@ -4,9 +4,15 @@ module Formular
     module Modules
       # this module is used for elements that contain something
       # e.g. <label>Label Words</label>
-      # it is designed to accept content as a string or as a block
-      # if no content it will just provide the opening tag,
-      # you can then add your own content and close manually by calling `.end`
+      # it is designed to accept content as a string (via the :content option)
+      # or as a block
+      # Alternatively you can produce blockless content by making use of the
+      # #start and #end methods e.g.
+      #
+      # element = Container.()
+      # element.start
+      # add your own content
+      # element.end
       module Container
         include Formular::Elements::Module
 

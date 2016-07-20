@@ -2,7 +2,7 @@ require 'formular/elements/module'
 module Formular
   module Elements
     module Modules
-      # this module provides error methods to a control when included.
+      # this module provides error methods and options to a control when included
       module Errors
         include Formular::Elements::Module
         add_option_keys :error

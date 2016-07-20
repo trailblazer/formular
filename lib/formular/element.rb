@@ -15,35 +15,40 @@ module Formular
     inheritable_attr :default_hash
     inheritable_attr :option_keys
 
-    # I actually don't want to merge default classes...
-    # it get's complicated with inheritance when you want to remove one
     self.default_hash = {}
     self.html_blocks = {}
     self.html_context = :default
     self.option_keys = []
 
     # set the default value of an option or attribute
-    # you can make this conditional by providing a conditions
+    # you can make this conditional by providing a condition
     # e.g. if: :some_method or unless: :some_method
-    def self.set_default(key, value, conditions = {})
-      self.default_hash[key] = { value: value, condition: conditions }
+    def self.set_default(key, value, condition = {})
+      self.default_hash[key] = { value: value, condition: condition }
     end
 
+    # define what your html should look like
+    # this block is executed in the context of an HtmlBlock instance
     def self.html(context = :default, &block)
       self.html_blocks[context] = block
     end
 
-    # whitelist the keys that should NOT end up as html attributes
+    # blacklist the keys that should NOT end up as html attributes
     def self.add_option_keys(*keys)
       self.option_keys += keys
     end
 
+    # define the name of the html tag for the element
+    # e.g.
+    # tag :span
+    # tag 'input'
+    # Note that if you leave this out, the tag will be inferred
+    # based on the name of your class
+    # Also, this is not inherited
     def self.tag(name)
       @tag_name = name
     end
 
-    # @apotonick if you don't like the magic here we could make you specify a tag in
-    # every element class. You could then inherit the attribute.
     def self.tag_name
       @tag_name || name.split("::").last.downcase
     end
@@ -57,7 +62,7 @@ module Formular
       normalize_attributes(options)
       @block = block
       @tag = self.class.tag_name
-      @html_blocks = define_html_block_instances
+      @html_blocks = define_html_blocks
     end
     attr_reader :tag, :html_blocks, :builder, :attributes, :options
 
@@ -69,10 +74,10 @@ module Formular
 
     private
 
-    def define_html_block_instances
-      html_blocks = {}
-      self.class.html_blocks.each { |context, block| html_blocks[context] = HtmlBlock.new(self, block) }
-      html_blocks
+    def define_html_blocks
+      self.class.html_blocks.each_with_object({}) do |(context, block), hash|
+        hash[context] = HtmlBlock.new(self, block)
+      end
     end
 
     # we split the options hash between options and attributes

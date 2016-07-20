@@ -2,13 +2,15 @@ require 'formular/elements/module'
 module Formular
   module Elements
     module Modules
-      # this module provides label to a control when included.
+      # this module provides label options and methods to a control when included.
       module Labels
         include Formular::Elements::Module
         add_option_keys :label, :label_options
 
-        # options functionality (same as SimpleForm):
-        # options[:hint] == String return the string
+        # options functionality:
+        # options[:label] == String return the string
+        # currently we don't infer label text so if you don't include
+        # label as an option, you wont get one rendered
         module InstanceMethods
           def label_text
             options[:label]

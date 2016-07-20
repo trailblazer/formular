@@ -21,8 +21,9 @@ module Formular
           private
           def hint_id
             return hint_options[:id] if hint_options[:id]
+
             id = attributes[:id] || form_encoded_id
-            return "#{id}_hint" if id
+            "#{id}_hint" if id
           end
 
           def hint_options
