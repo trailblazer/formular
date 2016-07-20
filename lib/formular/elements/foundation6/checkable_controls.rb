@@ -52,6 +52,7 @@ module Formular
           include Checkable
 
           tag :input
+          set_default :value, '1' # instead of reader value
 
           set_default :label_options, { class: ['is-invalid-label'] }, if: :has_errors?
           set_default :control_label_options, { class: ['is-invalid-label'] }, if: :has_errors?

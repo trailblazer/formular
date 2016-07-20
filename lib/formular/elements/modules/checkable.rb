@@ -1,5 +1,4 @@
 require 'formular/elements/module'
-require 'formular/elements/modules/control'
 require 'formular/elements/modules/collection'
 require 'formular/elements/modules/labels'
 
@@ -10,7 +9,6 @@ module Formular
       # based on the reader value
       module Checkable
         include Formular::Elements::Module
-        include Control
         include Collection
         include Labels
 

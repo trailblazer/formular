@@ -15,7 +15,7 @@ describe 'core elements' do
   describe Formular::Elements::Submit do
     it '#to_s' do
       element = Formular::Elements::Submit.(value: 'Submit Button')
-      element.to_s.must_equal %(<input type="submit" value="Submit Button"/>)
+      element.to_s.must_equal %(<input value="Submit Button" type="submit"/>)
     end
   end # Formular::Elements::Submit
 
@@ -77,17 +77,17 @@ describe 'core elements' do
 
     it "custom method" do
       element = Formular::Elements::Form.(method: 'put')
-      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><input type=\"hidden\" value="put" name="_method"/></form>)
+      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><input value="put" name="_method" type=\"hidden\"/></form>)
     end
 
     it "csrf_token" do
       element = Formular::Elements::Form.(csrf_token: 'token value...')
-      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input type=\"hidden\" value="token value..." name="_csrf_token"/><input name=\"utf8\" type=\"hidden\" value=\"✓\"/></form>)
+      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input value="token value..." name="_csrf_token" type="hidden"/><input name="utf8" type="hidden" value="✓"/></form>)
     end
 
     it "csrf_token_name" do
       element = Formular::Elements::Form.(csrf_token: 'token value...', csrf_token_name: '_authenticity_token')
-      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input type=\"hidden\" value="token value..." name="_authenticity_token"/><input name=\"utf8\" type=\"hidden\" value=\"✓\"/></form>)
+      element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input value="token value..." name="_authenticity_token" type="hidden"/><input name="utf8" type="hidden" value="✓"/></form>)
     end
 
     describe 'no contents' do
@@ -96,11 +96,11 @@ describe 'core elements' do
       end
 
       it '#to_s' do
-        element.to_s.must_equal %(<form method="post" accept-charset="utf-8" class="grouping"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/></form>)
+        element.to_s.must_equal %(<form class="grouping" method="post" accept-charset="utf-8"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/></form>)
       end
 
       it '#start' do
-        element.start.must_equal %(<form method="post" accept-charset="utf-8" class="grouping"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/>)
+        element.start.must_equal %(<form class="grouping" method="post" accept-charset="utf-8"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/>)
       end
 
       it '#end' do
@@ -136,18 +136,18 @@ describe 'core elements' do
     describe 'through builder' do
       it 'with attribute_name' do
         element = builder.input(:body, value: 'Some text')
-        element.to_s.must_equal %(<input name="body" id="body" type="text" value="Some text"/>)
+        element.to_s.must_equal %(<input value="Some text" name="body" id="body" type="text"/>)
       end
 
       it 'without attribute_name' do
         element = builder.input(value: 'Some text')
-        element.to_s.must_equal %(<input type="text" value="Some text"/>)
+        element.to_s.must_equal %(<input value="Some text" type="text"/>)
       end
     end
 
     it '#to_s' do
       element = Formular::Elements::Input.(value: 'Some text')
-      element.to_s.must_equal %(<input type="text" value="Some text"/>)
+      element.to_s.must_equal %(<input value="Some text" type="text"/>)
     end
   end # Formular::Elements::Input
 
@@ -194,23 +194,23 @@ describe 'core elements' do
   describe Formular::Elements::Checkbox do
     it '#to_s unchecked' do
       element = Formular::Elements::Checkbox.(name: 'public', value: 1)
-      element.to_s.must_equal %(<input type="hidden" value="0" name="public"/><input value="1" type="checkbox" name="public"/>)
+      element.to_s.must_equal %(<input value="0" name="public" type="hidden"/><input name="public" value="1" type="checkbox"/>)
     end
 
     it '#to_s checked' do
       element = Formular::Elements::Checkbox.(name: 'public', value: 1, checked: 'checked')
-      element.to_s.must_equal %(<input type="hidden" value="0" name="public"/><input value="1" type="checkbox" name="public" checked="checked"/>)
+      element.to_s.must_equal %(<input value="0" name="public" type="hidden"/><input name="public" value="1" checked="checked" type="checkbox"/>)
     end
 
     describe "with collection" do
       it '#to_s default methods' do
         element = Formular::Elements::Checkbox.(name: 'public[]',  collection: [['False', 0], ['True', 1]])
-        element.to_s.must_equal %(<label><input value="0" type="checkbox" name="public[]" id="public_0"/> False</label><label><input value="1" type="checkbox" name="public[]" id="public_1"/> True</label><input type="hidden" value="" name="public[]"/>)
+        element.to_s.must_equal %(<label><input value="0" type="checkbox" name="public[]" id="public_0"/> False</label><label><input value="1" type="checkbox" name="public[]" id="public_1"/> True</label><input value="" name="public[]" type="hidden"/>)
       end
 
       it '#to_s custom methods' do
         element = Formular::Elements::Checkbox.(name: 'public[]', collection: [2..4, 3..5], label_method: :min, value_method: :max)
-        element.to_s.must_equal %(<label><input value="4" type="checkbox" name="public[]" id="public_4"/> 2</label><label><input value="5" type="checkbox" name="public[]" id="public_5"/> 3</label><input type="hidden" value="" name="public[]"/>)
+        element.to_s.must_equal %(<label><input value="4" type="checkbox" name="public[]" id="public_4"/> 2</label><label><input value="5" type="checkbox" name="public[]" id="public_5"/> 3</label><input value="" name="public[]" type="hidden"/>)
       end
     end
   end # Formular::Elements::Checkbox
@@ -218,12 +218,12 @@ describe 'core elements' do
   describe Formular::Elements::Radio do
     it '#to_s unchecked' do
       element = Formular::Elements::Radio.(name: 'public', value: 1)
-      element.to_s.must_equal %(<input type="radio" name="public" value="1"/>)
+      element.to_s.must_equal %(<input name="public" value="1" type="radio"/>)
     end
 
     it '#to_s checked' do
       element = Formular::Elements::Radio.(name: 'public', value: 1, checked: 'checked')
-      element.to_s.must_equal %(<input type="radio" name="public" value="1" checked="checked"/>)
+      element.to_s.must_equal %(<input name="public" value="1" checked="checked" type="radio"/>)
     end
   end # Formular::Elements::Radio
 
