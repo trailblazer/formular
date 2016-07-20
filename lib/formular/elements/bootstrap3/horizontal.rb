@@ -16,6 +16,7 @@ module Formular
 
           html(:input_column) do |input|
             concat input.to_html(context: :default)
+            concat input.hint
             concat input.error
           end
 
