@@ -54,7 +54,6 @@ module Formular
 
     def initialize(options={}, &block)
       @builder = options.delete(:builder)
-      p self.class.default_hash
       normalize_attributes(options)
       @block = block
       @tag = self.class.tag_name
@@ -97,7 +96,7 @@ module Formular
         next if val.nil?
 
         if option_key?(k)
-          @options[k] ||= val
+          @options[k] = val if @options[k].nil?
         else
           # make sure that we merge classes, not override them
           k == :class && !@attributes[k].nil? ? @attributes[k] += val : @attributes[k] ||= val

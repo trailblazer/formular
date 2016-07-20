@@ -14,7 +14,7 @@ describe 'Bootstrap3::InputGroups' do
       right_addon: '.com',
       value: 'www.trailblazer.to'
     )
-    element.to_s.must_equal %(<div class="form-group"><label for="url" class="control-label">URL</label><div class="input-group"><span class="input-group-addon">http://</span><input name="url" id="url" type="text" class="form-control" value="www.trailblazer.to"/><span class="input-group-addon">.com</span></div></div>)
+    element.to_s.must_equal %(<div class="form-group"><label for="url" class="control-label">URL</label><div class="input-group"><span class="input-group-addon">http://</span><input value="www.trailblazer.to" name="url" id="url" type="text" class="form-control"/><span class="input-group-addon">.com</span></div></div>)
   end
 
   describe 'with buttons as options' do
@@ -26,7 +26,7 @@ describe 'Bootstrap3::InputGroups' do
         right_btn: '<a class="btn btn-default" href="/some_path">Click Me</a>',
         value: 'www.trailblazer.to'
       )
-      element.to_s.must_equal %(<div class="form-group"><label for="url" class="control-label">URL</label><div class="input-group"><span class="input-group-btn"><a class="btn btn-default" href="/some_path">Click Me</a></span><input name="url" id="url" type="text" class="form-control" value="www.trailblazer.to"/><span class="input-group-btn"><a class="btn btn-default" href="/some_path">Click Me</a></span></div></div>)
+      element.to_s.must_equal %(<div class="form-group"><label for="url" class="control-label">URL</label><div class="input-group"><span class="input-group-btn"><a class="btn btn-default" href="/some_path">Click Me</a></span><input value="www.trailblazer.to" name="url" id="url" type="text" class="form-control"/><span class="input-group-btn"><a class="btn btn-default" href="/some_path">Click Me</a></span></div></div>)
     end
   end
 
@@ -36,6 +36,6 @@ describe 'Bootstrap3::InputGroups' do
       concat input.control
       concat input.group_btn(builder.submit(value: 'Go!'))
     end
-    element.to_s.must_equal %(<div class="form-group"><label for="title" class="control-label">Title</label><div class="input-group"><span class="input-group-addon"><input name="default[]" id="default" type="checkbox" value="1"></span><input name="title" id="title" type="text" class="form-control" value="John Smith"/><span class="input-group-btn"><button class="btn btn-default" type="submit">Go!</button></span></div></div>)
+    element.to_s.must_equal %(<div class="form-group"><label for="title" class="control-label">Title</label><div class="input-group"><span class="input-group-addon"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" class="form-control"/><span class="input-group-btn"><button class="btn btn-default" type="submit">Go!</button></span></div></div>)
   end
 end
