@@ -16,7 +16,7 @@ describe Formular::Elements::Bootstrap3 do
   describe Formular::Elements::Bootstrap3::Input do
     it '#to_s with value' do
       element = builder.input(:name, value: 'Joseph Smith')
-      element.to_s.must_equal %(<div class="form-group"><input name="name" id="name" type="text" class="form-control" value="Joseph Smith"/></div>)
+      element.to_s.must_equal %(<div class="form-group"><input value="Joseph Smith" name="name" id="name" type="text" class="form-control"/></div>)
     end
 
     it '#to_s with label' do
@@ -26,7 +26,7 @@ describe Formular::Elements::Bootstrap3 do
 
     it '#to_s with hint' do
       element = builder.input(:name, hint: 'Some helpful words')
-      element.to_s.must_equal %(<div class="form-group"><input name="name" id="name" type="text" aria-describedby="name_hint" class="form-control"/><span class="help-block" id="name_hint">Some helpful words</span></div>)
+      element.to_s.must_equal %(<div class="form-group"><input name="name" id="name" type="text" aria-describedby="name_hint" class="form-control"/><span id="name_hint" class="help-block">Some helpful words</span></div>)
     end
 
     it '#to_s with error' do
@@ -42,7 +42,7 @@ describe Formular::Elements::Bootstrap3 do
         error: 'Something nasty happened',
         hint: 'Some helpful words'
       )
-      element.to_s.must_equal %(<div class="form-group has-error"><label for="name" class="control-label">Name</label><input name="name" id="name" type="text" aria-describedby="name_hint" class="form-control" value="Joseph Smith"/><span class="help-block" id="name_hint">Some helpful words</span><span class="help-block">Something nasty happened</span></div>)
+      element.to_s.must_equal %(<div class="form-group has-error"><label for="name" class="control-label">Name</label><input value="Joseph Smith" name="name" id="name" type="text" aria-describedby="name_hint" class="form-control"/><span id="name_hint" class="help-block">Some helpful words</span><span class="help-block">Something nasty happened</span></div>)
     end
   end
 

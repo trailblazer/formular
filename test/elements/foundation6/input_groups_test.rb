@@ -12,7 +12,7 @@ describe 'Foundation6::InputGroups' do
       right_label: '.com',
       value: 'www.trailblazer.to'
     )
-    element.to_s.must_equal %(<fieldset><div class="input-group"><span class="input-group-label">http://</span><input name="url" id="url" type="text" class="input-group-field" value="www.trailblazer.to"/><span class="input-group-label">.com</span></div></fieldset>)
+    element.to_s.must_equal %(<fieldset><div class="input-group"><span class="input-group-label">http://</span><input value="www.trailblazer.to" name="url" id="url" type="text" class="input-group-field"/><span class="input-group-label">.com</span></div></fieldset>)
   end
 
   it 'to_s with buttons as options' do
@@ -22,7 +22,7 @@ describe 'Foundation6::InputGroups' do
       right_button: '<button class="button" href="/some_path">Click Me</button>',
       value: 'www.trailblazer.to'
     )
-    element.to_s.must_equal %(<fieldset><div class="input-group"><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div><input name="url" id="url" type="text" class="input-group-field" value="www.trailblazer.to"/><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div></div></fieldset>)
+    element.to_s.must_equal %(<fieldset><div class="input-group"><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div><input value="www.trailblazer.to" name="url" id="url" type="text" class="input-group-field"/><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div></div></fieldset>)
   end
 
   it '#to_s with block' do
@@ -31,7 +31,7 @@ describe 'Foundation6::InputGroups' do
       concat input.group_input
       concat input.group_button(builder.submit(value: 'Go!'))
     end
-    element.to_s.must_equal %(<fieldset><div class="input-group"><span class="input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input name="title" id="title" type="text" class="input-group-field" value="John Smith"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div></fieldset>)
+    element.to_s.must_equal %(<fieldset><div class="input-group"><span class="input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" class="input-group-field"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div></fieldset>)
   end
 
   describe "with group label" do
@@ -43,7 +43,7 @@ describe 'Foundation6::InputGroups' do
         right_label: '.com',
         value: 'www.trailblazer.to'
       )
-      element.to_s.must_equal %(<fieldset><label for="url">Url</label><div class="input-group"><span class="input-group-label">http://</span><input name="url" id="url" type="text" class="input-group-field" value="www.trailblazer.to"/><span class="input-group-label">.com</span></div></fieldset>)
+      element.to_s.must_equal %(<fieldset><label for="url">Url</label><div class="input-group"><span class="input-group-label">http://</span><input value="www.trailblazer.to" name="url" id="url" type="text" class="input-group-field"/><span class="input-group-label">.com</span></div></fieldset>)
     end
 
     it 'to_s with buttons as options' do
@@ -54,7 +54,7 @@ describe 'Foundation6::InputGroups' do
         right_button: '<button class="button" href="/some_path">Click Me</button>',
         value: 'www.trailblazer.to'
       )
-      element.to_s.must_equal %(<fieldset><label for="url">Url</label><div class="input-group"><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div><input name="url" id="url" type="text" class="input-group-field" value="www.trailblazer.to"/><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div></div></fieldset>)
+      element.to_s.must_equal %(<fieldset><label for="url">Url</label><div class="input-group"><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div><input value="www.trailblazer.to" name="url" id="url" type="text" class="input-group-field"/><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div></div></fieldset>)
     end
 
     it '#to_s with block' do
@@ -63,7 +63,7 @@ describe 'Foundation6::InputGroups' do
         concat input.group_input
         concat input.group_button(builder.submit(value: 'Go!'))
       end
-      element.to_s.must_equal %(<fieldset><label for="title">Title</label><div class="input-group"><span class="input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input name="title" id="title" type="text" class="input-group-field" value="John Smith"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div></fieldset>)
+      element.to_s.must_equal %(<fieldset><label for="title">Title</label><div class="input-group"><span class="input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" class="input-group-field"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div></fieldset>)
     end
   end
 
@@ -77,7 +77,7 @@ describe 'Foundation6::InputGroups' do
         right_label: '.com',
         value: 'www.trailblazer.to'
       )
-      element.to_s.must_equal %(<fieldset><div class="input-group"><span class="is-invalid-label input-group-label">http://</span><input name="url" id="url" type="text" class="input-group-field is-invalid-input" value="www.trailblazer.to"/><span class="is-invalid-label input-group-label">.com</span></div><span class="form-error is-visible">Try harder!!</span></fieldset>)
+      element.to_s.must_equal %(<fieldset><div class="input-group"><span class="is-invalid-label input-group-label">http://</span><input value="www.trailblazer.to" name="url" id="url" type="text" class="input-group-field is-invalid-input"/><span class="is-invalid-label input-group-label">.com</span></div><span class="form-error is-visible">Try harder!!</span></fieldset>)
     end
 
     it 'to_s with buttons as options' do
@@ -87,7 +87,7 @@ describe 'Foundation6::InputGroups' do
         right_button: '<button class="button" href="/some_path">Click Me</button>',
         value: 'www.trailblazer.to'
       )
-      element.to_s.must_equal %(<fieldset><div class="input-group"><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div><input name="url" id="url" type="text" class="input-group-field is-invalid-input" value="www.trailblazer.to"/><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div></div><span class="form-error is-visible">Try harder!!</span></fieldset>)
+      element.to_s.must_equal %(<fieldset><div class="input-group"><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div><input value="www.trailblazer.to" name="url" id="url" type="text" class="input-group-field is-invalid-input"/><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div></div><span class="form-error is-visible">Try harder!!</span></fieldset>)
     end
 
     it '#to_s with block' do
@@ -96,7 +96,7 @@ describe 'Foundation6::InputGroups' do
         concat input.group_input
         concat input.group_button(builder.submit(value: 'Go!'))
       end
-      element.to_s.must_equal %(<fieldset><div class="input-group"><span class="is-invalid-label input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input name="title" id="title" type="text" class="input-group-field is-invalid-input" value="John Smith"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div><span class="form-error is-visible">is missing</span></fieldset>)
+      element.to_s.must_equal %(<fieldset><div class="input-group"><span class="is-invalid-label input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" class="input-group-field is-invalid-input"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div><span class="form-error is-visible">is missing</span></fieldset>)
     end
   end
 
@@ -109,7 +109,7 @@ describe 'Foundation6::InputGroups' do
         value: 'www.trailblazer.to',
         hint: 'Some handy hint'
       )
-      element.to_s.must_equal %(<fieldset><div class="input-group"><span class="input-group-label">http://</span><input name="url" id="url" type="text" aria-describedby=\"url_hint\" class="input-group-field" value="www.trailblazer.to"/><span class="input-group-label">.com</span></div><p class="help-text" id="url_hint">Some handy hint</p></fieldset>)
+      element.to_s.must_equal %(<fieldset><div class="input-group"><span class="input-group-label">http://</span><input value="www.trailblazer.to" name="url" id="url" type="text" aria-describedby=\"url_hint\" class="input-group-field"/><span class="input-group-label">.com</span></div><p id="url_hint" class="help-text">Some handy hint</p></fieldset>)
     end
 
     it 'to_s with buttons as options' do
@@ -120,7 +120,7 @@ describe 'Foundation6::InputGroups' do
         value: 'www.trailblazer.to',
         hint: 'Some handy hint'
       )
-      element.to_s.must_equal %(<fieldset><div class="input-group"><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div><input name="url" id="url" type="text" aria-describedby=\"url_hint\" class="input-group-field" value="www.trailblazer.to"/><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div></div><p class="help-text" id="url_hint">Some handy hint</p></fieldset>)
+      element.to_s.must_equal %(<fieldset><div class="input-group"><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div><input value="www.trailblazer.to" name="url" id="url" type="text" aria-describedby=\"url_hint\" class="input-group-field"/><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div></div><p id="url_hint" class="help-text">Some handy hint</p></fieldset>)
     end
 
     it '#to_s with block' do
@@ -129,7 +129,7 @@ describe 'Foundation6::InputGroups' do
         concat input.group_input
         concat input.group_button(builder.submit(value: 'Go!'))
       end
-      element.to_s.must_equal %(<fieldset><div class="input-group"><span class="input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input name="title" id="title" type="text" aria-describedby=\"title_hint\" class="input-group-field" value="John Smith"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div><p class="help-text" id="title_hint">Some handy hint</p></fieldset>)
+      element.to_s.must_equal %(<fieldset><div class="input-group"><span class="input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" aria-describedby=\"title_hint\" class="input-group-field"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div><p id="title_hint" class="help-text">Some handy hint</p></fieldset>)
     end
   end
 
@@ -145,7 +145,7 @@ describe 'Foundation6::InputGroups' do
         value: 'www.trailblazer.to',
         hint: 'Some handy hint'
       )
-      element.to_s.must_equal %(<fieldset><label for="url" class="is-invalid-label">Url</label><div class="input-group"><span class="is-invalid-label input-group-label">http://</span><input name="url" id="url" type="text" aria-describedby=\"url_hint\" class="input-group-field is-invalid-input" value="www.trailblazer.to"/><span class="is-invalid-label input-group-label">.com</span></div><p class="help-text" id="url_hint">Some handy hint</p><span class="form-error is-visible">Try harder!!</span></fieldset>)
+      element.to_s.must_equal %(<fieldset><label class="is-invalid-label" for="url">Url</label><div class="input-group"><span class="is-invalid-label input-group-label">http://</span><input value="www.trailblazer.to" name="url" id="url" type="text" aria-describedby=\"url_hint\" class="input-group-field is-invalid-input"/><span class="is-invalid-label input-group-label">.com</span></div><p id="url_hint" class="help-text">Some handy hint</p><span class="form-error is-visible">Try harder!!</span></fieldset>)
     end
 
     it 'to_s with buttons as options' do
@@ -157,7 +157,7 @@ describe 'Foundation6::InputGroups' do
         value: 'www.trailblazer.to',
         hint: 'Some handy hint'
       )
-      element.to_s.must_equal %(<fieldset><label for="url" class="is-invalid-label">Url</label><div class="input-group"><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div><input name="url" id="url" type="text" aria-describedby=\"url_hint\" class="input-group-field is-invalid-input" value="www.trailblazer.to"/><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div></div><p class="help-text" id="url_hint">Some handy hint</p><span class="form-error is-visible">Try harder!!</span></fieldset>)
+      element.to_s.must_equal %(<fieldset><label class="is-invalid-label" for="url">Url</label><div class="input-group"><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div><input value="www.trailblazer.to" name="url" id="url" type="text" aria-describedby=\"url_hint\" class="input-group-field is-invalid-input"/><div class="input-group-button"><button class="button" href="/some_path">Click Me</button></div></div><p id="url_hint" class="help-text">Some handy hint</p><span class="form-error is-visible">Try harder!!</span></fieldset>)
     end
 
     it '#to_s with block' do
@@ -166,7 +166,7 @@ describe 'Foundation6::InputGroups' do
         concat input.group_input
         concat input.group_button(builder.submit(value: 'Go!'))
       end
-      element.to_s.must_equal %(<fieldset><label for="title" class="is-invalid-label">Title</label><div class="input-group"><span class="is-invalid-label input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input name="title" id="title" type="text" aria-describedby=\"title_hint\" class="input-group-field is-invalid-input" value="John Smith"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div><p class="help-text" id="title_hint">Some handy hint</p><span class="form-error is-visible">is missing</span></fieldset>)
+      element.to_s.must_equal %(<fieldset><label class="is-invalid-label" for="title">Title</label><div class="input-group"><span class="is-invalid-label input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" aria-describedby=\"title_hint\" class="input-group-field is-invalid-input"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div><p id="title_hint" class="help-text">Some handy hint</p><span class="form-error is-visible">is missing</span></fieldset>)
     end
   end
 end

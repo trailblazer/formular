@@ -55,6 +55,7 @@ module Formular
 
           tag :input
           set_default :control_label_options, { class: ['checkbox-inline'] }
+          set_default :value, '1' # instead of reader value
 
           html { closed_start_tag }
         end # class InlineCheckbox
@@ -91,6 +92,7 @@ module Formular
           include StackedCheckable
 
           tag :input
+          set_default :value, '1' # instead of reader value
 
           html { closed_start_tag }
 

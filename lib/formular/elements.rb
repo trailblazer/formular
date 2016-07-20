@@ -11,7 +11,6 @@ module Formular
     # These three are really just provided for convenience when creating other elements
     Container = Class.new(Formular::Element) { include Formular::Elements::Modules::Container }
     Control = Class.new(Formular::Element) { include Formular::Elements::Modules::Control }
-    Checkable = Class.new(Formular::Element) { include Formular::Elements::Modules::Checkable }
     WrappedControl = Class.new(Formular::Element) { include Formular::Elements::Modules::WrappedControl }
 
     Option = Class.new(Container)
@@ -198,15 +197,16 @@ module Formular
       end
     end # class Select
 
-    class Checkbox < Checkable
+    class Checkbox < Control
       add_option_keys :unchecked_value, :include_hidden, :multiple
 
       tag :input
       set_default :type, 'checkbox'
       set_default :unchecked_value, :default_unchecked_value
       set_default :value, '1' # instead of reader value
-
       set_default :include_hidden, true
+
+      include Formular::Elements::Modules::Checkable
 
       html do |element|
         if element.collection?
@@ -231,7 +231,7 @@ module Formular
       private
 
       def default_unchecked_value
-        options[:collection] ? '' : '0'
+        collection? ? '' : '0'
       end
 
       # only append the [] to name if part of a collection, or the multiple option is set
@@ -246,10 +246,12 @@ module Formular
       end
     end # class Checkbox
 
-    class Radio < Checkable
+    class Radio < Control
       tag :input
       set_default :type, 'radio'
       set_default :value, nil # instead of reader value
+
+      include Formular::Elements::Modules::Checkable
 
       html { closed_start_tag }
     end # class Radio

@@ -75,35 +75,33 @@ module Formular
       html_blocks
     end
 
-    # I'm not convinced by this method but essentially we split the options hash
-    # between options and attributes based on the option_keys defined on the class
-    # we then get the default attributes from the class & split these in the same way
-    # the users options & attributes are then merged with the default options & attributes
-    def normalize_attributes(options={})
-      @attributes = options
+    # we split the options hash between options and attributes
+    # based on the option_keys defined on the class
+    # we then get the default_hash from the class
+    # and merge with the user options and attributes
+    def normalize_attributes(**options)
+      @attributes = Attributes[options]
       @options = @attributes.select { |k, v| @attributes.delete(k) || true if option_key?(k) }
-
-      default_attributes = default_hash
-      default_options = default_attributes.select do |k, v|
-        default_attributes.delete(k) || true if option_key?(k)
-      end
-
-      @options = default_options.merge(@options)
-      @attributes = Attributes[default_attributes].merge(@attributes)
+      merge_default_hash
     end
 
-    # default values will either be an array of classes, a string, or symbol.
-    # symbols are treated as method names and we attempt to call them on self.
-    # if not then we simply return the symbol
-    def default_hash
-      attrs = {}
+    # Take each default value and merge it with attributes && options.
+    # This way ordering is important and we can access values as they are evaluated
+    def merge_default_hash
       self.class.default_hash.each do |k, v|
         next unless evaluate_option_condition?(v[:condition])
 
-        attrs[k] = v[:value]
-      end
+        val = Uber::Options::Value.new(v[:value]).evaluate(self)
 
-      Uber::Options.new(attrs).evaluate(self).select{ |k, v| !v.nil? }
+        next if val.nil?
+
+        if option_key?(k)
+          @options[k] = val if @options[k].nil?
+        else
+          # make sure that we merge classes, not override them
+          k == :class && !@attributes[k].nil? ? @attributes[k] += val : @attributes[k] ||= val
+        end
+      end
     end
 
     def option_key?(k)
