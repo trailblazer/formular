@@ -35,7 +35,7 @@ module Formular
               has_label? ? [] : builder.class.column_classes[:left_offset]
             end
           end
-        end
+        end # module WrappedControl
 
         module WrappedCheckableControl
           include Formular::Elements::Module
@@ -50,7 +50,7 @@ module Formular
               has_group_label? ? [] : builder.class.column_classes[:left_offset]
             end
           end
-        end
+        end # module WrappedCheckableControl
 
         module StackedCheckableControl
           include Formular::Elements::Module
@@ -64,7 +64,7 @@ module Formular
             concat input.hint
             concat input.error
           end
-        end
+        end # module StackedCheckableControl
 
         module InlineCheckableControl
           include Formular::Elements::Module
@@ -76,14 +76,7 @@ module Formular
             concat input.hint
             concat input.error
           end
-        end
-
-        Form = Class.new(Formular::Elements::Form) { set_default :class, ['form-horizontal'] }
-        Select = Class.new(Formular::Elements::Bootstrap3::Select) { include WrappedControl }
-        Textarea = Class.new(Formular::Elements::Bootstrap3::Textarea) { include WrappedControl }
-        Input = Class.new(Formular::Elements::Bootstrap3::Input) { include WrappedControl }
-        InputGroup = Class.new(Formular::Elements::Bootstrap3::InputGroup) { tag 'input'; include WrappedControl }
-        Submit = Class.new(Formular::Elements::Bootstrap3::Submit) { include WrappedControl }
+        end # module InlineCheckableControl
 
         class InputColumnWrapper < Formular::Elements::Div
           set_default :class, :column_class
@@ -101,21 +94,45 @@ module Formular
           end
         end # class Label
 
+        class Form < Formular::Elements::Form
+          set_default :class, ['form-horizontal']
+        end # class Form
+
+        class Select < Formular::Elements::Bootstrap3::Select
+          include WrappedControl
+        end # class Select
+
+        class Textarea < Formular::Elements::Bootstrap3::Textarea
+          include WrappedControl
+        end # class Textarea
+
+        class Input < Formular::Elements::Bootstrap3::Input
+          include WrappedControl
+        end # class Input
+
+        class InputGroup < Formular::Elements::Bootstrap3::InputGroup
+          include WrappedControl
+        end # class InputGroup
+
+        class Submit < Formular::Elements::Bootstrap3::Submit
+          include WrappedControl
+        end # class Submit
+
         class Checkbox < Formular::Elements::Bootstrap3::Checkbox
           include StackedCheckableControl
-        end
+        end # class Checkbox
 
         class Radio < Formular::Elements::Bootstrap3::Radio
           include StackedCheckableControl
-        end
+        end # class Radio
 
         class InlineCheckbox < Formular::Elements::Bootstrap3::InlineCheckbox
           include InlineCheckableControl
-        end
+        end # class InlineCheckbox
 
         class InlineRadio < Formular::Elements::Bootstrap3::InlineRadio
           include InlineCheckableControl
-        end
+        end # class InlineRadio
       end # module Horizontal
     end # module Bootstrap3
   end # module Elements

@@ -23,7 +23,7 @@ describe Formular::Element do
 
   describe '#normalize_attributes' do
     class CorrectAttrsInput < Formular::Element
-      tag 'input'
+      tag :input
       add_option_keys :option_1, :option_2, :option_3, :opt
       set_default :class, ['some-class']
       set_default :opt, 'Override me'

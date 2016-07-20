@@ -4,7 +4,9 @@ module Formular
   module Elements
     module Bootstrap3
       module Inline
-        Form = Class.new(Formular::Elements::Form) { set_default :class, ['form-inline'] }
+        class Form < Formular::Elements::Form
+          set_default :class, ['form-inline']
+        end # class Form
       end # module Inline
     end # module Bootstrap3
   end # module Elements
