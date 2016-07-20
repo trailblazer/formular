@@ -5,7 +5,7 @@ require 'formular/builders/bootstrap3_inline'
 
 describe 'Bootstrap3 builders' do
   let(:model) { Comment.new(nil, 'Something exciting', [Reply.new], Owner.new) }
-  let(:collection_array) { [[1, 'Yes'], [0, 'No']] }
+  let(:collection_array) { [['Yes', 1], ['No', 0]] }
   describe Formular::Builders::Bootstrap3 do
     let(:builder) do
       Formular::Builders::Bootstrap3.new(model: model, path_prefix: :comment)
@@ -21,7 +21,7 @@ describe 'Bootstrap3 builders' do
 
       it '#outputs without block (use end)' do
         form = builder.form(action: '/questions/13')
-        html = form.to_s
+        html = form.start
         html << form.textarea(:body, label: 'Body').to_s
         html << form.select(
           :public,
@@ -36,7 +36,7 @@ describe 'Bootstrap3 builders' do
 
       it 'please ignore my labels' do
         form = builder.form(action: '/questions/13')
-        html = form.to_s
+        html = form.start
         html << form.textarea(:body).to_s
         html << form.select(:public, collection: collection_array).to_s
         html << form.input(:body).to_s
@@ -47,7 +47,7 @@ describe 'Bootstrap3 builders' do
 
       it 'please use custom labels' do
         form = builder.form(action: '/questions/13')
-        html = form.to_s
+        html = form.start
         html << form.textarea(:body, label: 'Some fancy label').to_s
         html << form.select(
           :public,
@@ -90,7 +90,7 @@ describe 'Bootstrap3 builders' do
 
       it '#outputs without block (use end)' do
         form = builder.form(action: '/questions/13')
-        html = form.to_s
+        html = form.start
         html << form.input(:body, label: 'Body').to_s
         html << form.end
 
@@ -153,7 +153,7 @@ describe 'Bootstrap3 builders' do
 
       it '#outputs without block (use end)' do
         form = builder.form(action: '/questions/13')
-        html = form.to_s
+        html = form.start
         html << form.input(:body, label: 'Body').to_s
         html << form.end
 

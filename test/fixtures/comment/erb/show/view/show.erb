@@ -1,5 +1,6 @@
 <div>New</div>
-<%= f = form(model, "/posts", path_prefix: :comment) %>
+<% f = form(model, "/posts", path_prefix: :comment) %>
+<%= f.start %>
 <%= f.input :id %>
 <%= f.textarea :body, placeholder: "And your story...", rows: 9 %>
 <%= f.checkbox :public, value: true %>

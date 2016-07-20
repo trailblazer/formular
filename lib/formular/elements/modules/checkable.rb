@@ -1,5 +1,7 @@
 require 'formular/elements/module'
 require 'formular/elements/modules/collection'
+require 'formular/elements/modules/labels'
+
 module Formular
   module Elements
     module Modules
@@ -8,6 +10,7 @@ module Formular
       module Checkable
         include Formular::Elements::Module
         include Collection
+        include Labels
 
         add_option_keys :control_label_options, :label_options, :label
 
@@ -15,13 +18,13 @@ module Formular
 
         module InstanceMethods
           def checkable_label
-            label_opts = Attributes[options[:label_options]]
-            label_opts[:content] = if options[:label]
-                                     "#{to_html(context: :default)} #{options[:label]}"
-                                   else
-                                     to_html(context: :default).to_s
-                                   end
-            Formular::Elements::Label.(label_opts).to_s
+            label_options[:content] = if has_label?
+                                        "#{to_html(context: :default)} #{label_text}"
+                                      else
+                                        to_html(context: :default).to_s
+                                      end
+
+            Formular::Elements::Label.(label_options).to_s
           end
 
           def group_label

@@ -32,17 +32,16 @@ module Formular
       set_default :accept_charset, 'utf-8'
       set_default :enforce_utf8, true
 
-      html do |element|
-        if element.has_content?
-          element.to_html(context: :with_content)
-        else
-          hidden_tags = element.extra_hidden_tags
-          start_tag + hidden_tags
-        end
+      html(:start) do |form|
+        hidden_tags = element.extra_hidden_tags
+        concat start_tag
+        concat hidden_tags
       end
 
-      def content
-        extra_hidden_tags + super
+      html do |form|
+        concat form.to_html(context: :start)
+        concat form.content
+        concat end_tag
       end
 
       def extra_hidden_tags
@@ -102,12 +101,6 @@ module Formular
       include Formular::Elements::Modules::Container
       add_option_keys :value
 
-      # we should always render complete element tags
-      # we don't want opens without closes for textareas
-      html do |element|
-        element.to_html(context: :with_content)
-      end
-
       def content
         options[:value] || super
       end
@@ -135,10 +128,6 @@ module Formular
 
     class Button < Formular::Elements::Container
       add_option_keys :value
-
-      html do |element|
-        element.to_html(context: :with_content)
-      end
 
       def content
         options[:value] || super

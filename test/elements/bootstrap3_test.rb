@@ -4,7 +4,7 @@ require 'formular/elements/bootstrap3'
 
 describe Formular::Elements::Bootstrap3 do
   let(:builder) { Formular::Builders::Bootstrap3.new }
-  let(:collection_array) { [[1, 'Option 1'], [2, 'Option 2']] }
+  let(:collection_array) { [['Option 1', 1], ['Option 2', 2]] }
 
   describe Formular::Elements::Bootstrap3::Submit do
     it "#to_s" do

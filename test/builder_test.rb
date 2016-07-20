@@ -37,7 +37,7 @@ describe Formular::Builder do
 
     it '#outputs without block (use end)' do
       form = builder.form(action: '/questions/13')
-      html = form.to_s
+      html = form.start
       html << form.label(class: ['control-label'], content: 'What colour is the sky?').to_s
       html << form.input(type: 'text', value: 'Something exciting').to_s
       html << form.end
