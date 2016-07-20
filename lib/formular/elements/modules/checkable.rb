@@ -29,6 +29,12 @@ module Formular
           end
         end
 
+        html(:collection) do |input|
+          input.collection.map { |item|
+            item.to_html(context: :checkable_label)
+          }.join('')
+        end
+
         module InstanceMethods
           def group_label
             return '' unless has_group_label?

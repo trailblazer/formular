@@ -10,36 +10,18 @@ module Formular
         module InlineCheckable
           include Formular::Elements::Module
 
-          html(:with_group_label) do |input|
+          html(:wrapped) do |input|
             input.wrapper do
               concat input.group_label
               concat input.hidden_tag unless input.collection?
-
-              concat Formular::Elements::Div.(content: input.collection.map{ |item|
-                item.to_html(context: :checkable_label)
-              }.join(''))
-
+              if input.has_group_label?
+                concat Formular::Elements::Div.(content: input.to_html(context: :collection))
+              else
+                concat input.to_html(context: :collection)
+              end
               concat input.hidden_tag if input.collection?
               concat input.hint
               concat input.error
-            end
-          end
-
-          html(:wrapped) do |input|
-            if input.has_group_label?
-              input.to_html(context: :with_group_label)
-            else
-              input.wrapper do
-                concat input.hidden_tag unless input.collection?
-
-                input.collection.each { |item|
-                  concat item.to_html(context: :checkable_label)
-                }
-
-                concat input.hidden_tag if input.collection?
-                concat input.hint
-                concat input.error
-              end
             end
           end
         end # class InlineCheckable
@@ -73,13 +55,17 @@ module Formular
             input.wrapper do
               concat input.group_label
               concat input.hidden_tag unless input.collection?
-              input.collection.each do |control|
-                concat control.inner_wrapper { control.to_html(context: :checkable_label) }
-              end
+              concat input.to_html(context: :collection)
               concat input.hidden_tag if input.collection?
               concat input.hint
               concat input.error
             end
+          end
+
+          html(:collection) do |input|
+            input.collection.map { |control|
+              control.inner_wrapper { control.to_html(context: :checkable_label) }
+            }.join('')
           end
 
           module InstanceMethods
