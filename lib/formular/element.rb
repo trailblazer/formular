@@ -75,17 +75,17 @@ module Formular
       html_blocks
     end
 
-    # I'm not convinced by this method but essentially we split the options hash
-    # between options and attributes based on the option_keys defined on the class
-    # we then get the default attributes from the class
-    # and merge with the user attributes
+    # we split the options hash between options and attributes
+    # based on the option_keys defined on the class
+    # we then get the default_hash from the class
+    # and merge with the user options and attributes
     def normalize_attributes(**options)
       @attributes = Attributes[options]
       @options = @attributes.select { |k, v| @attributes.delete(k) || true if option_key?(k) }
       merge_default_hash
     end
 
-    # Take each default value and merge it with @attributes && options.
+    # Take each default value and merge it with attributes && options.
     # This way ordering is important and we can access values as they are evaluated
     def merge_default_hash
       self.class.default_hash.each do |k, v|
