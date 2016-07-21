@@ -29,7 +29,9 @@ describe Formular::Element do
       set_default :opt, 'Override me'
       set_default :option_1, 'Some super cool value', if: :happy?
       set_default :opt, 'Keep me'
-      set_default :class, 'Add me as a class', method: '<<'
+      add_default :class, ['Add me as a class']
+      add_default :class, ['I should no exist']
+      remove_default :class, ['I should no exist']
 
       def happy?
         false

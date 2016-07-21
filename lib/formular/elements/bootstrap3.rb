@@ -54,7 +54,7 @@ module Formular
       end # class Wrapper
 
       class ErrorWrapper < Wrapper
-        set_default :class, 'has-error', method: '<<'
+        add_default :class, ['has-error']
       end # class Wrapper
     end # module Bootstrap3
   end # module Elements
