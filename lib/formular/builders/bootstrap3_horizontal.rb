@@ -1,14 +1,10 @@
-require 'formular/builders/basic'
-require 'formular/elements'
-require 'formular/elements/bootstrap3'
+require 'formular/builders/bootstrap3'
 require 'formular/elements/bootstrap3/horizontal'
 module Formular
   module Builders
     class Bootstrap3Horizontal < Formular::Builders::Bootstrap3
       element_set(
         form: Formular::Elements::Bootstrap3::Horizontal::Form,
-        error: Formular::Elements::Bootstrap3::Error,
-        hint: Formular::Elements::Bootstrap3::Hint,
         input: Formular::Elements::Bootstrap3::Horizontal::Input,
         input_group: Formular::Elements::Bootstrap3::Horizontal::InputGroup,
         select: Formular::Elements::Bootstrap3::Horizontal::Select,
@@ -19,7 +15,6 @@ module Formular
         label: Formular::Elements::Bootstrap3::Horizontal::Label,
         checkable_group_label: Formular::Elements::Bootstrap3::Horizontal::Label,
         textarea: Formular::Elements::Bootstrap3::Horizontal::Textarea,
-        wrapper: Formular::Elements::Bootstrap3::Wrapper,
         error_wrapper: Formular::Elements::Bootstrap3::ErrorWrapper,
         input_column_wrapper: Formular::Elements::Bootstrap3::Horizontal::InputColumnWrapper,
         submit: Formular::Elements::Bootstrap3::Horizontal::Submit
