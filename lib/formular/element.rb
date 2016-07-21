@@ -24,8 +24,19 @@ module Formular
     # set the default value of an option or attribute
     # you can make this conditional by providing a condition
     # e.g. if: :some_method or unless: :some_method
-    def self.set_default(key, value, condition = {})
-      self.default_hash[key] = { value: value, condition: condition }
+    # if you provide a :method option, you can mutate an existing
+    # default rather than overriding it
+    def self.set_default(key, value, **options)
+      method = options.delete(:method)
+      condition = options
+
+      val = if method.nil?
+              value
+            else
+              default_hash[key][:value].dup.send(method, value)
+            end
+
+      self.default_hash[key] = { value: val, condition: condition }
     end
 
     # define what your html should look like
