@@ -6,9 +6,15 @@ module Formular
     # But I kind of see myself having Builder as a generic
     # viewbuilder and this basic class as Form
     class Basic < Formular::Builder
-      element_set({
+      element_set(
         form: Formular::Elements::Form,
+        fieldset: Formular::Elements::Fieldset,
+        legend: Formular::Elements::Legend,
+        div: Formular::Elements::Div,
+        span: Formular::Elements::Span,
+        p: Formular::Elements::P,
         input: Formular::Elements::Input,
+        hidden: Formular::Elements::Hidden,
         label: Formular::Elements::Label,
         error: Formular::Elements::Error,
         hint: Formular::Elements::P,
@@ -19,7 +25,7 @@ module Formular
         radio: Formular::Elements::Radio,
         wrapper: Formular::Elements::Div,
         error_wrapper: Formular::Elements::Div
-      })
+      )
 
       def initialize(model: nil, path_prefix: nil, errors: nil, elements: {})
         @model = model
