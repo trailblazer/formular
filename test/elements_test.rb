@@ -256,6 +256,18 @@ describe 'core elements' do
         )
         element.option_tags.must_equal %(<optgroup label="Genders"><option value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option value="1">True</option><option value="0">False</option></optgroup>)
       end
+
+      it 'option tag attributes' do
+        element = Formular::Elements::Select.(
+          name: 'public',
+          collection: [
+            ['Genders', [['Male', 'm', { data: { some_attr: 'yes' } }], %w(Female f)]],
+            ['Booleans', [['True', 1, { required: 'true' }], ['False', 0]]]
+          ],
+          value: 'm'
+        )
+        element.option_tags.must_equal %(<optgroup label="Genders"><option data-some-attr="yes" value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option required="true" value="1">True</option><option value="0">False</option></optgroup>)
+      end
     end
   end # Formular::Elements::Select
 end
