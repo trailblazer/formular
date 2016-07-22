@@ -1,9 +1,10 @@
 require 'formular/builders/bootstrap3'
-require 'formular/elements/bootstrap3/inline'
 module Formular
   module Builders
     class Bootstrap3Inline < Formular::Builders::Bootstrap3
-      element_set form: Formular::Elements::Bootstrap3::Inline::Form
+      Form = Class.new(Formular::Elements::Form) { set_default :class, ['form-inline'] }
+
+      element_set form: Form
     end # class Bootstrap3Inline
   end # module Builders
 end # module Formular

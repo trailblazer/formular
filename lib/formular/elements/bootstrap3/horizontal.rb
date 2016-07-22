@@ -3,7 +3,7 @@ require 'formular/elements'
 require 'formular/elements/modules/container'
 require 'formular/elements/module'
 require 'formular/elements/bootstrap3'
-require 'formular/elements/bootstrap3/checkable_controls'
+require 'formular/elements/bootstrap3/checkable_control'
 module Formular
   module Elements
     module Bootstrap3
@@ -101,12 +101,12 @@ module Formular
         end # class Submit
 
         class Checkbox < Formular::Elements::Bootstrap3::Checkbox
-          include Formular::Elements::Bootstrap3::CheckableControls::StackedCheckable
+          include Formular::Elements::Bootstrap3::CheckableControl::StackedCheckable
           include WrappedCheckableControl
         end # class Checkbox
 
         class Radio < Formular::Elements::Bootstrap3::Radio
-          include Formular::Elements::Bootstrap3::CheckableControls::StackedCheckable
+          include Formular::Elements::Bootstrap3::CheckableControl::StackedCheckable
           include WrappedCheckableControl
         end # class Radio
 

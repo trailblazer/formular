@@ -1,9 +1,9 @@
 require 'test_helper'
 require 'formular/builders/bootstrap3'
 require 'formular/elements/bootstrap3'
-require 'formular/elements/bootstrap3/checkable_controls'
+require 'formular/elements/bootstrap3/checkable_control'
 
-describe 'Bootstrap3::CheckableControls' do
+describe 'Bootstrap3::CheckableControl' do
   let(:builder) { Formular::Builders::Bootstrap3.new }
   let(:collection_array) { [['Option 1', 1], ['Option 2', 2]] }
 

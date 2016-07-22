@@ -1,9 +1,9 @@
 require 'test_helper'
 require 'formular/builders/bootstrap3'
 require 'formular/elements/bootstrap3'
-require 'formular/elements/bootstrap3/input_groups'
+require 'formular/elements/bootstrap3/input_group'
 
-describe 'Bootstrap3::InputGroups' do
+describe 'Bootstrap3::InputGroup' do
   let(:builder) { Formular::Builders::Bootstrap3.new }
 
   it '#to_s with addons as options' do
