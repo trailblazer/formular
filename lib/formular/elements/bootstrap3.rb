@@ -19,6 +19,10 @@ module Formular
         set_default :type, 'submit'
       end # class Submit
 
+      class ErrorNotification < Formular::Elements::ErrorNotification
+        set_default :class, ['alert alert-danger']
+      end
+
       class Error < Formular::Elements::Error
         tag :span
         set_default :class, ['help-block']
