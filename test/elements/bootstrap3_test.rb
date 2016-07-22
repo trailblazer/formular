@@ -6,6 +6,25 @@ describe Formular::Elements::Bootstrap3 do
   let(:builder) { Formular::Builders::Bootstrap3.new }
   let(:collection_array) { [['Option 1', 1], ['Option 2', 2]] }
 
+  describe Formular::Elements::Bootstrap3::ErrorNotification do
+    let(:builder) { Formular::Builders::Bootstrap3.new(errors: { name: ['some error'] }) }
+
+    it 'default message' do
+      element = builder.error_notification
+      element.to_s.must_equal %(<div class="alert alert-danger">Please review the problems below:</div>)
+    end
+
+    it 'custom message' do
+      element = builder.error_notification(message: 'My message:')
+      element.to_s.must_equal %(<div class="alert alert-danger">My message:</div>)
+    end
+
+    it 'respects html attributes' do
+      element = builder.error_notification(data: { some_key: 'true' }, class: ['hey', 'there'])
+      element.to_s.must_equal %(<div data-some-key="true" class="hey there alert alert-danger">Please review the problems below:</div>)
+    end
+  end
+
   describe Formular::Elements::Bootstrap3::Submit do
     it "#to_s" do
       element = builder.submit(value: 'Go Go Go!!')

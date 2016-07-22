@@ -1,11 +1,10 @@
 require 'formular/builders/basic'
-require 'formular/elements'
 require 'formular/elements/bootstrap3'
 module Formular
   module Builders
     class Bootstrap3 < Formular::Builders::Basic
       element_set(
-        form: Formular::Elements::Form,
+        error_notification: Formular::Elements::Bootstrap3::ErrorNotification,
         error: Formular::Elements::Bootstrap3::Error,
         hint: Formular::Elements::Bootstrap3::Hint,
         input: Formular::Elements::Bootstrap3::Input,

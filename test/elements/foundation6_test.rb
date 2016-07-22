@@ -6,6 +6,25 @@ describe Formular::Elements::Foundation6 do
   let(:builder) { Formular::Builders::Foundation6.new }
   let(:collection_array) { [['Option 1', 1], ['Option 2', 2]] }
 
+  describe Formular::Elements::Foundation6::ErrorNotification do
+    let(:builder) { Formular::Builders::Foundation6.new(errors: { name: ['some error'] }) }
+
+    it 'default message' do
+      element = builder.error_notification
+      element.to_s.must_equal %(<div class="callout alert">Please review the problems below:</div>)
+    end
+
+    it 'custom message' do
+      element = builder.error_notification(message: 'My message:')
+      element.to_s.must_equal %(<div class="callout alert">My message:</div>)
+    end
+
+    it 'respects html attributes' do
+      element = builder.error_notification(data: { some_key: 'true' }, class: ['hey', 'there'])
+      element.to_s.must_equal %(<div data-some-key="true" class="hey there callout alert">Please review the problems below:</div>)
+    end
+  end
+
   describe Formular::Elements::Foundation6::Input do
     it '#to_s' do
       element = builder.input(:name, label: 'Name', value: 'Joseph Smith')

@@ -91,6 +91,30 @@ module Formular
       end
     end
 
+    class ErrorNotification < Formular::Element
+      tag :div
+      add_option_keys :message
+
+      html do |element|
+        if element.builder_errors?
+          concat start_tag
+          concat element.error_message
+          concat end_tag
+        else
+          ''
+        end
+      end
+
+      def error_message
+        options[:message] || 'Please review the problems below:'
+      end
+
+      def builder_errors?
+        return false if builder.nil?
+        !builder.errors.empty?
+      end
+    end
+
     class Error < P
       include Formular::Elements::Modules::Errors
       add_option_keys :attribute_name
@@ -192,11 +216,15 @@ module Formular
       end
 
       def item_to_option(item)
-        value = item.send(options[:value_method])
-        label = item.send(options[:label_method])
+        opts = if item.is_a?(Array) && item.size > 2
+                 item.pop
+               else
+                 {}
+               end
 
-        opts = { value: value, content: label }
-        opts[:selected] = 'selected' if value == options[:value]
+        opts[:value] = item.send(options[:value_method])
+        opts[:content] = item.send(options[:label_method])
+        opts[:selected] = 'selected' if opts[:value] == options[:value]
 
         Formular::Elements::Option.new(opts).to_s
       end

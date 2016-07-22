@@ -5,6 +5,25 @@ require 'formular/builders/basic'
 describe 'core elements' do
   let(:builder) { Formular::Builders::Basic.new }
 
+  describe Formular::Elements::ErrorNotification do
+    let(:builder) { Formular::Builders::Basic.new(errors: { name: ['some error'] }) }
+
+    it 'default message' do
+      element = builder.error_notification
+      element.to_s.must_equal %(<div>Please review the problems below:</div>)
+    end
+
+    it 'custom message' do
+      element = builder.error_notification(message: 'My message:')
+      element.to_s.must_equal %(<div>My message:</div>)
+    end
+
+    it 'respects html attributes' do
+      element = builder.error_notification(data: { some_key: 'true' }, class: ['hey', 'there'])
+      element.to_s.must_equal %(<div data-some-key="true" class="hey there">Please review the problems below:</div>)
+    end
+  end # Formular::Elements::Button
+
   describe Formular::Elements::Button do
     it 'returns correct html' do
       element = Formular::Elements::Button.(href: '/some_path', value: 'Button')
@@ -255,6 +274,18 @@ describe 'core elements' do
           value: 'm'
         )
         element.option_tags.must_equal %(<optgroup label="Genders"><option value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option value="1">True</option><option value="0">False</option></optgroup>)
+      end
+
+      it 'option tag attributes' do
+        element = Formular::Elements::Select.(
+          name: 'public',
+          collection: [
+            ['Genders', [['Male', 'm', { data: { some_attr: 'yes' } }], %w(Female f)]],
+            ['Booleans', [['True', 1, { required: 'true' }], ['False', 0]]]
+          ],
+          value: 'm'
+        )
+        element.option_tags.must_equal %(<optgroup label="Genders"><option data-some-attr="yes" value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option required="true" value="1">True</option><option value="0">False</option></optgroup>)
       end
     end
   end # Formular::Elements::Select
