@@ -94,6 +94,21 @@ module Formular
 
         class InputGroup < Formular::Elements::Bootstrap3::InputGroup
           include WrappedControl
+
+          html(:start) do |input|
+            wrapper = input.wrapper
+            concat wrapper.start
+            concat input.to_html(context: :label_column)
+            concat wrapper.input_column_wrapper(class: input.column_class).start
+            concat Formular::Elements::Bootstrap3::InputGroup::Wrapper.().start
+          end
+
+          html(:end) do |input|
+            wrapper = input.wrapper
+            concat Formular::Elements::Bootstrap3::InputGroup::Wrapper.().end
+            concat wrapper.input_column_wrapper.end
+            concat wrapper.end
+          end
         end # class InputGroup
 
         class Submit < Formular::Elements::Bootstrap3::Submit
