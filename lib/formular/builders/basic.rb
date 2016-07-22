@@ -7,6 +7,7 @@ module Formular
     # viewbuilder and this basic class as Form
     class Basic < Formular::Builder
       element_set(
+        error_notification: Formular::Elements::ErrorNotification,
         form: Formular::Elements::Form,
         fieldset: Formular::Elements::Fieldset,
         legend: Formular::Elements::Legend,
@@ -30,7 +31,7 @@ module Formular
       def initialize(model: nil, path_prefix: nil, errors: nil, elements: {})
         @model = model
         @path_prefix = path_prefix
-        @errors = errors || (model ? model.errors : nil)
+        @errors = errors || (model ? model.errors : {})
         super(elements)
       end
       attr_reader :model, :errors

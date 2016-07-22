@@ -91,6 +91,30 @@ module Formular
       end
     end
 
+    class ErrorNotification < Formular::Element
+      tag :div
+      add_option_keys :message
+
+      html do |element|
+        if element.builder_errors?
+          concat start_tag
+          concat element.error_message
+          concat end_tag
+        else
+          ''
+        end
+      end
+
+      def error_message
+        options[:message] || 'Please review the problems below:'
+      end
+
+      def builder_errors?
+        return false if builder.nil?
+        !builder.errors.empty?
+      end
+    end
+
     class Error < P
       include Formular::Elements::Modules::Errors
       add_option_keys :attribute_name

@@ -10,6 +10,10 @@ module Formular
       include InputGroups
       include CheckableControls
 
+      class ErrorNotification < Formular::Elements::ErrorNotification
+        set_default :class, ['callout alert']
+      end
+
       module InputWithErrors
         include Formular::Elements::Module
         set_default :class, ['is-invalid-input'], if: :has_errors?

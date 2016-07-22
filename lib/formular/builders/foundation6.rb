@@ -5,6 +5,7 @@ module Formular
   module Builders
     class Foundation6 < Formular::Builders::Basic
       element_set(
+        error_notification: Formular::Elements::Foundation6::ErrorNotification,
         checkable_group_label: Formular::Elements::Legend,
         checkbox: Formular::Elements::Foundation6::Checkbox,
         radio: Formular::Elements::Foundation6::Radio,
