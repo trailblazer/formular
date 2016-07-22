@@ -34,6 +34,13 @@ module Formular
       self.html_blocks[context] = block
     end
 
+    # a convenient way of changing the key for a context
+    # useful for inheritance if you want to replace a context
+    # but still access the original function
+    def self.rename_html_context(old_context, new_context)
+      self.html_blocks[new_context] = self.html_blocks.delete(old_context)
+    end
+
     # blacklist the keys that should NOT end up as html attributes
     def self.add_option_keys(*keys)
       self.option_keys += keys

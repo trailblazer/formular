@@ -6,7 +6,7 @@ require 'formular/elements/module'
 module Formular
   module Elements
     module Bootstrap3
-      module CheckableControls
+      module CheckableControl
         module InlineCheckable
           include Formular::Elements::Module
 
@@ -100,7 +100,7 @@ module Formular
             ''
           end
         end # class Radio
-      end # module CheckableControls
+      end # module CheckableControl
     end # module Bootstrap3
   end # module Elements
 end # module Formular

@@ -1,5 +1,6 @@
 require 'formular/builders/basic'
 require 'formular/elements/bootstrap3'
+require 'formular/elements/bootstrap3/input_group'
 module Formular
   module Builders
     class Bootstrap3 < Formular::Builders::Basic
@@ -19,7 +20,8 @@ module Formular
         textarea: Formular::Elements::Bootstrap3::Textarea,
         wrapper: Formular::Elements::Bootstrap3::Wrapper,
         error_wrapper: Formular::Elements::Bootstrap3::ErrorWrapper,
-        submit: Formular::Elements::Bootstrap3::Submit
+        submit: Formular::Elements::Bootstrap3::Submit,
+        row: Formular::Elements::Bootstrap3::Row
       )
     end # class Bootstrap3
   end # module Builders

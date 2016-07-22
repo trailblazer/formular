@@ -13,7 +13,7 @@ module Formular
       basic: 'Formular::Builders::Basic',
       bootstrap3: 'Formular::Builders::Bootstrap3',
       bootstrap3_inline: 'Formular::Builders::Bootstrap3Inline',
-      bootstrap3_horizontal: 'Formular::Builders::Bootstrap3Inline',
+      bootstrap3_horizontal: 'Formular::Builders::Bootstrap3Horizontal',
       foundation6: 'Formular::Builders::Foundation6'
     }.freeze
 

@@ -3,16 +3,16 @@ require 'formular/elements'
 require 'formular/elements/modules/container'
 require 'formular/elements/modules/wrapped_control'
 require 'formular/elements/module'
-require 'formular/elements/bootstrap3/input_groups'
-require 'formular/elements/bootstrap3/checkable_controls'
+require 'formular/elements/bootstrap3/checkable_control'
+require 'formular/elements/bootstrap3/column_control'
 
 module Formular
   module Elements
     module Bootstrap3
-      include InputGroups
-      include CheckableControls
+      include CheckableControl
 
       Label = Class.new(Formular::Elements::Label) { set_default :class, ['control-label'] }
+      Row = Class.new(Formular::Elements::Div) { set_default :class, ['row'] }
 
       class Submit < Formular::Elements::Button
         set_default :class, ['btn', 'btn-default']
@@ -34,6 +34,7 @@ module Formular
 
       class Input < Formular::Elements::Input
         include Formular::Elements::Modules::WrappedControl
+        include Formular::Elements::Bootstrap3::ColumnControl
 
         set_default :class, ['form-control'], unless: :file_input?
 
@@ -44,12 +45,15 @@ module Formular
 
       class Select < Formular::Elements::Select
         include Formular::Elements::Modules::WrappedControl
+        include Formular::Elements::Bootstrap3::ColumnControl
 
         set_default :class, ['form-control']
       end # class Select
 
       class Textarea < Formular::Elements::Textarea
         include Formular::Elements::Modules::WrappedControl
+        include Formular::Elements::Bootstrap3::ColumnControl
+
         set_default :class, ['form-control']
       end # class Textarea
 
