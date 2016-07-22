@@ -36,6 +36,19 @@ module Formular
           Wrapper.(content: content)
         end
 
+        html(:start) do |input|
+          concat input.wrapper.start
+          concat input.label
+          concat Wrapper.().start
+        end
+
+        html(:end) do |input|
+          concat Wrapper.().end
+          concat input.hint
+          concat input.error
+          concat input.wrapper.end
+        end
+
         def group_addon(content = nil, option_key: nil)
           return '' unless content || option_key
           addon_content = content || options[option_key]
