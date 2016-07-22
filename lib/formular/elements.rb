@@ -192,11 +192,15 @@ module Formular
       end
 
       def item_to_option(item)
-        value = item.send(options[:value_method])
-        label = item.send(options[:label_method])
+        opts = if item.is_a?(Array) && item.size > 2
+                 item.pop
+               else
+                 {}
+               end
 
-        opts = { value: value, content: label }
-        opts[:selected] = 'selected' if value == options[:value]
+        opts[:value] = item.send(options[:value_method])
+        opts[:content] = item.send(options[:label_method])
+        opts[:selected] = 'selected' if opts[:value] == options[:value]
 
         Formular::Elements::Option.new(opts).to_s
       end
