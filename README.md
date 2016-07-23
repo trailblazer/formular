@@ -28,10 +28,10 @@ class PostsController < ApplicationController
   helper Formular::Helper
 ```
 
-You should also configure what frontend you want to use. This will wrap inputs correctly, and so on.
+You should also configure what builder you want to use. This will wrap inputs correctly, and so on. 
 
 ```ruby
-Formular::Helper.frontend :bootstrap3
+Formular::Helper.builder= :bootstrap3
 ```
 
 In your view, you're now ready to use Formular's API to render forms.
@@ -69,6 +69,13 @@ Note that a lot of this code can be done automatically by Formular.
 Formular's API docs and information on how to extend it can be found on the [Trailblazer project page](http://trailblazer.to/gems/formular).
 
 Formular's rendering is easily customizable. It provides built-in support for Foundation 6 and Bootstrap 3 so far with more to come.
+
+The list of builders provided by default can be seen in the BUILDERS constant. Try the following in an IRB session with your project loaded (rails console).
+
+```ruby
+Formular::Helper::BUILDERS
+```
+
 
 
 ## Key Features
