@@ -35,7 +35,7 @@ module Formular
           }
         end
 
-        html(:default) do |element|
+        html do |element|
           context = element.stacked_column? ? :stacked_column : :no_cols
           element.to_html(context: context)
         end

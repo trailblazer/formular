@@ -8,6 +8,7 @@ module Formular
       class InputGroup < Formular::Elements::Input
         include Formular::Elements::Modules::WrappedControl
         include Formular::Elements::Modules::Container
+        include Formular::Elements::Bootstrap3::ColumnControl
 
         class Wrapper < Formular::Elements::Div
           set_default :class, ['input-group']
@@ -27,7 +28,7 @@ module Formular
 
         html(:raw_input) { closed_start_tag }
 
-        html do |input|
+        html(:no_cols) do |input|
           content = if input.has_content?
                       input.content
                     else

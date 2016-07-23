@@ -7,7 +7,7 @@ describe 'Bootstrap3::ColumnControl' do
   let(:builder) { Formular::Builders::Bootstrap3.new(errors: { body: ['some nasty error'] }) }
   COLLECTION_ARRAY = [['Option 1', 1], ['Option 2', 2]]
   describe 'inline columns' do
-    it 'inputs' do
+    it 'input' do
       form = builder.form(action: '/questions/13') do |f|
         f.row do
           concat f.input(:body, label: 'Body', inline_col_class: ['col-md-6'], hint: 'some handy hint')
@@ -16,6 +16,17 @@ describe 'Bootstrap3::ColumnControl' do
         end
       end
       form.to_s.must_equal %(<form action="/questions/13" method="post" accept-charset=\"utf-8\"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="row"><div class="col-md-6 form-group has-error"><label for="body" class="control-label">Body</label><input name="body" id="body" type="text" aria-describedby="body_hint" class="form-control"/><span id="body_hint" class="help-block">some handy hint</span><span class="help-block">some nasty error</span></div><div class="col-md-2 form-group"><input name="uuid" id="uuid" type="text" class="form-control"/></div><div class="col-md-4 form-group"><label for="public" class="control-label">Public</label><input name="public" id="public" type="text" class="form-control"/></div></div></form>)
+    end
+
+    it 'input_group' do
+      form = builder.form(action: '/questions/13') do |f|
+        f.row do
+          concat f.input_group(:body, label: 'Body', inline_col_class: ['col-md-6'], hint: 'some handy hint')
+          concat f.input_group(:uuid, inline_col_class: ['col-md-2'])
+          concat f.input_group(:public, label: 'Public', inline_col_class: ['col-md-4'])
+        end
+      end
+      form.to_s.must_equal %(<form action="/questions/13" method="post" accept-charset=\"utf-8\"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="row"><div class="col-md-6 form-group has-error"><label for="body" class="control-label">Body</label><div class="input-group"><input name="body" id="body" type="text" aria-describedby="body_hint" class="form-control"/></div><span id="body_hint" class="help-block">some handy hint</span><span class="help-block">some nasty error</span></div><div class="col-md-2 form-group"><div class=\"input-group\"><input name="uuid" id="uuid" type="text" class="form-control"/></div></div><div class="col-md-4 form-group"><label for="public" class="control-label">Public</label><div class=\"input-group\"><input name="public" id="public" type="text" class="form-control"/></div></div></div></form>)
     end
 
     it 'select' do
@@ -42,13 +53,22 @@ describe 'Bootstrap3::ColumnControl' do
   end
 
   describe 'stacked columns' do
-    it 'inputs' do
+    it 'input' do
       form = builder.form(action: '/questions/13') do |f|
         concat f.input(:body, label: 'Body', stacked_col_class: ['col-md-6'], hint: 'some handy hint')
         concat f.input(:uuid, stacked_col_class: ['col-md-2'])
         concat f.input(:public, label: 'Public', stacked_col_class: ['col-md-4'])
       end
       form.to_s.must_equal %(<form action="/questions/13" method="post" accept-charset=\"utf-8\"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group has-error"><label for="body" class="control-label">Body</label><div class="row"><div class="col-md-6"><input name="body" id="body" type="text" aria-describedby="body_hint" class="form-control"/></div></div><span id="body_hint" class="help-block">some handy hint</span><span class="help-block">some nasty error</span></div><div class="form-group"><div class="row"><div class="col-md-2"><input name="uuid" id="uuid" type="text" class="form-control"/></div></div></div><div class="form-group"><label for="public" class="control-label">Public</label><div class="row"><div class="col-md-4"><input name="public" id="public" type="text" class="form-control"/></div></div></div></form>)
+    end
+
+    it 'input_group' do
+      form = builder.form(action: '/questions/13') do |f|
+        concat f.input_group(:body, label: 'Body', stacked_col_class: ['col-md-6'], hint: 'some handy hint')
+        concat f.input_group(:uuid, stacked_col_class: ['col-md-2'])
+        concat f.input_group(:public, label: 'Public', stacked_col_class: ['col-md-4'])
+      end
+      form.to_s.must_equal %(<form action="/questions/13" method="post" accept-charset=\"utf-8\"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group has-error"><label for="body" class="control-label">Body</label><div class="row"><div class="col-md-6"><div class="input-group"><input name="body" id="body" type="text" aria-describedby="body_hint" class="form-control"/></div></div></div><span id="body_hint" class="help-block">some handy hint</span><span class="help-block">some nasty error</span></div><div class="form-group"><div class="row"><div class="col-md-2"><div class=\"input-group\"><input name="uuid" id="uuid" type="text" class="form-control"/></div></div></div></div><div class="form-group"><label for="public" class="control-label">Public</label><div class="row"><div class="col-md-4"><div class=\"input-group\"><input name="public" id="public" type="text" class="form-control"/></div></div></div></div></form>)
     end
 
     it 'select' do
