@@ -6,9 +6,10 @@ module Formular
     inheritable_attr :elements
     self.elements = {}
 
+
     def self.element_set(**elements)
-      elements.merge!(elements)
-      define_element_methods(**elements)
+      self.elements.merge!(elements)
+      define_element_methods(self.elements)
     end
 
     def self.define_element_methods(**elements)
