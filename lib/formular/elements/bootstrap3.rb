@@ -61,8 +61,8 @@ module Formular
         set_default :class, ['form-group']
       end # class Wrapper
 
-      class ErrorWrapper < Formular::Elements::Div
-        set_default :class, ['form-group', 'has-error']
+      class ErrorWrapper < Wrapper
+        add_default :class, ['has-error']
       end # class Wrapper
     end # module Bootstrap3
   end # module Elements

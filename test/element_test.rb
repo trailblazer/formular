@@ -29,6 +29,9 @@ describe Formular::Element do
       set_default :opt, 'Override me'
       set_default :option_1, 'Some super cool value', if: :happy?
       set_default :opt, 'Keep me'
+      add_default :class, ['Add me as a class']
+      add_default :class, ['I should no exist']
+      remove_default :class, ['I should no exist']
 
       def happy?
         false
@@ -37,7 +40,7 @@ describe Formular::Element do
     let(:element) { CorrectAttrsInput.(value: 'some value', option_2: 'an option') }
 
     it 'attributes should exclude option_keys' do
-      element.attributes.must_equal(value: 'some value', class: ['some-class'])
+      element.attributes.must_equal(value: 'some value', class: ['some-class', 'Add me as a class'])
     end
 
     it 'should evaluate condition correctly' do
@@ -51,7 +54,7 @@ describe Formular::Element do
     it 'should allow defaults to be overriden' do
       element = CorrectAttrsInput.(value: 'some value', class: ['another-class'], option_1: 'I don\'t care if you\'re happy!')
 
-      element.attributes.must_equal(value: 'some value', class: ['another-class', 'some-class'])
+      element.attributes.must_equal(value: 'some value', class: ['another-class', 'some-class', 'Add me as a class'])
       element.options.must_equal(opt: 'Keep me', option_1: 'I don\'t care if you\'re happy!')
     end
 
