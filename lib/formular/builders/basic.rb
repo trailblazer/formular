@@ -7,25 +7,25 @@ module Formular
     # viewbuilder and this basic class as Form
     class Basic < Formular::Builder
       element_set(
-        error_notification: Formular::Elements::ErrorNotification,
-        form: Formular::Elements::Form,
-        fieldset: Formular::Elements::Fieldset,
-        legend: Formular::Elements::Legend,
-        div: Formular::Elements::Div,
-        span: Formular::Elements::Span,
-        p: Formular::Elements::P,
-        input: Formular::Elements::Input,
-        hidden: Formular::Elements::Hidden,
-        label: Formular::Elements::Label,
-        error: Formular::Elements::Error,
-        hint: Formular::Elements::P,
-        textarea: Formular::Elements::Textarea,
-        submit: Formular::Elements::Submit,
-        select: Formular::Elements::Select,
-        checkbox: Formular::Elements::Checkbox,
-        radio: Formular::Elements::Radio,
-        wrapper: Formular::Elements::Div,
-        error_wrapper: Formular::Elements::Div
+        error_notification: Formular::Element::ErrorNotification,
+        form: Formular::Element::Form,
+        fieldset: Formular::Element::Fieldset,
+        legend: Formular::Element::Legend,
+        div: Formular::Element::Div,
+        span: Formular::Element::Span,
+        p: Formular::Element::P,
+        input: Formular::Element::Input,
+        hidden: Formular::Element::Hidden,
+        label: Formular::Element::Label,
+        error: Formular::Element::Error,
+        hint: Formular::Element::P,
+        textarea: Formular::Element::Textarea,
+        submit: Formular::Element::Submit,
+        select: Formular::Element::Select,
+        checkbox: Formular::Element::Checkbox,
+        radio: Formular::Element::Radio,
+        wrapper: Formular::Element::Div,
+        error_wrapper: Formular::Element::Div
       )
 
       def initialize(model: nil, path_prefix: nil, errors: nil, elements: {})

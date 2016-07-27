@@ -23,7 +23,7 @@ module Formular
       @output << content.to_s
     end
 
-    # return the start/opening tag with the elements
+    # return the start/opening tag with the element
     # attributes hash converted into valid html attributes
     def start_tag
       if element.attributes.empty?

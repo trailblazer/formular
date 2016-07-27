@@ -3,13 +3,15 @@ require 'formular/builder'
 require 'formular/elements'
 
 describe Formular::Builder do
-  BuilderElements =
-    {label: Formular::Elements::Label,
-     input: Formular::Elements::Input,
-     form: Formular::Elements::Form}.freeze
+  BuilderElement =
+    {
+      label: Formular::Element::Label,
+      input: Formular::Element::Input,
+      form: Formular::Element::Form
+   }.freeze
 
   let(:builder) {
-    Formular::Builder.new(BuilderElements)
+    Formular::Builder.new(BuilderElement)
   }
 
   describe '#define_element_methods' do
@@ -56,7 +58,7 @@ describe Formular::Builder do
   describe 'builder elements' do
     Password = Class.new(Formular::Element)
     Builder = Class.new(Formular::Builder) do
-      element_set(BuilderElements)
+      element_set(BuilderElement)
     end
     InheritedBuilder = Class.new(Builder)
     PasswordInheritedBuilder = Class.new(InheritedBuilder) do
@@ -64,7 +66,7 @@ describe Formular::Builder do
     end
 
     it "stores elements" do
-      Builder.elements.must_equal BuilderElements
+      Builder.elements.must_equal BuilderElement
     end
 
     it "inherits elements" do
