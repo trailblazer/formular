@@ -31,7 +31,7 @@ describe Formular::Builders::Basic do
         }
       end
 
-      f.to_s.must_equal %(<form method="post" accept-charset="utf-8" action="/ok"><input name="utf8" type="hidden" value="✓"/><input name="blah[ble]" id="blah_ble" value="blargh" type="text"/><input name="blah[coll][][name]" id="blah_coll_0_name" value="1" type="text"/><input name="blah[coll][][id]" id="blah_coll_0_id" value="3" type="text"/><input name="blah[coll][][name]" id="blah_coll_1_name" value="2" type="text"/><input name="blah[coll][][id]" id="blah_coll_1_id" value="5" type="text"/></form>)
+      f.to_s.must_equal %(<form method="post" action="/ok" accept-charset="utf-8"><input name="utf8" type="hidden" value="✓"/><input name="blah[ble]" id="blah_ble" value="blargh" type="text"/><input name="blah[coll][][name]" id="blah_coll_0_name" value="1" type="text"/><input name="blah[coll][][id]" id="blah_coll_0_id" value="3" type="text"/><input name="blah[coll][][name]" id="blah_coll_1_name" value="2" type="text"/><input name="blah[coll][][id]" id="blah_coll_1_id" value="5" type="text"/></form>)
     end
   end
 end
