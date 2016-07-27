@@ -1,17 +1,17 @@
 require 'formular/element'
-require 'formular/elements/module'
-require 'formular/elements/modules/container'
-require 'formular/elements/modules/wrapped_control'
-require 'formular/elements/modules/control'
-require 'formular/elements/modules/checkable'
-require 'formular/elements/modules/errors'
+require 'formular/element/module'
+require 'formular/element/modules/container'
+require 'formular/element/modules/wrapped_control'
+require 'formular/element/modules/control'
+require 'formular/element/modules/checkable'
+require 'formular/element/modules/error'
 
 module Formular
-  module Elements
+  class Element
     # These three are really just provided for convenience when creating other elements
-    Container = Class.new(Formular::Element) { include Formular::Elements::Modules::Container }
-    Control = Class.new(Formular::Element) { include Formular::Elements::Modules::Control }
-    WrappedControl = Class.new(Formular::Element) { include Formular::Elements::Modules::WrappedControl }
+    Container = Class.new(Formular::Element) { include Formular::Element::Modules::Container }
+    Control = Class.new(Formular::Element) { include Formular::Element::Modules::Control }
+    WrappedControl = Class.new(Formular::Element) { include Formular::Element::Modules::WrappedControl }
 
     # define some base classes to build from or easily use elsewhere
     Option = Class.new(Container) { tag :option }
@@ -116,13 +116,13 @@ module Formular
     end
 
     class Error < P
-      include Formular::Elements::Modules::Errors
+      include Formular::Element::Modules::Error
       add_option_keys :attribute_name
       set_default :content, :error_text
     end # class Error
 
     class Textarea < Control
-      include Formular::Elements::Modules::Container
+      include Formular::Element::Modules::Container
       tag :textarea
       add_option_keys :value
 
@@ -152,7 +152,7 @@ module Formular
       html { closed_start_tag }
     end # class Submit
 
-    class Button < Formular::Elements::Container
+    class Button < Formular::Element::Container
       tag :button
       add_option_keys :value
 
@@ -168,7 +168,7 @@ module Formular
     end # class Input
 
     class Select < Control
-      include Formular::Elements::Modules::Collection
+      include Formular::Element::Modules::Collection
       tag :select
 
       add_option_keys :value
@@ -208,7 +208,7 @@ module Formular
           if item.last.is_a?(Array)
             opts = { label: item.first, content: collection_to_options(item.last) }
 
-            Formular::Elements::OptGroup.new(opts).to_s
+            Formular::Element::OptGroup.new(opts).to_s
           else
             item_to_option(item)
           end
@@ -226,7 +226,7 @@ module Formular
         opts[:content] = item.send(options[:label_method])
         opts[:selected] = 'selected' if opts[:value] == options[:value]
 
-        Formular::Elements::Option.new(opts).to_s
+        Formular::Element::Option.new(opts).to_s
       end
     end # class Select
 
@@ -240,7 +240,7 @@ module Formular
       set_default :value, '1' # instead of reader value
       set_default :include_hidden, true
 
-      include Formular::Elements::Modules::Checkable
+      include Formular::Element::Modules::Checkable
 
       html do |element|
         if element.collection?
@@ -286,9 +286,9 @@ module Formular
       set_default :type, 'radio'
       set_default :value, nil # instead of reader value
 
-      include Formular::Elements::Modules::Checkable
+      include Formular::Element::Modules::Checkable
 
       html { closed_start_tag }
     end # class Radio
-  end # module Elements
+  end # class Element
 end # module Formular
