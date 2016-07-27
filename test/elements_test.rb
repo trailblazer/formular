@@ -5,30 +5,49 @@ require 'formular/builders/basic'
 describe 'core elements' do
   let(:builder) { Formular::Builders::Basic.new }
 
-  describe Formular::Elements::Button do
+  describe Formular::Element::ErrorNotification do
+    let(:builder) { Formular::Builders::Basic.new(errors: { name: ['some error'] }) }
+
+    it 'default message' do
+      element = builder.error_notification
+      element.to_s.must_equal %(<div>Please review the problems below:</div>)
+    end
+
+    it 'custom message' do
+      element = builder.error_notification(message: 'My message:')
+      element.to_s.must_equal %(<div>My message:</div>)
+    end
+
+    it 'respects html attributes' do
+      element = builder.error_notification(data: { some_key: 'true' }, class: ['hey', 'there'])
+      element.to_s.must_equal %(<div data-some-key="true" class="hey there">Please review the problems below:</div>)
+    end
+  end # Formular::Element::Button
+
+  describe Formular::Element::Button do
     it 'returns correct html' do
-      element = Formular::Elements::Button.(href: '/some_path', value: 'Button')
+      element = Formular::Element::Button.(href: '/some_path', value: 'Button')
       element.to_s.must_equal %(<button href="/some_path">Button</button>)
     end
-  end # Formular::Elements::Button
+  end # Formular::Element::Button
 
-  describe Formular::Elements::Submit do
+  describe Formular::Element::Submit do
     it '#to_s' do
-      element = Formular::Elements::Submit.(value: 'Submit Button')
+      element = Formular::Element::Submit.(value: 'Submit Button')
       element.to_s.must_equal %(<input value="Submit Button" type="submit"/>)
     end
-  end # Formular::Elements::Submit
+  end # Formular::Element::Submit
 
-  describe Formular::Elements::Fieldset do
+  describe Formular::Element::Fieldset do
     it '#to_s contents as string' do
-      element = Formular::Elements::Fieldset.(content: '<legend>Hello</legend>')
+      element = Formular::Element::Fieldset.(content: '<legend>Hello</legend>')
       element.to_s.must_equal %(<fieldset><legend>Hello</legend></fieldset>)
     end
 
     it '#to_s contents as block' do
-      element = Formular::Elements::Fieldset.() do
+      element = Formular::Element::Fieldset.() do
         concat '<legend>Hello</legend>'
-        concat Formular::Elements::Label.(
+        concat Formular::Element::Label.(
           class: ['control-label'],
           content: 'A handy label'
         )
@@ -37,7 +56,7 @@ describe 'core elements' do
     end
 
     describe 'no contents' do
-      let(:element) { Formular::Elements::Fieldset.(class: ['grouping']) }
+      let(:element) { Formular::Element::Fieldset.(class: ['grouping']) }
 
       it '#to_s' do
         element.to_s.must_equal %(<fieldset class="grouping"></fieldset>)
@@ -51,18 +70,18 @@ describe 'core elements' do
         element.end.must_equal %(</fieldset>)
       end
     end
-  end # Formular::Elements::Fieldset
+  end # Formular::Element::Fieldset
 
-  describe Formular::Elements::Form do
+  describe Formular::Element::Form do
     it '#to_s contents as string' do
-      element = Formular::Elements::Form.(content: '<h1>Edit Form</h1>')
+      element = Formular::Element::Form.(content: '<h1>Edit Form</h1>')
       element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><h1>Edit Form</h1></form>)
     end
 
     it '#to_s contents as block' do
-      element = Formular::Elements::Form.() do
+      element = Formular::Element::Form.() do
         concat '<h1>Edit Form</h1>'
-        concat Formular::Elements::Label.(
+        concat Formular::Element::Label.(
           class: ['control-label'],
           content: 'A handy label'
         )
@@ -71,28 +90,28 @@ describe 'core elements' do
     end
 
     it "enforce_utf8 option is false" do
-      element = Formular::Elements::Form.(enforce_utf8: false)
+      element = Formular::Element::Form.(enforce_utf8: false)
       element.to_s.must_equal %(<form method="post" accept-charset="utf-8"></form>)
     end
 
     it "custom method" do
-      element = Formular::Elements::Form.(method: 'put')
+      element = Formular::Element::Form.(method: 'put')
       element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><input value="put" name="_method" type=\"hidden\"/></form>)
     end
 
     it "csrf_token" do
-      element = Formular::Elements::Form.(csrf_token: 'token value...')
+      element = Formular::Element::Form.(csrf_token: 'token value...')
       element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input value="token value..." name="_csrf_token" type="hidden"/><input name="utf8" type="hidden" value="✓"/></form>)
     end
 
     it "csrf_token_name" do
-      element = Formular::Elements::Form.(csrf_token: 'token value...', csrf_token_name: '_authenticity_token')
+      element = Formular::Element::Form.(csrf_token: 'token value...', csrf_token_name: '_authenticity_token')
       element.to_s.must_equal %(<form method="post" accept-charset="utf-8"><input value="token value..." name="_authenticity_token" type="hidden"/><input name="utf8" type="hidden" value="✓"/></form>)
     end
 
     describe 'no contents' do
       let(:element) do
-        Formular::Elements::Form.(class: ['grouping'])
+        Formular::Element::Form.(class: ['grouping'])
       end
 
       it '#to_s' do
@@ -107,16 +126,16 @@ describe 'core elements' do
         element.end.must_equal %(</form>)
       end
     end
-  end # Formular::Elements::Form
+  end # Formular::Element::Form
 
-  describe Formular::Elements::Textarea do
+  describe Formular::Element::Textarea do
     it '#to_s contents as string' do
-      element = Formular::Elements::Textarea.(content: 'Some lovely words here...')
+      element = Formular::Element::Textarea.(content: 'Some lovely words here...')
       element.to_s.must_equal %(<textarea>Some lovely words here...</textarea>)
     end
 
     it '#to_s contents as block' do
-      element = Formular::Elements::Textarea.() do
+      element = Formular::Element::Textarea.() do
         concat 'Part 1 text; '
         concat 'Part 2 text'
       end
@@ -124,15 +143,15 @@ describe 'core elements' do
     end
 
     describe 'no contents' do
-      let(:element) { Formular::Elements::Textarea.(rows: 3) }
+      let(:element) { Formular::Element::Textarea.(rows: 3) }
 
       it '#to_s' do
         element.to_s.must_equal %(<textarea rows="3"></textarea>)
       end
     end
-  end # Formular::Elements::Textarea
+  end # Formular::Element::Textarea
 
-  describe Formular::Elements::Input do
+  describe Formular::Element::Input do
     describe 'through builder' do
       it 'with attribute_name' do
         element = builder.input(:body, value: 'Some text')
@@ -146,12 +165,12 @@ describe 'core elements' do
     end
 
     it '#to_s' do
-      element = Formular::Elements::Input.(value: 'Some text')
+      element = Formular::Element::Input.(value: 'Some text')
       element.to_s.must_equal %(<input value="Some text" type="text"/>)
     end
-  end # Formular::Elements::Input
+  end # Formular::Element::Input
 
-  describe Formular::Elements::Label do
+  describe Formular::Element::Label do
     describe 'through builder' do
       it 'with attribute_name' do
         element = builder.label(:body, content: 'Body')
@@ -165,12 +184,12 @@ describe 'core elements' do
     end
 
     it '#to_s contents as string' do
-      element = Formular::Elements::Label.(content: 'What a nice label')
+      element = Formular::Element::Label.(content: 'What a nice label')
       element.to_s.must_equal %(<label>What a nice label</label>)
     end
 
     it '#to_s contents as block' do
-      element = Formular::Elements::Label.() do
+      element = Formular::Element::Label.() do
         concat 'something '
         concat 'super '
         concat 'dooper'
@@ -179,7 +198,7 @@ describe 'core elements' do
     end
 
     describe 'no contents' do
-      let(:element) { Formular::Elements::Label.(class: ['control-label']) }
+      let(:element) { Formular::Element::Label.(class: ['control-label']) }
 
       it '#to_s' do
         element.to_s.must_equal %(<label class="control-label"></label>)
@@ -189,47 +208,47 @@ describe 'core elements' do
         element.end.must_equal %(</label>)
       end
     end
-  end # Formular::Elements::Label
+  end # Formular::Element::Label
 
-  describe Formular::Elements::Checkbox do
+  describe Formular::Element::Checkbox do
     it '#to_s unchecked' do
-      element = Formular::Elements::Checkbox.(name: 'public', value: 1)
+      element = Formular::Element::Checkbox.(name: 'public', value: 1)
       element.to_s.must_equal %(<input value="0" name="public" type="hidden"/><input name="public" value="1" type="checkbox"/>)
     end
 
     it '#to_s checked' do
-      element = Formular::Elements::Checkbox.(name: 'public', value: 1, checked: 'checked')
+      element = Formular::Element::Checkbox.(name: 'public', value: 1, checked: 'checked')
       element.to_s.must_equal %(<input value="0" name="public" type="hidden"/><input name="public" value="1" checked="checked" type="checkbox"/>)
     end
 
     describe "with collection" do
       it '#to_s default methods' do
-        element = Formular::Elements::Checkbox.(name: 'public[]',  collection: [['False', 0], ['True', 1]])
+        element = Formular::Element::Checkbox.(name: 'public[]',  collection: [['False', 0], ['True', 1]])
         element.to_s.must_equal %(<label><input value="0" type="checkbox" name="public[]" id="public_0"/> False</label><label><input value="1" type="checkbox" name="public[]" id="public_1"/> True</label><input value="" name="public[]" type="hidden"/>)
       end
 
       it '#to_s custom methods' do
-        element = Formular::Elements::Checkbox.(name: 'public[]', collection: [2..4, 3..5], label_method: :min, value_method: :max)
+        element = Formular::Element::Checkbox.(name: 'public[]', collection: [2..4, 3..5], label_method: :min, value_method: :max)
         element.to_s.must_equal %(<label><input value="4" type="checkbox" name="public[]" id="public_4"/> 2</label><label><input value="5" type="checkbox" name="public[]" id="public_5"/> 3</label><input value="" name="public[]" type="hidden"/>)
       end
     end
-  end # Formular::Elements::Checkbox
+  end # Formular::Element::Checkbox
 
-  describe Formular::Elements::Radio do
+  describe Formular::Element::Radio do
     it '#to_s unchecked' do
-      element = Formular::Elements::Radio.(name: 'public', value: 1)
+      element = Formular::Element::Radio.(name: 'public', value: 1)
       element.to_s.must_equal %(<input name="public" value="1" type="radio"/>)
     end
 
     it '#to_s checked' do
-      element = Formular::Elements::Radio.(name: 'public', value: 1, checked: 'checked')
+      element = Formular::Element::Radio.(name: 'public', value: 1, checked: 'checked')
       element.to_s.must_equal %(<input name="public" value="1" checked="checked" type="radio"/>)
     end
-  end # Formular::Elements::Radio
+  end # Formular::Element::Radio
 
-  describe Formular::Elements::Select do
+  describe Formular::Element::Select do
     let(:element) do
-      Formular::Elements::Select.(
+      Formular::Element::Select.(
         name: 'public',
         collection: [['False', 0], ['True', 1]],
         value: 0
@@ -246,7 +265,7 @@ describe 'core elements' do
       end
 
       it 'nested array' do
-        element = Formular::Elements::Select.(
+        element = Formular::Element::Select.(
           name: 'public',
           collection: [
             ['Genders', [%w(Male m), %w(Female f)]],
@@ -256,6 +275,18 @@ describe 'core elements' do
         )
         element.option_tags.must_equal %(<optgroup label="Genders"><option value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option value="1">True</option><option value="0">False</option></optgroup>)
       end
+
+      it 'option tag attributes' do
+        element = Formular::Element::Select.(
+          name: 'public',
+          collection: [
+            ['Genders', [['Male', 'm', { data: { some_attr: 'yes' } }], %w(Female f)]],
+            ['Booleans', [['True', 1, { required: 'true' }], ['False', 0]]]
+          ],
+          value: 'm'
+        )
+        element.option_tags.must_equal %(<optgroup label="Genders"><option data-some-attr="yes" value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option required="true" value="1">True</option><option value="0">False</option></optgroup>)
+      end
     end
-  end # Formular::Elements::Select
+  end # Formular::Element::Select
 end

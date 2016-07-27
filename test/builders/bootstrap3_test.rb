@@ -97,6 +97,14 @@ describe 'Bootstrap3 builders' do
         html.must_equal %(<form action="/questions/13" method="post" accept-charset="utf-8" class="form-horizontal"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group"><label for="comment_body" class="col-sm-2 control-label">Body</label><div class="col-sm-10"><input name="comment[body]" id="comment_body" value="Something exciting" type="text" class="form-control"/></div></div></form>)
       end
 
+      it 'wrapped_control renders correctly with hint & error' do
+        form = builder.form(action: '/questions/13') do |f|
+          f.input(:body, label: 'Body', hint: 'some handy hint', error: 'Something went wrong').to_s
+        end
+
+        form.to_s.must_equal %(<form action="/questions/13" method="post" accept-charset="utf-8" class="form-horizontal"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group has-error"><label for=\"comment_body\" class=\"col-sm-2 control-label\">Body</label><div class="col-sm-10"><input name=\"comment[body]\" id=\"comment_body\" value=\"Something exciting\" type=\"text\" aria-describedby=\"comment_body_hint\" class=\"form-control\"/><span id=\"comment_body_hint\" class=\"help-block\">some handy hint</span><span class=\"help-block\">Something went wrong</span></div></div></form>)
+      end
+
       it 'checkbox renders correctly' do
         form = builder.form(action: '/questions/13') do |f|
           f.checkbox(:public, value: 1, label: 'Public').to_s

@@ -6,41 +6,49 @@ module Formular
     # But I kind of see myself having Builder as a generic
     # viewbuilder and this basic class as Form
     class Basic < Formular::Builder
-      element_set({
-        form: Formular::Elements::Form,
-        input: Formular::Elements::Input,
-        label: Formular::Elements::Label,
-        error: Formular::Elements::Error,
-        hint: Formular::Elements::Hint,
-        textarea: Formular::Elements::Textarea,
-        submit: Formular::Elements::Submit,
-        select: Formular::Elements::Select,
-        checkbox: Formular::Elements::Checkbox,
-        radio: Formular::Elements::Radio,
-        wrapper: Formular::Elements::Div,
-        error_wrapper: Formular::Elements::Div
-      })
+      element_set(
+        error_notification: Formular::Element::ErrorNotification,
+        form: Formular::Element::Form,
+        fieldset: Formular::Element::Fieldset,
+        legend: Formular::Element::Legend,
+        div: Formular::Element::Div,
+        span: Formular::Element::Span,
+        p: Formular::Element::P,
+        input: Formular::Element::Input,
+        hidden: Formular::Element::Hidden,
+        label: Formular::Element::Label,
+        error: Formular::Element::Error,
+        hint: Formular::Element::P,
+        textarea: Formular::Element::Textarea,
+        submit: Formular::Element::Submit,
+        select: Formular::Element::Select,
+        checkbox: Formular::Element::Checkbox,
+        radio: Formular::Element::Radio,
+        wrapper: Formular::Element::Div,
+        error_wrapper: Formular::Element::Div
+      )
 
       def initialize(model: nil, path_prefix: nil, errors: nil, elements: {})
         @model = model
         @path_prefix = path_prefix
-        @errors = errors || (model ? model.errors : nil)
+        @errors = errors || (model ? model.errors : {})
         super(elements)
       end
       attr_reader :model, :errors
 
-      def collection(name, models = nil, &block)
+      def collection(name, models: nil, builder: nil, &block)
         models ||= model ? model.send(name) : []
 
         models.map.with_index do |model, i|
-          nested(name, nested_model: model, path_appendix: [name,i], &block)
+          nested(name, nested_model: model, path_appendix: [name,i], builder: builder, &block)
         end.join('')
       end
 
-      def nested(name, nested_model: nil, path_appendix: nil, &block)
+      def nested(name, nested_model: nil, path_appendix: nil, builder: nil, &block)
         nested_model ||= model.send(name) if model
         path_appendix ||= name
-        self.class.new(model: nested_model, path_prefix: path(path_appendix)).(&block)
+        builder ||= self.class
+        builder.new(model: nested_model, path_prefix: path(path_appendix)).(&block)
       end
 
       # these can be called from an element

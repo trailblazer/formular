@@ -35,11 +35,11 @@ module Formular
 
     private
     def key_to_attr_name(key)
-      key.to_s.gsub("_", "-")
+      key.to_s.gsub('_', '-')
     end
 
     def val_to_string(value)
-      value.is_a?(Array) ? value.join(" ") : value
+      value.is_a?(Array) ? value.join(' ') : value
     end
   end # class Attributes
 end # module Formular

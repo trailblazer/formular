@@ -10,9 +10,6 @@ _Framework-Agnostic Form Renderer for Ruby._
 
 Formular renders HTML forms in a similar fashion to [SimpleForm](https://github.com/plataformatec/simple_form) and other gems. It is lightning-fast, has zero coupling to any ORM or web framework, and makes no magical assumptions about the rendered form object.
 
-It works best if backed with a form object like [Reform](https://github.com/trailblazer/reform).
-
-Formular's rendering is easily customizable. It provides support for Foundation 5, Foundation 6, Bootstrap 3, and ... # TODO.
 
 ## Example
 
@@ -31,10 +28,10 @@ class PostsController < ApplicationController
   helper Formular::Helper
 ```
 
-You should also configure what frontend you want to use. This will wrap inputs correctly, and so on.
+You should also configure what builder you want to use. This will wrap inputs correctly, and so on. 
 
 ```ruby
-Formular::Helper.frontend :bootstrap3
+Formular::Helper.builder= :bootstrap3
 ```
 
 In your view, you're now ready to use Formular's API to render forms.
@@ -71,41 +68,27 @@ Note that a lot of this code can be done automatically by Formular.
 
 Formular's API docs and information on how to extend it can be found on the [Trailblazer project page](http://trailblazer.to/gems/formular).
 
-## API
+Formular's rendering is easily customizable. It provides built-in support for Foundation 6 and Bootstrap 3 so far with more to come.
 
-The render API is highly inspired by the [SimpleForm](https://github.com/plataformatec/simple_form) gem.
+The list of builders provided by default can be seen in the BUILDERS constant. Try the following in an IRB session with your project loaded (rails console).
 
-no guessing, so different public methods. can be abstracted to a "guessing layer", if you want that.
+```ruby
+Formular::Helper::BUILDERS
+```
 
-* `id: false` won't render an `id` attribute.
-* `id: "myID"` results in `id="myID"`.
-
-attributes
-wrapper_attrs
-label_attrs
-(error_attrs ?)
-
-## Checkbox
-
-= f.checkbox :is_public, label: "Public?"
-
-`value: 1` is automatic.
-unchecked_value
-checked: "checked" in attributes
-checked: false/nil => *no* `checked` attribute.
 
 
 ## Key Features
 
 * Incredibly fast.
-* Customization: "Wrappers" are self-explaining objects. Ships with renderers for Foundation, ...
+* Customization: "Wrappers" are self-explaining objects. Ships with renderers for Foundation 5 and Bootstrap 3
 * No magic. No `respond_to?`, no guessing, no hidden semantics.
 * A well-designed API instead of a configuration DSL. If you need to change behavior, program it.
 
 ## Limitations
 
 * Currently, nested hashes aren't suffixed with `_attributes`, as it's usually done in ActiveRecord.
-* Capturing only works with Slim and Hamlit, so far.
+* Capturing only works with Slim and Hamlit. A 'blockless' API is provided to enable use in ERB
 
 ## Installation
 
@@ -117,9 +100,6 @@ gem 'formular'
 
 Requires Ruby >= 2.1.
 
-
-
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
