@@ -1,6 +1,5 @@
 require 'formular/element'
 require 'formular/elements'
-require 'formular/element/modules/container'
 require 'formular/element/module'
 require 'formular/element/bootstrap3'
 require 'formular/element/bootstrap3/checkable_control'
@@ -112,7 +111,16 @@ module Formular
         end # class InputGroup
 
         class Submit < Formular::Element::Bootstrap3::Submit
-          include WrappedControl
+          self.html_context = :wrapped
+
+          html(:wrapped) do |input|
+            input.wrapper do |wrapper|
+              wrapper.input_column_wrapper(
+                        class: input.builder.class.column_classes[:left_offset],
+                        content: input.to_html(context: :default)
+                      )
+            end
+          end
         end # class Submit
 
         class Checkbox < Formular::Element::Bootstrap3::Checkbox

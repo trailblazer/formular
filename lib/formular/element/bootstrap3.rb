@@ -1,6 +1,5 @@
 require 'formular/element'
 require 'formular/elements'
-require 'formular/element/modules/container'
 require 'formular/element/modules/wrapped_control'
 require 'formular/element/module'
 require 'formular/element/bootstrap3/checkable_control'
@@ -21,6 +20,8 @@ module Formular
 
       class ErrorNotification < Formular::Element::ErrorNotification
         set_default :class, ['alert alert-danger']
+        set_default :role, 'alert'
+
       end
 
       class Error < Formular::Element::Error

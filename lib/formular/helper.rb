@@ -12,8 +12,11 @@ module Formular
     BUILDERS = {
       basic: 'Formular::Builders::Basic',
       bootstrap3: 'Formular::Builders::Bootstrap3',
+      bootstrap4: 'Formular::Builders::Bootstrap4',
       bootstrap3_inline: 'Formular::Builders::Bootstrap3Inline',
+      bootstrap4_inline: 'Formular::Builders::Bootstrap4Inline',
       bootstrap3_horizontal: 'Formular::Builders::Bootstrap3Horizontal',
+      bootstrap4_horizontal: 'Formular::Builders::Bootstrap4Horizontal',
       foundation6: 'Formular::Builders::Foundation6'
     }.freeze
 

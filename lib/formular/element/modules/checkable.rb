@@ -81,7 +81,7 @@ module Formular
           end
 
           def collection_base_options
-            opts = attributes.select { |k, v| ![:name, :id, :checked].include?(k) }
+            opts = attributes.select { |k, v| ![:name, :id, :checked, :class].include?(k) } #FIXME due to class merging, we'll end up with duplicate classes...
             opts[:attribute_name] = attribute_name if attribute_name
             opts[:builder]        = builder if builder
             opts[:label_options]  = options[:control_label_options] if options[:control_label_options]

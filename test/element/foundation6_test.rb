@@ -4,7 +4,7 @@ require 'formular/element/foundation6'
 
 describe Formular::Element::Foundation6 do
   let(:builder) { Formular::Builders::Foundation6.new }
-  let(:collection_array) { [['Option 1', 1], ['Option 2', 2]] }
+  let(:collection_array) { COLLECTION_ARRAY }
 
   describe Formular::Element::Foundation6::ErrorNotification do
     let(:builder) { Formular::Builders::Foundation6.new(errors: { name: ['some error'] }) }

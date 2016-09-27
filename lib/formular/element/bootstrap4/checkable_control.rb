@@ -4,10 +4,29 @@ require 'formular/element/module'
 
 module Formular
   class Element
-    module Bootstrap3
+    module Bootstrap4
       module CheckableControl
+        class Checkbox < Formular::Element::Checkbox
+          include Formular::Element::Modules::WrappedControl
+          set_default :class, ['form-check-input']
+          set_default :value, '1' # instead of reader value
+
+          html { closed_start_tag }
+        end # class Checkbox
+
+        class Radio < Formular::Element::Radio
+          include Formular::Element::Modules::WrappedControl
+          set_default :class, ['form-check-input']
+
+          def hidden_tag
+            ''
+          end
+        end # class Radio
+
         module InlineCheckable
           include Formular::Element::Module
+
+          set_default :control_label_options, { class: ['form-check-inline'] }
 
           html(:wrapped) do |input|
             input.wrapper do
@@ -25,26 +44,12 @@ module Formular
           end
         end # class InlineCheckable
 
-        class InlineRadio < Formular::Element::Radio
-          include Formular::Element::Modules::WrappedControl
+        class InlineRadio < Radio
           include InlineCheckable
+        end # class InlineRadio
 
-          add_option_keys :control_label_options
-          set_default :control_label_options, { class: ['radio-inline'] }
-
-          def hidden_tag
-            ''
-          end
-        end# class InlineRadio
-
-        class InlineCheckbox < Formular::Element::Checkbox
-          include Formular::Element::Modules::WrappedControl
+        class InlineCheckbox < Checkbox
           include InlineCheckable
-
-          set_default :control_label_options, { class: ['checkbox-inline'] }
-          set_default :value, '1' # instead of reader value
-
-          html { closed_start_tag }
         end # class InlineCheckbox
 
         module StackedCheckable
@@ -67,39 +72,23 @@ module Formular
             }.join('')
           end
 
+          set_default :control_label_options, { class: ['form-check-label'] }
+
           module InstanceMethods
             def inner_wrapper(&block)
-              Formular::Element::Div.(class: inner_wrapper_class, &block).to_s
+              Formular::Element::Div.(class: ['form-check'], &block).to_s
             end
           end
         end # module StackedCheckable
 
-        class Checkbox < Formular::Element::Checkbox
-          include Formular::Element::Modules::WrappedControl
+        class StackedCheckbox < Checkbox
           include StackedCheckable
-
-          set_default :value, '1' # instead of reader value
-
-          html { closed_start_tag }
-
-          def inner_wrapper_class
-            ['checkbox']
-          end
         end # class Checkbox
 
-        class Radio < Formular::Element::Radio
-          include Formular::Element::Modules::WrappedControl
+        class StackedRadio < Radio
           include StackedCheckable
-
-          def inner_wrapper_class
-            ['radio']
-          end
-
-          def hidden_tag
-            ''
-          end
-        end # class Radio
+        end # class StackedRadio
       end # module CheckableControl
-    end # module Bootstrap3
+    end # module Bootstrap4
   end # class Element
 end # module Formular

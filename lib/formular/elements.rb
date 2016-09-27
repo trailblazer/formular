@@ -21,6 +21,7 @@ module Formular
     Div = Class.new(Container) { tag :div }
     P = Class.new(Container) { tag :p }
     Span = Class.new(Container) { tag :span }
+    Small = Class.new(Container) { tag :small }
 
     class Hidden < Control
       tag :input

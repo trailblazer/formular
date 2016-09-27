@@ -4,24 +4,24 @@ require 'formular/element/bootstrap3'
 
 describe Formular::Element::Bootstrap3 do
   let(:builder) { Formular::Builders::Bootstrap3.new }
-  let(:collection_array) { [['Option 1', 1], ['Option 2', 2]] }
+  let(:collection_array) { COLLECTION_ARRAY }
 
   describe Formular::Element::Bootstrap3::ErrorNotification do
     let(:builder) { Formular::Builders::Bootstrap3.new(errors: { name: ['some error'] }) }
 
     it 'default message' do
       element = builder.error_notification
-      element.to_s.must_equal %(<div class="alert alert-danger">Please review the problems below:</div>)
+      element.to_s.must_equal %(<div class="alert alert-danger" role="alert">Please review the problems below:</div>)
     end
 
     it 'custom message' do
       element = builder.error_notification(message: 'My message:')
-      element.to_s.must_equal %(<div class="alert alert-danger">My message:</div>)
+      element.to_s.must_equal %(<div class="alert alert-danger" role="alert">My message:</div>)
     end
 
     it 'respects html attributes' do
       element = builder.error_notification(data: { some_key: 'true' }, class: ['hey', 'there'])
-      element.to_s.must_equal %(<div data-some-key="true" class="hey there alert alert-danger">Please review the problems below:</div>)
+      element.to_s.must_equal %(<div data-some-key="true" class="hey there alert alert-danger" role="alert">Please review the problems below:</div>)
     end
   end
 
@@ -62,6 +62,40 @@ describe Formular::Element::Bootstrap3 do
         hint: 'Some helpful words'
       )
       element.to_s.must_equal %(<div class="form-group has-error"><label for="name" class="control-label">Name</label><input value="Joseph Smith" name="name" id="name" type="text" aria-describedby="name_hint" class="form-control"/><span id="name_hint" class="help-block">Some helpful words</span><span class="help-block">Something nasty happened</span></div>)
+    end
+  end
+
+  describe Formular::Element::Bootstrap3::Select do
+    it '#to_s with value' do
+      element = builder.select(:name, value: 1, collection: collection_array)
+      element.to_s.must_equal %(<div class="form-group"><select name="name" id="name" class="form-control"><option value="1" selected="selected">Option 1</option><option value="2">Option 2</option></select></div>)
+    end
+
+    it '#to_s with label' do
+      element = builder.select(:name, label: 'Name', collection: collection_array)
+      element.to_s.must_equal %(<div class="form-group"><label for="name" class="control-label">Name</label><select name="name" id="name" class="form-control"><option value="1">Option 1</option><option value="2">Option 2</option></select></div>)
+    end
+
+    it '#to_s with hint' do
+      element = builder.select(:name, hint: 'Some helpful words', collection: collection_array)
+      element.to_s.must_equal %(<div class="form-group"><select name="name" id="name" aria-describedby="name_hint" class="form-control"><option value="1">Option 1</option><option value="2">Option 2</option></select><span id="name_hint" class="help-block">Some helpful words</span></div>)
+    end
+
+    it '#to_s with error' do
+      element = builder.select(:name, error: 'Something nasty happened', collection: collection_array)
+      element.to_s.must_equal %(<div class="form-group has-error"><select name="name" id="name" class="form-control"><option value="1">Option 1</option><option value="2">Option 2</option></select><span class="help-block">Something nasty happened</span></div>)
+    end
+
+    it '#to_s all together!' do
+      element = builder.select(
+        :name,
+        value: 1,
+        label: 'Name',
+        error: 'Something nasty happened',
+        hint: 'Some helpful words',
+        collection: collection_array
+      )
+      element.to_s.must_equal %(<div class="form-group has-error"><label for="name" class="control-label">Name</label><select name="name" id="name" aria-describedby="name_hint" class="form-control"><option value="1" selected="selected">Option 1</option><option value="2">Option 2</option></select><span id="name_hint" class="help-block">Some helpful words</span><span class="help-block">Something nasty happened</span></div>)
     end
   end
 

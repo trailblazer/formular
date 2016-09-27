@@ -5,7 +5,7 @@ require 'formular/builders/bootstrap3_inline'
 
 describe 'Bootstrap3 builders' do
   let(:model) { Comment.new(nil, 'Something exciting', [Reply.new], Owner.new) }
-  let(:collection_array) { [['Yes', 1], ['No', 0]] }
+  let(:collection_array) { COLLECTION_ARRAY }
   describe Formular::Builders::Bootstrap3 do
     let(:builder) do
       Formular::Builders::Bootstrap3.new(model: model, path_prefix: :comment)
@@ -31,7 +31,7 @@ describe 'Bootstrap3 builders' do
         html << form.input(:body, label: 'Body').to_s
         html << form.end
 
-        html.must_equal %(<form action="/questions/13" method="post" accept-charset=\"utf-8\"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group"><label for="comment_body" class="control-label">Body</label><textarea name="comment[body]" id="comment_body" class="form-control">Something exciting</textarea></div><div class="form-group"><label for=\"comment_public\" class="control-label">Public</label><select name="comment[public]" id="comment_public" class="form-control"><option value="1">Yes</option><option value="0">No</option></select></div><div class="form-group"><label for="comment_body" class="control-label">Body</label><input name="comment[body]" id="comment_body" value="Something exciting" type="text" class="form-control"/></div></form>)
+        html.must_equal %(<form action="/questions/13" method="post" accept-charset=\"utf-8\"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group"><label for="comment_body" class="control-label">Body</label><textarea name="comment[body]" id="comment_body" class="form-control">Something exciting</textarea></div><div class="form-group"><label for=\"comment_public\" class="control-label">Public</label><select name="comment[public]" id="comment_public" class="form-control"><option value="1">Option 1</option><option value="2">Option 2</option></select></div><div class="form-group"><label for="comment_body" class="control-label">Body</label><input name="comment[body]" id="comment_body" value="Something exciting" type="text" class="form-control"/></div></form>)
       end
 
       it 'please ignore my labels' do
@@ -42,7 +42,7 @@ describe 'Bootstrap3 builders' do
         html << form.input(:body).to_s
         html << form.end
 
-        html.must_equal %(<form action="/questions/13" method="post" accept-charset=\"utf-8\"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group"><textarea name="comment[body]" id="comment_body" class="form-control">Something exciting</textarea></div><div class="form-group"><select name="comment[public]" id="comment_public" class="form-control"><option value="1">Yes</option><option value="0">No</option></select></div><div class="form-group"><input name="comment[body]" id="comment_body" value="Something exciting" type="text" class="form-control"/></div></form>)
+        html.must_equal %(<form action="/questions/13" method="post" accept-charset=\"utf-8\"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group"><textarea name="comment[body]" id="comment_body" class="form-control">Something exciting</textarea></div><div class="form-group"><select name="comment[public]" id="comment_public" class="form-control"><option value="1">Option 1</option><option value="2">Option 2</option></select></div><div class="form-group"><input name="comment[body]" id="comment_body" value="Something exciting" type="text" class="form-control"/></div></form>)
       end
 
       it 'please use custom labels' do
@@ -60,7 +60,7 @@ describe 'Bootstrap3 builders' do
         ).to_s
         html << form.end
 
-        html.must_equal %(<form action="/questions/13" method="post" accept-charset=\"utf-8\"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group"><label for="comment_body" class="control-label">Some fancy label</label><textarea name="comment[body]" id="comment_body" class="form-control">Something exciting</textarea></div><div class="form-group"><label for=\"comment_public\" class="control-label">Another fancy label</label><select name="comment[public]" id="comment_public" class="form-control"><option value="1">Yes</option><option value="0">No</option></select></div><div class="form-group"><label for="comment_body" class="control-label">Oh look, here's another fancy label</label><input name="comment[body]" id="comment_body" value="Something exciting" type="text" class="form-control"/></div></form>)
+        html.must_equal %(<form action="/questions/13" method="post" accept-charset=\"utf-8\"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group"><label for="comment_body" class="control-label">Some fancy label</label><textarea name="comment[body]" id="comment_body" class="form-control">Something exciting</textarea></div><div class="form-group"><label for=\"comment_public\" class="control-label">Another fancy label</label><select name="comment[public]" id="comment_public" class="form-control"><option value="1">Option 1</option><option value="2">Option 2</option></select></div><div class="form-group"><label for="comment_body" class="control-label">Oh look, here's another fancy label</label><input name="comment[body]" id="comment_body" value="Something exciting" type="text" class="form-control"/></div></form>)
       end
     end
 
@@ -126,7 +126,7 @@ describe 'Bootstrap3 builders' do
           f.radio(:public, label: 'Public', collection: collection_array).to_s
         end
 
-        form.to_s.must_equal %(<form action="/questions/13" method="post" accept-charset="utf-8" class="form-horizontal"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group"><label class="col-sm-2 control-label">Public</label><div class="col-sm-10"><div class="radio"><label><input type="radio" name="comment[public]" value="1" id="comment_public_1"/> Yes</label></div><div class="radio"><label><input type="radio" name="comment[public]" value="0" id="comment_public_0"/> No</label></div></div></div></form>)
+        form.to_s.must_equal %(<form action="/questions/13" method="post" accept-charset="utf-8" class="form-horizontal"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group"><label class="col-sm-2 control-label">Public</label><div class="col-sm-10"><div class="radio"><label><input type="radio" name="comment[public]" value="1" id="comment_public_1"/> Option 1</label></div><div class="radio"><label><input type="radio" name="comment[public]" value="2" id="comment_public_2"/> Option 2</label></div></div></div></form>)
       end
 
       it 'inlineradio collection renders correctly' do
@@ -138,7 +138,7 @@ describe 'Bootstrap3 builders' do
           ).to_s
         end
 
-        form.to_s.must_equal %(<form action="/questions/13" method="post" accept-charset="utf-8" class="form-horizontal"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group"><label class="col-sm-2 control-label">Public</label><div class="col-sm-10"><label class="radio-inline"><input type="radio" name="comment[public]" value="1" id="comment_public_1"/> Yes</label><label class="radio-inline"><input type="radio" name="comment[public]" value="0" id="comment_public_0"/> No</label></div></div></form>)
+        form.to_s.must_equal %(<form action="/questions/13" method="post" accept-charset="utf-8" class="form-horizontal"><input name=\"utf8\" type=\"hidden\" value=\"✓\"/><div class="form-group"><label class="col-sm-2 control-label">Public</label><div class="col-sm-10"><label class="radio-inline"><input type="radio" name="comment[public]" value="1" id="comment_public_1"/> Option 1</label><label class="radio-inline"><input type="radio" name="comment[public]" value="2" id="comment_public_2"/> Option 2</label></div></div></form>)
       end
     end
   end

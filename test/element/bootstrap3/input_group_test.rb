@@ -77,9 +77,9 @@ describe 'Bootstrap3::InputGroup' do
       element = builder.input_group(:title, label: 'Title') do |input|
         concat input.group_addon('<input name="default[]" id="default" type="checkbox" value="1">')
         concat input.control
-        concat input.group_btn(builder.submit(value: 'Go!'))
+        concat input.group_btn('<a class="btn btn-default" href="/some_path">Go!</a>')
       end
-      element.to_s.must_equal %(<div class="form-group"><label for="title" class="col-sm-2 control-label">Title</label><div class="col-sm-10"><div class="input-group"><span class="input-group-addon"><input name="default[]" id="default" type="checkbox" value="1"></span><input name="title" id="title" type="text" class="form-control"/><span class="input-group-btn"><button class="btn btn-default" type="submit">Go!</button></span></div></div></div>)
+      element.to_s.must_equal %(<div class="form-group"><label for="title" class="col-sm-2 control-label">Title</label><div class="col-sm-10"><div class="input-group"><span class="input-group-addon"><input name="default[]" id="default" type="checkbox" value="1"></span><input name="title" id="title" type="text" class="form-control"/><span class="input-group-btn"><a class="btn btn-default" href="/some_path">Go!</a></span></div></div></div>)
     end
 
     it '#to_s blockless' do

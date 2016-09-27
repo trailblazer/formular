@@ -5,7 +5,7 @@ require 'formular/element/bootstrap3/checkable_control'
 
 describe 'Bootstrap3::CheckableControl' do
   let(:builder) { Formular::Builders::Bootstrap3.new }
-  let(:collection_array) { [['Option 1', 1], ['Option 2', 2]] }
+  let(:collection_array) { COLLECTION_ARRAY }
 
   describe Formular::Element::Bootstrap3::Checkbox do
     it 'with value and label' do

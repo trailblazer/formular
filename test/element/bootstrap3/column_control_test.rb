@@ -5,7 +5,7 @@ require 'formular/element/bootstrap3/column_control'
 
 describe 'Bootstrap3::ColumnControl' do
   let(:builder) { Formular::Builders::Bootstrap3.new(errors: { body: ['some nasty error'] }) }
-  COLLECTION_ARRAY = [['Option 1', 1], ['Option 2', 2]]
+
   describe 'inline columns' do
     it 'input' do
       form = builder.form(action: '/questions/13') do |f|
