@@ -7,5 +7,3 @@ Reply   = Struct.new(:id, :content, :errors)
 Owner   = Struct.new(:id, :name, :email, :errors)
 COLLECTION_ARRAY = [['Option 1', 1], ['Option 2', 2]]
 
-require 'reform'
-require 'reform/form/dry'

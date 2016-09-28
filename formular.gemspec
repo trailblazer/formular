@@ -23,8 +23,6 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "reform"
-  spec.add_development_dependency "dry-validation"
   spec.add_development_dependency "trailblazer-cells"
   spec.add_development_dependency "cells-slim"
   spec.add_development_dependency "cells-erb"

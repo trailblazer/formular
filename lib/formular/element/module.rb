@@ -1,8 +1,8 @@
 # Include this in every module that gets further included.
 # This is literally a copy and past from reform. Could we dry this up ??
 # https://github.com/apotonick/reform/blob/master/lib/reform/form/module.rb
-
-# require 'declarative/heritage'
+require 'declarative'
+require 'declarative/heritage'
 module Formular
   class Element
     module Module
