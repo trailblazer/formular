@@ -59,7 +59,7 @@ In your view, you're now ready to use Formular's API to render forms.
   .form-group
     = f.textarea :content, placeholder: "And your story...", rows: 9
   .form-group
-    = f.button type: :submit, value: "Submit!", class: [:btn, :'btn-lg', :'btn-default']
+    = f.submit value: "Submit!", class: [:btn, :'btn-lg', :'btn-default']
 ```
 
 Note that a lot of this code can be done automatically by Formular.
