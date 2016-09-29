@@ -60,9 +60,10 @@ Our basic builder ships with the following elements:
 We also provide builders for Twitter Bootstrap (v.3&4) and Zurb's Foundation (v.6)
 
 To help you get started we've got some example Sinatra apps so you can see Formular in action:
-[Bootstrap3 (slim)](https://github.com/fran-worley/gemgem-sinatra/tree/formular-slim-bootstrap3)
-[Bootstrap4 (slim)](https://github.com/fran-worley/gemgem-sinatra/tree/formular-slim-bootstrap4)
-Foundation6 (slim)
+
+* [Bootstrap3 (slim)](https://github.com/fran-worley/gemgem-sinatra/blob/formular-slim-bootstrap3/concepts/post/view/new.slim)
+* [Bootstrap4 (slim)](https://github.com/fran-worley/gemgem-sinatra/blob/formular-slim-bootstrap4/concepts/post/view/new.slim)
+* Foundation6 (slim)
 
 Formular's API docs and information on how to extend it will be found on the [Trailblazer project page](http://trailblazer.to/gems/formular) once the page has been added 😉.
 
