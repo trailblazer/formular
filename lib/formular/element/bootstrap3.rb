@@ -40,7 +40,7 @@ module Formular
         set_default :class, ['form-control'], unless: :file_input?
 
         def file_input?
-          attributes[:type] == 'file'
+          attributes[:type].to_s == 'file'
         end
       end # class Input
 
