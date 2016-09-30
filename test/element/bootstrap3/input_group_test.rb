@@ -48,6 +48,13 @@ describe 'Bootstrap3::InputGroup' do
     html.must_equal %(<div class="form-group"><label for="title" class="control-label">Title</label><div class="input-group"><span class="input-group-addon"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" class="form-control"/><span class="input-group-btn"><button class="btn btn-default" type="submit">Go!</button></span></div></div>)
   end
 
+  describe "with errors" do
+    it '#to_s' do
+      html = builder.input_group(:title, label: 'Title', error: 'Something bad...', left_addon: '@').to_s
+      html.must_equal %(<div class="form-group has-error"><label for="title" class="control-label">Title</label><div class="input-group"><span class="input-group-addon">@</span><input name="title" id="title" type="text" class="form-control"/></div><span class="help-block">Something bad...</span></div>)
+    end
+  end
+
   describe "horizontal form" do
     let(:builder) { Formular::Builders::Bootstrap3Horizontal.new }
 
