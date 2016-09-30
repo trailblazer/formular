@@ -28,13 +28,14 @@ module Formular
         error_wrapper: Formular::Element::Div
       )
 
-      def initialize(model: nil, path_prefix: nil, errors: nil, elements: {})
+      def initialize(model: nil, path_prefix: nil, errors: nil, values: nil, elements: {})
         @model = model
         @path_prefix = path_prefix
         @errors = errors || (model ? model.errors : {})
+        @values = values || {}
         super(elements)
       end
-      attr_reader :model, :errors
+      attr_reader :model, :errors, :values
 
       def collection(name, models: nil, builder: nil, &block)
         models ||= model ? model.send(name) : []
@@ -57,7 +58,7 @@ module Formular
       end
 
       def reader_value(name)
-        model ? model.send(name) : nil
+        model ? model.send(name) : values[name.to_sym]
       end
     end # class Basic
   end # module Builders
