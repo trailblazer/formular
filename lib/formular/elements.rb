@@ -225,7 +225,7 @@ module Formular
 
         opts[:value] = item.send(options[:value_method])
         opts[:content] = item.send(options[:label_method])
-        opts[:selected] = 'selected' if opts[:value] == options[:value]
+        opts[:selected] = 'selected' if opts[:value].to_s == options[:value].to_s
 
         Formular::Element::Option.new(opts).to_s
       end
