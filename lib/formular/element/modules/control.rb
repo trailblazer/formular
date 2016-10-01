@@ -20,20 +20,26 @@ module Formular
 
           private
 
+          # FIXME... we should probably find a better way of returning nil to all of these if
+          # no attribute_name or builder
+          def builder_attribute?
+            attribute_name && builder
+          end
+
           def path
-            @path ||= builder.path(attribute_name) if attribute_name && builder
+            @path ||= builder.path(attribute_name) if builder_attribute?
           end
 
           def form_encoded_name
-            path.to_encoded_name if path
+            path.to_encoded_name if builder_attribute?
           end
 
           def form_encoded_id
-            path.to_encoded_id if path
+            path.to_encoded_id if builder_attribute?
           end
 
           def reader_value
-            builder.reader_value(attribute_name) if attribute_name && builder
+            builder.reader_value(attribute_name) if builder_attribute?
           end
         end # model InstanceMethods
       end # module Control
