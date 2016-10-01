@@ -129,6 +129,18 @@ describe 'core elements' do
   end # Formular::Element::Form
 
   describe Formular::Element::Textarea do
+    describe 'through builder' do
+      it 'with attribute_name' do
+        element = builder.textarea(:body)
+        element.to_s.must_equal %(<textarea name="body" id="body"></textarea>)
+      end
+
+      it 'without attribute_name' do
+        element = builder.textarea
+        element.to_s.must_equal %(<textarea></textarea>)
+      end
+    end
+
     it '#to_s contents as string' do
       element = Formular::Element::Textarea.(content: 'Some lovely words here...')
       element.to_s.must_equal %(<textarea>Some lovely words here...</textarea>)
