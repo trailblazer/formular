@@ -25,6 +25,13 @@ describe Formular::Element::Bootstrap3 do
     end
   end
 
+  describe Formular::Element::Bootstrap3::Icon do
+    it "#to_s" do
+      element = builder.icon(name: :plus)
+      element.to_s.must_equal %(<span class="glyphicon glyphicon-plus"></span>)
+    end
+  end
+
   describe Formular::Element::Bootstrap3::Submit do
     it "#to_s" do
       element = builder.submit(value: 'Go Go Go!!')

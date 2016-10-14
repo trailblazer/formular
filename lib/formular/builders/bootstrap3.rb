@@ -21,7 +21,8 @@ module Formular
         wrapper: Formular::Element::Bootstrap3::Wrapper,
         error_wrapper: Formular::Element::Bootstrap3::ErrorWrapper,
         submit: Formular::Element::Bootstrap3::Submit,
-        row: Formular::Element::Bootstrap3::Row
+        row: Formular::Element::Bootstrap3::Row,
+        icon: Formular::Element::Bootstrap3::Icon
       )
     end # class Bootstrap3
   end # module Builders
