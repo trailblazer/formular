@@ -300,5 +300,87 @@ describe 'core elements' do
         element.option_tags.must_equal %(<optgroup label="Genders"><option data-some-attr="yes" value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option required="true" value="1">True</option><option value="0">False</option></optgroup>)
       end
     end
+
+    describe 'prompt' do
+      let(:element) do
+        Formular::Element::Select.(
+          name: 'public',
+          collection: [['False', 0], ['True', 1]],
+          value: 0,
+          prompt: 'Select an option'
+        )
+      end
+
+      it 'simple array' do
+        element.option_tags.must_equal %(<option value="">Select an option</option><option value="0" selected="selected">False</option><option value="1">True</option>)
+      end
+
+      it 'nested array' do
+        element = Formular::Element::Select.(
+          name: 'public',
+          collection: [
+            ['Genders', [%w(Male m), %w(Female f)]],
+            ['Booleans', [['True', 1], ['False', 0]]]
+          ],
+          value: 'm',
+          prompt: 'Select an option'
+        )
+        element.option_tags.must_equal %(<option value="">Select an option</option><optgroup label="Genders"><option value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option value="1">True</option><option value="0">False</option></optgroup>)
+      end
+
+      it 'option tag attributes' do
+        element = Formular::Element::Select.(
+          name: 'public',
+          collection: [
+            ['Genders', [['Male', 'm', { data: { some_attr: 'yes' } }], %w(Female f)]],
+            ['Booleans', [['True', 1, { required: 'true' }], ['False', 0]]]
+          ],
+          value: 'm',
+          prompt: 'Select an option'
+        )
+        element.option_tags.must_equal %(<option value="">Select an option</option><optgroup label="Genders"><option data-some-attr="yes" value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option required="true" value="1">True</option><option value="0">False</option></optgroup>)
+      end
+    end
+
+    describe 'include_blank?' do
+      let(:element) do
+        Formular::Element::Select.(
+          name: 'public',
+          collection: [['False', 0], ['True', 1]],
+          value: 0,
+          include_blank: true
+        )
+      end
+
+      it 'simple array' do
+        element.option_tags.must_equal %(<option value=""></option><option value="0" selected="selected">False</option><option value="1">True</option>)
+      end
+
+      it 'nested array' do
+        element = Formular::Element::Select.(
+          name: 'public',
+          collection: [
+            ['Genders', [%w(Male m), %w(Female f)]],
+            ['Booleans', [['True', 1], ['False', 0]]]
+          ],
+          value: 'm',
+          include_blank: true
+        )
+        element.option_tags.must_equal %(<option value=""></option><optgroup label="Genders"><option value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option value="1">True</option><option value="0">False</option></optgroup>)
+      end
+
+      it 'option tag attributes' do
+        element = Formular::Element::Select.(
+          name: 'public',
+          collection: [
+            ['Genders', [['Male', 'm', { data: { some_attr: 'yes' } }], %w(Female f)]],
+            ['Booleans', [['True', 1, { required: 'true' }], ['False', 0]]]
+          ],
+          value: 'm',
+          include_blank: true
+        )
+        element.option_tags.must_equal %(<option value=""></option><optgroup label="Genders"><option data-some-attr="yes" value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option required="true" value="1">True</option><option value="0">False</option></optgroup>)
+      end
+    end
   end # Formular::Element::Select
 end

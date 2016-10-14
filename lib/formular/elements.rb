@@ -172,7 +172,7 @@ module Formular
       include Formular::Element::Modules::Collection
       tag :select
 
-      add_option_keys :value
+      add_option_keys :value, :prompt, :include_blank
 
       html do |input|
         concat start_tag
@@ -199,10 +199,21 @@ module Formular
       #   <option value="0">false</option>
       # </optgroup>
       def option_tags
-        collection_to_options(options[:collection])
+        collection = options[:collection]
+
+        first = placeholder
+        collection.unshift(first) if first
+
+        collection_to_options(collection)
       end
 
       private
+
+      def placeholder
+        return unless options[:prompt].is_a?(String) || options[:include_blank] == true
+
+        [options[:prompt] || "", ""]
+      end
 
       def collection_to_options(collection)
         collection.map do |item|
