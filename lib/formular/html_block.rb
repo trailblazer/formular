@@ -35,7 +35,7 @@ module Formular
 
     # return a closed start tag (e.g. <input name="body"/>)
     def closed_start_tag
-      start_tag.gsub('>', '/>')
+      start_tag.gsub(/\>$/, '/>')
     end
 
     # returns the end/ closing tag for an element
