@@ -41,7 +41,7 @@ describe Formular::Element do
     end
 
     it 'should evaluate condition correctly' do
-      element.options[:option_1].must_equal nil
+      element.options[:option_1].must_be_nil
     end
 
     it 'should exclude nil keys' do

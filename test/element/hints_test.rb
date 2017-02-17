@@ -36,7 +36,7 @@ describe 'hints module' do
     describe '#hint_message' do
       it 'option is false then should be nil' do
         element = builder.wrapped_input(:body, hint: false)
-        element.hint_text.must_equal nil
+        element.hint_text.must_be_nil
       end
 
       it 'return custom message' do
