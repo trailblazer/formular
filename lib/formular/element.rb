@@ -98,19 +98,22 @@ module Formular
     # This way ordering is important and we can access values as they are evaluated
     def merge_default_hash
       self.class.default_hash.each do |k, v|
-        next unless evaluate_option_condition?(v[:condition])
-
-        val = Uber::Options::Value.new(v[:value]).evaluate(self)
-
-        next if val.nil?
-
         if option_key?(k)
-          @options[k] = val if @options[k].nil?
+          set_default_value(@options, k, v) if @options[k].nil?
         else
-          # make sure that we merge classes, not override them
-          k == :class && !@attributes[k].nil? ? @attributes[k] += val : @attributes[k] ||= val
+          set_default_value(@attributes, k, v) if k == :class || @attributes[k].nil?
         end
       end
+    end
+
+    # We only set default values if not given allready in options or attributes
+    # except the class Attribute that is merged with the given ones.
+    def set_default_value(opts_or_attribs, k, v)
+      return unless evaluate_option_condition?(v[:condition])
+      val = Uber::Options::Value.new(v[:value]).evaluate(self)
+      return if val.nil?
+      # make sure that we merge classes, not override them
+      k == :class && !opts_or_attribs[k].nil? ? opts_or_attribs[k] += val : opts_or_attribs[k] = val
     end
 
     def option_key?(k)
