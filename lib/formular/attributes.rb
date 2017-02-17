@@ -39,7 +39,8 @@ module Formular
     end
 
     def val_to_string(value)
-      value.is_a?(Array) ? value.join(' ') : value
+      val = value.is_a?(Array) ? value.join(' ') : value
+      val.is_a?(String) ? CGI.escape_html(val) : val
     end
   end # class Attributes
 end # module Formular
