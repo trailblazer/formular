@@ -1,6 +1,7 @@
 div New
 = form model, "/posts", path_prefix: :comment do |f|
   = f.input :id
+  = f.input :no_model_method, value: 'given value'
   = f.textarea :body
   = f.checkbox :public, value: true
   = f.collection :replies do |reply|
@@ -10,4 +11,3 @@ div New
     = owner.input :email
   = f.input :uuid
   = f.submit value: "Submit"
-
