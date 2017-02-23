@@ -33,7 +33,7 @@ module Formular
         set_default :class, :input_class
 
         def input_class
-          attributes[:type].to_s == 'file' ? %(form-control-file) : %(form-control)
+          options[:type].to_s == 'file' ? %(form-control-file) : %(form-control)
         end
       end # class Input
 

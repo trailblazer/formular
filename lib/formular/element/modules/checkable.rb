@@ -59,10 +59,10 @@ module Formular
               opts[:value] = item.send(options[:value_method])
               opts[:label] = item.send(options[:label_method])
 
-              opts[:id] = if attributes[:id]
-                            "#{attributes[:id]}_#{opts[:value]}"
+              opts[:id] = if options[:id]
+                            "#{options[:id]}_#{opts[:value]}"
                           else
-                            "#{attribute_name || attributes[:name].gsub('[]', '')}_#{opts[:value]}"
+                            "#{attribute_name || options[:name].gsub('[]', '')}_#{opts[:value]}"
                           end
 
               self.class.(opts)
@@ -77,7 +77,7 @@ module Formular
 
           # we can't access other defaults
           def is_checked?
-            !options[:checked].nil? || reader_value == attributes[:value]
+            !options[:checked].nil? || reader_value == options[:value]
           end
 
           def collection_base_options
@@ -85,7 +85,7 @@ module Formular
             opts[:attribute_name] = attribute_name if attribute_name
             opts[:builder]        = builder if builder
             opts[:label_options]  = options[:control_label_options] if options[:control_label_options]
-            opts[:name]           = attributes[:name] if attributes[:name]
+            opts[:name]           = options[:name] if options[:name]
 
             opts
           end

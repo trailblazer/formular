@@ -63,12 +63,17 @@ module Formular
 
     def initialize(**options, &block)
       @builder = options.delete(:builder)
-      normalize_attributes(options)
+      normalize_options(options)
       @block = block
       @tag = self.class.tag_name
       @html_blocks = define_html_blocks
     end
-    attr_reader :tag, :html_blocks, :builder, :attributes, :options
+    attr_reader :tag, :html_blocks, :builder, :options
+
+    def attributes
+      attrs = @options.select { |k, v| @options[k] || true unless option_key?(k) }
+      Attributes[attrs]
+    end
 
     def to_html(context: nil)
       context ||= self.class.html_context
@@ -84,31 +89,37 @@ module Formular
       end
     end
 
-    # we split the options hash between options and attributes
-    # based on the option_keys defined on the class
-    # we then get the default_hash from the class
+    # we get the default_hash from the class
     # and merge with the user options and attributes
-    def normalize_attributes(**options)
-      @attributes = Attributes[options]
-      @options = @attributes.select { |k, v| @attributes.delete(k) || true if option_key?(k) }
+    def normalize_options(**options)
+      @options = options
       merge_default_hash
     end
 
-    # Take each default value and merge it with attributes && options.
+    # Options passed into our element instance take precident over those set by default
+    # Take each default value and merge it with options.
     # This way ordering is important and we can access values as they are evaluated
     def merge_default_hash
       self.class.default_hash.each do |k, v|
+        should_merge = k.to_s.include?('class') && !options[k].nil?
+
+        # if we've already got a value, and it's not a class then skip
+        next unless options[k].nil? || should_merge
+
+        # if our default is conditional and the condition evaluates to false then skip
         next unless evaluate_option_condition?(v[:condition])
 
         val = Uber::Options::Value.new(v[:value]).evaluate(self)
 
+        # if our default value is nil then skip
         next if val.nil?
 
-        if option_key?(k)
-          @options[k] = val if @options[k].nil?
+        # otherwise perform the actual merge, classes get joined, otherwise we overwrite
+
+        if should_merge
+          @options[k] += val
         else
-          # make sure that we merge classes, not override them
-          k == :class && !@attributes[k].nil? ? @attributes[k] += val : @attributes[k] ||= val
+          @options[k] = val
         end
       end
     end

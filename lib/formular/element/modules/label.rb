@@ -6,6 +6,7 @@ module Formular
       module Label
         include Formular::Element::Module
         add_option_keys :label, :label_options
+        set_default :label_options, {}
 
         # options functionality:
         # options[:label] == String return the string

@@ -17,6 +17,8 @@ module Formular
 
         add_option_keys :error_options, :wrapper_options
         set_default :aria_describedby, :hint_id, if: :has_hint?
+        set_default :error_options, {}
+        set_default :wrapper_options, {}
 
         self.html_context = :wrapped
 
@@ -32,7 +34,7 @@ module Formular
         module InstanceMethods
           def wrapper(&block)
             wrapper_element = has_errors? ? :error_wrapper : :wrapper
-            builder.send(wrapper_element, Attributes[options[:wrapper_options]], &block)
+            builder.send(wrapper_element, wrapper_options, &block)
           end
 
           def label
@@ -60,11 +62,11 @@ module Formular
 
           private
           def error_options
-            @error_options ||= Attributes[options[:error_options]]
+            @error_options ||= options[:error_options]
           end
 
           def wrapper_options
-            @wrapper_options ||= Attributes[options[:wrapper_options]]
+            @wrapper_options ||= options[:wrapper_options]
           end
         end # module InstanceMethods
       end # module WrappedControl

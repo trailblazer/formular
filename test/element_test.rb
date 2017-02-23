@@ -21,7 +21,7 @@ describe Formular::Element do
     it('#tag') { El3.().tag.must_equal :div }
   end
 
-  describe '#normalize_attributes' do
+  describe '#normalize_options' do
     class CorrectAttrsInput < Formular::Element
       tag :input
       add_option_keys :option_1, :option_2, :option_3, :opt
@@ -45,14 +45,14 @@ describe Formular::Element do
     end
 
     it 'should exclude nil keys' do
-      element.options.must_equal(opt: 'Keep me', option_2: 'an option')
+      element.options.must_equal(value: "some value", option_2: "an option", class: ["some-class"], opt: "Keep me")
     end
 
     it 'should allow defaults to be overriden' do
       element = CorrectAttrsInput.(value: 'some value', class: ['another-class'], option_1: 'I don\'t care if you\'re happy!')
 
       element.attributes.must_equal(value: 'some value', class: ['another-class', 'some-class'])
-      element.options.must_equal(opt: 'Keep me', option_1: 'I don\'t care if you\'re happy!')
+      element.options.must_equal(value: "some value", class: ["another-class", "some-class"], option_1: "I don't care if you're happy!", opt: "Keep me")
     end
 
     it 'should previously defined defaults to be overriden' do

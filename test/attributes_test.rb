@@ -7,19 +7,6 @@ class AttributesTest < Minitest::Spec
     it { Formular::Attributes[class: []].must_equal({ class: [] }) }
   end
 
-  describe "#merge!" do
-    it do
-      attrs = Formular::Attributes[:'data-remote' => true]
-      attrs.merge!(class: [:group]).must_equal(:'data-remote' => true, class: [:group])
-    end
-
-    it do
-      attrs = Formular::Attributes[class: [:control]]
-      attrs.merge!(class: [:group])
-      attrs.must_equal(class: [:group, :control])
-    end
-  end
-
   describe "#to_html" do
     it "should convert value as array correctly" do
       attrs = Formular::Attributes[value: "my value", type: "text", class: ["class1", "class2"]]

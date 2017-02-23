@@ -76,17 +76,17 @@ module Formular
 
       # because this mutates attributes, we have to call this before rendering the start_tag
       def method_tag
-        method = attributes[:method]
+        method = options[:method]
 
         case method
         when /^get$/ # must be case-insensitive, but can't use downcase as might be nil
-          attributes[:method] = 'get'
+          options[:method] = 'get'
           ''
         when /^post$/, '', nil
-          attributes[:method] = 'post'
+          options[:method] = 'post'
           ''
         else
-          attributes[:method] = 'post'
+          options[:method] = 'post'
           Hidden.(value: method, name: '_method').to_s
         end
       end
@@ -140,7 +140,7 @@ module Formular
       # as per MDN A label element can have both a 'for' attribute and a contained control element,
       # as long as the for attribute points to the contained control element.
       def labeled_control_id
-        return options[:labeled_control].attributes[:id] if options[:labeled_control]
+        return options[:labeled_control].options[:id] if options[:labeled_control]
         return builder.path(options[:attribute_name]).to_encoded_id if options[:attribute_name] && builder
       end
     end # class Label
@@ -271,7 +271,7 @@ module Formular
       def hidden_tag
         return '' unless options[:include_hidden]
 
-        Hidden.(value: options[:unchecked_value], name: attributes[:name]).to_s
+        Hidden.(value: options[:unchecked_value], name: options[:name]).to_s
       end
 
       private
