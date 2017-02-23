@@ -4,7 +4,9 @@
 
 * Select elements prompt and include_blank options now operate the same way as simple form
 * added procces_option to the Element API
-* Escape html chars in error_text, hint_text, input values
+* Escape html (controls, labels errors hints)
+* provide an element module for easily escaping html values
+* setting a default builder in the helper now actually works!
 
 ### Internal
 * element#options now includes both elements and html attributes

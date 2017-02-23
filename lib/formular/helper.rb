@@ -21,23 +21,32 @@ module Formular
     }.freeze
 
     class << self
+      def _builder
+        @builder || Formular::Builders::Basic
+      end
       attr_writer :builder
 
-      def builder(name = nil)
-        name ||= :basic
+      def builder(name)
+        self.builder = load_builder(name)
+      end
+
+      def load_builder(name)
         require "formular/builders/#{name}"
-        self.builder = Formular::Builders.const_get(BUILDERS.fetch(name)) # Formular::Builders::Bootstrap3
+        Formular::Builders.const_get(BUILDERS.fetch(name))
       end
     end
 
     private
 
     def builder(model, **options)
-      builder = Formular::Helper.builder(options.delete(:builder))
+      builder_name = options.delete(:builder)
+
+      builder = builder_name ? Formular::Helper.load_builder(builder_name) : Formular::Helper._builder
       options[:model] ||= model
 
       builder.new(options)
     end
+
   end # module Helper
 
   module RailsHelper

@@ -18,7 +18,6 @@ class Comment::Erb
 end
 
 class Erb < Minitest::Spec
-  # FIXME: don't ask me why erb makes so much white space...
   describe 'valid, initial rendering' do
     let(:model) { Comment.new(1, nil, [Reply.new(1, 'some exciting words'), Reply.new], Owner.new(1, 'Joe Blog', 'joe@somewhere.com'), '0x', true) }
 
