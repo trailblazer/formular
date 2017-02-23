@@ -1,5 +1,5 @@
 require 'formular/elements'
-require 'formular/element/modules/wrapped_control'
+require 'formular/element/modules/wrapped'
 require 'formular/element/module'
 
 module Formular
@@ -26,7 +26,7 @@ module Formular
         end # class InlineCheckable
 
         class InlineRadio < Formular::Element::Radio
-          include Formular::Element::Modules::WrappedControl
+          include Formular::Element::Modules::Wrapped
           include InlineCheckable
 
           add_option_keys :control_label_options
@@ -38,11 +38,10 @@ module Formular
         end# class InlineRadio
 
         class InlineCheckbox < Formular::Element::Checkbox
-          include Formular::Element::Modules::WrappedControl
+          include Formular::Element::Modules::Wrapped
           include InlineCheckable
 
           set_default :control_label_options, { class: ['checkbox-inline'] }
-          set_default :value, '1' # instead of reader value
 
           html { closed_start_tag }
         end # class InlineCheckbox
@@ -75,10 +74,8 @@ module Formular
         end # module StackedCheckable
 
         class Checkbox < Formular::Element::Checkbox
-          include Formular::Element::Modules::WrappedControl
+          include Formular::Element::Modules::Wrapped
           include StackedCheckable
-
-          set_default :value, '1' # instead of reader value
 
           html { closed_start_tag }
 
@@ -88,7 +85,7 @@ module Formular
         end # class Checkbox
 
         class Radio < Formular::Element::Radio
-          include Formular::Element::Modules::WrappedControl
+          include Formular::Element::Modules::Wrapped
           include StackedCheckable
 
           def inner_wrapper_class

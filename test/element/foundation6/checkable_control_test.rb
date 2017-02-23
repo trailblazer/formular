@@ -10,7 +10,7 @@ describe 'Foundation6::CheckableControl' do
   describe Formular::Element::Foundation6::Checkbox do
     it '#to_s' do
       element = builder.checkbox(:public, label: 'Public')
-      element.to_s.must_equal %(<fieldset><input value="0" name="public" type="hidden"/><label><input name="public" id="public" value="1" type="checkbox"/> Public</label></fieldset>)
+      element.to_s.must_equal %(<fieldset><input value="0" name="public" type="hidden"/><label><input name="public" id="public" type="checkbox" value="1"/> Public</label></fieldset>)
     end
 
     it '#to_s with errors' do
@@ -19,7 +19,7 @@ describe 'Foundation6::CheckableControl' do
         label: 'Option 1',
         error: 'Something terrible happened'
       )
-      element.to_s.must_equal %(<fieldset><input value="0" name="public" type="hidden"/><label class="is-invalid-label"><input name="public" id="public" value="1" type="checkbox"/> Option 1</label><span class="form-error is-visible">Something terrible happened</span></fieldset>)
+      element.to_s.must_equal %(<fieldset><input value="0" name="public" type="hidden"/><label class="is-invalid-label"><input name="public" id="public" type="checkbox" value="1"/> Option 1</label><span class="form-error is-visible">Something terrible happened</span></fieldset>)
     end
 
     describe 'with collection' do
@@ -29,7 +29,7 @@ describe 'Foundation6::CheckableControl' do
           label: 'Public',
           collection: collection_array
         )
-        element.to_s.must_equal %(<fieldset><legend>Public</legend><label><input value="1" type="checkbox" name="public[]" id="public_1"/> Option 1</label><label><input value="2" type="checkbox" name="public[]" id="public_2"/> Option 2</label><input value="" name="public[]" type="hidden"/></fieldset>)
+        element.to_s.must_equal %(<fieldset><legend>Public</legend><label><input type="checkbox" value="1" name="public[]" id="public_1"/> Option 1</label><label><input type="checkbox" value="2" name="public[]" id="public_2"/> Option 2</label><input value="" name="public[]" type="hidden"/></fieldset>)
       end
 
       it '#to_s with errors' do
@@ -38,7 +38,7 @@ describe 'Foundation6::CheckableControl' do
           collection: collection_array,
           error: 'Something terrible happened'
         )
-        element.to_s.must_equal %(<fieldset><label class="is-invalid-label"><input value="1" type="checkbox" name="public[]" id="public_1"/> Option 1</label><label class="is-invalid-label"><input value="2" type="checkbox" name="public[]" id="public_2"/> Option 2</label><input value="" name="public[]" type="hidden"/><span class="form-error is-visible">Something terrible happened</span></fieldset>)
+        element.to_s.must_equal %(<fieldset><label class="is-invalid-label"><input type="checkbox" value="1" name="public[]" id="public_1"/> Option 1</label><label class="is-invalid-label"><input type="checkbox" value="2" name="public[]" id="public_2"/> Option 2</label><input value="" name="public[]" type="hidden"/><span class="form-error is-visible">Something terrible happened</span></fieldset>)
       end
     end
   end
@@ -98,7 +98,7 @@ describe 'Foundation6::CheckableControl' do
           :public,
           collection: collection_array
         )
-        element.to_s.must_equal %(<fieldset><div><label><input type="checkbox" name="public[]" value="1" id="public_1"/> Option 1</label></div><div><label><input type="checkbox" name="public[]" value="2" id="public_2"/> Option 2</label></div><input value="" name="public[]" type="hidden"/></fieldset>)
+        element.to_s.must_equal %(<fieldset><div><label><input type="checkbox" value="1" name="public[]" id="public_1"/> Option 1</label></div><div><label><input type="checkbox" value="2" name="public[]" id="public_2"/> Option 2</label></div><input value="" name="public[]" type="hidden"/></fieldset>)
       end
 
       it '#to_s with errors' do
@@ -107,7 +107,7 @@ describe 'Foundation6::CheckableControl' do
           collection: collection_array,
           error: 'Something terrible happened'
         )
-        element.to_s.must_equal %(<fieldset><div><label class="is-invalid-label"><input type="checkbox" name="public[]" value="1" id="public_1"/> Option 1</label></div><div><label class="is-invalid-label"><input type="checkbox" name="public[]" value="2" id="public_2"/> Option 2</label></div><input value="" name="public[]" type="hidden"/><span class="form-error is-visible">Something terrible happened</span></fieldset>)
+        element.to_s.must_equal %(<fieldset><div><label class="is-invalid-label"><input type="checkbox" value="1" name="public[]" id="public_1"/> Option 1</label></div><div><label class="is-invalid-label"><input type="checkbox" value="2" name="public[]" id="public_2"/> Option 2</label></div><input value="" name="public[]" type="hidden"/><span class="form-error is-visible">Something terrible happened</span></fieldset>)
       end
     end
   end

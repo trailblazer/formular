@@ -26,15 +26,15 @@ module Formular
         end # class Legend
 
         class Input < Formular::Element::Bootstrap4::Input
-          include Formular::Element::Bootstrap3::Horizontal::WrappedControl
+          include Formular::Element::Bootstrap3::Horizontal::Wrapped
         end # class Input
 
         class CustomFile < Formular::Element::Bootstrap4::CustomFile
-          include Formular::Element::Bootstrap3::Horizontal::WrappedControl
+          include Formular::Element::Bootstrap3::Horizontal::Wrapped
         end # class CustomFile
 
         class CustomSelect < Formular::Element::Bootstrap4::CustomSelect
-          include Formular::Element::Bootstrap3::Horizontal::WrappedControl
+          include Formular::Element::Bootstrap3::Horizontal::Wrapped
         end # class CustomFile
 
         class Submit < Formular::Element::Bootstrap4::Submit

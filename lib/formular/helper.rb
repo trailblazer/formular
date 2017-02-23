@@ -22,7 +22,7 @@ module Formular
 
     class << self
       def _builder
-        @builder || Formular::Builders::Basic
+        @builder || load_builder(:basic)
       end
       attr_writer :builder
 

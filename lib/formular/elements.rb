@@ -1,7 +1,7 @@
 require 'formular/element'
 require 'formular/element/module'
 require 'formular/element/modules/container'
-require 'formular/element/modules/wrapped_control'
+require 'formular/element/modules/wrapped'
 require 'formular/element/modules/control'
 require 'formular/element/modules/checkable'
 require 'formular/element/modules/error'
@@ -13,7 +13,7 @@ module Formular
     # These three are really just provided for convenience when creating other elements
     Container = Class.new(Formular::Element) { include Formular::Element::Modules::Container }
     Control = Class.new(Formular::Element) { include Formular::Element::Modules::Control }
-    WrappedControl = Class.new(Formular::Element) { include Formular::Element::Modules::WrappedControl }
+    Wrapped = Class.new(Formular::Element) { include Formular::Element::Modules::Wrapped }
 
     # define some base classes to build from or easily use elsewhere
     OptGroup = Class.new(Container) { tag :optgroup }

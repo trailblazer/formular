@@ -26,7 +26,10 @@ module Formular
     # set the default value of an option or attribute
     # you can make this conditional by providing a condition
     # e.g. if: :some_method or unless: :some_method
+    # to respect the order defaults are declared, rather than overriting existing defaults
+    # we should delete the existing and create a new k/v pair
     def self.set_default(key, value, condition = {})
+      self.default_hash.delete(key) # attempt to delete an existing key
       self.default_hash[key] = { value: value, condition: condition }
     end
 

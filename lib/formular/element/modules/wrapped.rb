@@ -8,9 +8,9 @@ module Formular
     module Modules
       # include this module to enable an element to render the entire wrapped input
       # e.g. wrapper{label+control+hint+error}
-      module WrappedControl
+      module Wrapped
         include Formular::Element::Module
-        include Control
+#        include Control
         include Hint
         include Error
         include Label
@@ -68,7 +68,7 @@ module Formular
             @wrapper_options ||= options[:wrapper_options] || {}
           end
         end # module InstanceMethods
-      end # module WrappedControl
+      end # module Wrapped
     end # module Modules
   end # class Element
 end # module Formular

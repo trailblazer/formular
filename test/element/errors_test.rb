@@ -7,7 +7,7 @@ describe 'errors module' do
 
   class WrappedInput < Formular::Element::Input
     tag :input
-    include Formular::Element::Modules::WrappedControl
+    include Formular::Element::Modules::Wrapped
   end
 
   class ErrorWrapper < Formular::Element::Div

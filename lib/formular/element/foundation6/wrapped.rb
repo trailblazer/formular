@@ -1,11 +1,11 @@
 require 'formular/element/module'
-require 'formular/element/modules/wrapped_control'
+require 'formular/element/modules/wrapped'
 module Formular
   class Element
     module Foundation6
-      module WrappedControl
+      module Wrapped
         include Formular::Element::Module
-        include Formular::Element::Modules::WrappedControl
+        include Formular::Element::Modules::Wrapped
 
         html(:wrapped) do |input|
           input.wrapper do
@@ -15,7 +15,7 @@ module Formular
             concat input.error
           end.to_s
         end
-      end # module WrappedControl
+      end # module Wrapped
     end # module Foundation6
   end # class Element
 end # module Formular

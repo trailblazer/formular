@@ -9,10 +9,13 @@
 * setting a default builder in the helper now actually works!
 
 ### Internal
+
 * element#options now includes both elements and html attributes
 * elements#attributes only includes html attributes and can't be mutated. Change element#options instead
 * elements#normalize_options no longer tries to use the default value if an option is present
 * added a module for html_escape
+* renamed WrappedControl module to Wrapped and stopped including control
+* changes the order of default_hash to better respect inheritance ordering
 
 # v0.2.1 2016-09-29
 

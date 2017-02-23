@@ -271,12 +271,12 @@ describe 'core elements' do
     describe "with collection" do
       it '#to_s default methods' do
         element = Formular::Element::Checkbox.(name: 'public[]',  collection: [['False', 0], ['True', 1]])
-        element.to_s.must_equal %(<label><input value="0" type="checkbox" name="public[]" id="public_0"/> False</label><label><input value="1" type="checkbox" name="public[]" id="public_1"/> True</label><input value="" name="public[]" type="hidden"/>)
+        element.to_s.must_equal %(<label><input type="checkbox" value="0" name="public[]" id="public_0"/> False</label><label><input type="checkbox" value="1" name="public[]" id="public_1"/> True</label><input value="" name="public[]" type="hidden"/>)
       end
 
       it '#to_s custom methods' do
         element = Formular::Element::Checkbox.(name: 'public[]', collection: [2..4, 3..5], label_method: :min, value_method: :max)
-        element.to_s.must_equal %(<label><input value="4" type="checkbox" name="public[]" id="public_4"/> 2</label><label><input value="5" type="checkbox" name="public[]" id="public_5"/> 3</label><input value="" name="public[]" type="hidden"/>)
+        element.to_s.must_equal %(<label><input type="checkbox" value="4" name="public[]" id="public_4"/> 2</label><label><input type="checkbox" value="5" name="public[]" id="public_5"/> 3</label><input value="" name="public[]" type="hidden"/>)
       end
     end
   end # Formular::Element::Checkbox

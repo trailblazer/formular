@@ -1,5 +1,5 @@
 require 'formular/elements'
-require 'formular/element/modules/wrapped_control'
+require 'formular/element/modules/wrapped'
 require 'formular/element/module'
 
 module Formular
@@ -7,15 +7,14 @@ module Formular
     module Bootstrap4
       module CheckableControl
         class Checkbox < Formular::Element::Checkbox
-          include Formular::Element::Modules::WrappedControl
+          include Formular::Element::Modules::Wrapped
           set_default :class, ['form-check-input']
-          set_default :value, '1' # instead of reader value
 
           html { closed_start_tag }
         end # class Checkbox
 
         class Radio < Formular::Element::Radio
-          include Formular::Element::Modules::WrappedControl
+          include Formular::Element::Modules::Wrapped
           set_default :class, ['form-check-input']
 
           def hidden_tag

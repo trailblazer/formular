@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'formular/builders/bootstrap3'
+require 'formular/builders/bootstrap3_horizontal'
 require 'formular/element/bootstrap3'
 require 'formular/element/bootstrap3/input_group'
 

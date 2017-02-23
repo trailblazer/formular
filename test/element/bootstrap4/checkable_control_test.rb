@@ -10,7 +10,7 @@ describe 'Bootstrap4::CheckableControl' do
   describe Formular::Element::Bootstrap4::Checkbox do
     it 'with value and label' do
       element = builder.checkbox(:public, label: 'Public')
-      element.to_s.must_equal %(<fieldset class="form-group"><input value="0" name="public" type="hidden"/><div class="form-check"><label class="form-check-label"><input name="public" id="public" value="1" type="checkbox" class="form-check-input"/> Public</label></div></fieldset>)
+      element.to_s.must_equal %(<fieldset class="form-group"><input value="0" name="public" type="hidden"/><div class="form-check"><label class="form-check-label"><input name="public" id="public" type="checkbox" value="1" class="form-check-input"/> Public</label></div></fieldset>)
     end
 
     it 'with hint' do
@@ -19,7 +19,7 @@ describe 'Bootstrap4::CheckableControl' do
         label: 'Public',
         hint: 'Some helpful words'
       )
-      element.to_s.must_equal %(<fieldset class="form-group"><input value="0" name="public" type="hidden"/><div class="form-check"><label class="form-check-label"><input name="public" id="public" value="1" type="checkbox" aria-describedby="public_hint" class="form-check-input"/> Public</label></div><small id="public_hint" class="text-muted">Some helpful words</small></fieldset>)
+      element.to_s.must_equal %(<fieldset class="form-group"><input value="0" name="public" type="hidden"/><div class="form-check"><label class="form-check-label"><input name="public" id="public" type="checkbox" value="1" aria-describedby="public_hint" class="form-check-input"/> Public</label></div><small id="public_hint" class="text-muted">Some helpful words</small></fieldset>)
     end
 
     it 'with error' do
@@ -28,7 +28,7 @@ describe 'Bootstrap4::CheckableControl' do
         label: 'Public',
         error: 'Something nasty happened'
       )
-      element.to_s.must_equal %(<fieldset class="form-group has-danger"><input value="0" name="public" type="hidden"/><div class="form-check"><label class="form-check-label"><input name="public" id="public" value="1" type="checkbox" class="form-check-input"/> Public</label></div><span class="form-control-feedback">Something nasty happened</span></fieldset>)
+      element.to_s.must_equal %(<fieldset class="form-group has-danger"><input value="0" name="public" type="hidden"/><div class="form-check"><label class="form-check-label"><input name="public" id="public" type="checkbox" value="1" class="form-check-input"/> Public</label></div><span class="form-control-feedback">Something nasty happened</span></fieldset>)
     end
 
     it 'all together!' do
@@ -38,13 +38,13 @@ describe 'Bootstrap4::CheckableControl' do
         error: 'Something nasty happened',
         hint: 'Some helpful words'
       )
-      element.to_s.must_equal %(<fieldset class="form-group has-danger"><input value="0" name="public" type="hidden"/><div class="form-check"><label class="form-check-label"><input name="public" id="public" value="1" type="checkbox" aria-describedby="public_hint" class="form-check-input"/> Public</label></div><small id="public_hint" class="text-muted">Some helpful words</small><span class="form-control-feedback">Something nasty happened</span></fieldset>)
+      element.to_s.must_equal %(<fieldset class="form-group has-danger"><input value="0" name="public" type="hidden"/><div class="form-check"><label class="form-check-label"><input name="public" id="public" type="checkbox" value="1" aria-describedby="public_hint" class="form-check-input"/> Public</label></div><small id="public_hint" class="text-muted">Some helpful words</small><span class="form-control-feedback">Something nasty happened</span></fieldset>)
     end
 
     describe 'with collection' do
       it 'no group label' do
         element = builder.checkbox(:public, collection: collection_array)
-        element.to_s.must_equal %(<fieldset class="form-group"><div class="form-check"><label class="form-check-label"><input value="1" type="checkbox" name="public[]" id="public_1" class="form-check-input"/> Option 1</label></div><div class="form-check"><label class="form-check-label"><input value="2" type="checkbox" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/></fieldset>)
+        element.to_s.must_equal %(<fieldset class="form-group"><div class="form-check"><label class="form-check-label"><input type="checkbox" value="1" name="public[]" id="public_1" class="form-check-input"/> Option 1</label></div><div class="form-check"><label class="form-check-label"><input type="checkbox" value="2" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/></fieldset>)
       end
 
       it 'with group label' do
@@ -53,7 +53,7 @@ describe 'Bootstrap4::CheckableControl' do
           label: 'Public',
           collection: collection_array
         )
-        element.to_s.must_equal %(<fieldset class="form-group"><legend>Public</legend><div class="form-check"><label class="form-check-label"><input value="1" type="checkbox" name="public[]" id="public_1" class="form-check-input"/> Option 1</label></div><div class="form-check"><label class="form-check-label"><input value="2" type="checkbox" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/></fieldset>)
+        element.to_s.must_equal %(<fieldset class="form-group"><legend>Public</legend><div class="form-check"><label class="form-check-label"><input type="checkbox" value="1" name="public[]" id="public_1" class="form-check-input"/> Option 1</label></div><div class="form-check"><label class="form-check-label"><input type="checkbox" value="2" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/></fieldset>)
       end
 
       it 'with hint' do
@@ -62,7 +62,7 @@ describe 'Bootstrap4::CheckableControl' do
           collection: collection_array,
           hint: 'Some helpful words'
         )
-        element.to_s.must_equal %(<fieldset class="form-group"><div class="form-check"><label class="form-check-label"><input value="1" type="checkbox" aria-describedby="public_hint" name="public[]" id="public_1" class="form-check-input"/> Option 1</label></div><div class="form-check"><label class="form-check-label"><input value="2" type="checkbox" aria-describedby="public_hint" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/><small id="public_hint" class="text-muted">Some helpful words</small></fieldset>)
+        element.to_s.must_equal %(<fieldset class="form-group"><div class="form-check"><label class="form-check-label"><input type="checkbox" value="1" aria-describedby="public_hint" name="public[]" id="public_1" class="form-check-input"/> Option 1</label></div><div class="form-check"><label class="form-check-label"><input type="checkbox" value="2" aria-describedby="public_hint" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/><small id="public_hint" class="text-muted">Some helpful words</small></fieldset>)
       end
 
       it 'with error' do
@@ -71,7 +71,7 @@ describe 'Bootstrap4::CheckableControl' do
           collection: collection_array,
           error: 'Something nasty happened'
         )
-        element.to_s.must_equal %(<fieldset class="form-group has-danger"><div class="form-check"><label class="form-check-label"><input value="1" type="checkbox" name="public[]" id="public_1" class="form-check-input"/> Option 1</label></div><div class="form-check"><label class="form-check-label"><input value="2" type="checkbox" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/><span class="form-control-feedback">Something nasty happened</span></fieldset>)
+        element.to_s.must_equal %(<fieldset class="form-group has-danger"><div class="form-check"><label class="form-check-label"><input type="checkbox" value="1" name="public[]" id="public_1" class="form-check-input"/> Option 1</label></div><div class="form-check"><label class="form-check-label"><input type="checkbox" value="2" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/><span class="form-control-feedback">Something nasty happened</span></fieldset>)
       end
 
       it 'all together!' do
@@ -82,7 +82,7 @@ describe 'Bootstrap4::CheckableControl' do
           hint: 'Some helpful words',
           error: 'Something nasty happened'
         )
-        element.to_s.must_equal %(<fieldset class="form-group has-danger"><legend>Public</legend><div class="form-check"><label class="form-check-label"><input value="1" type="checkbox" aria-describedby="public_hint" name="public[]" id="public_1" class="form-check-input"/> Option 1</label></div><div class="form-check"><label class="form-check-label"><input value="2" type="checkbox" aria-describedby="public_hint" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/><small id="public_hint" class="text-muted">Some helpful words</small><span class="form-control-feedback">Something nasty happened</span></fieldset>)
+        element.to_s.must_equal %(<fieldset class="form-group has-danger"><legend>Public</legend><div class="form-check"><label class="form-check-label"><input type="checkbox" value="1" aria-describedby="public_hint" name="public[]" id="public_1" class="form-check-input"/> Option 1</label></div><div class="form-check"><label class="form-check-label"><input type="checkbox" value="2" aria-describedby="public_hint" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/><small id="public_hint" class="text-muted">Some helpful words</small><span class="form-control-feedback">Something nasty happened</span></fieldset>)
       end
     end
   end
@@ -173,7 +173,7 @@ describe 'Bootstrap4::CheckableControl' do
   describe Formular::Element::Bootstrap4::InlineCheckbox do
     it 'with value and label' do
       element = builder.inline_checkbox(:public, label: 'Public')
-      element.to_s.must_equal %(<fieldset class="form-group"><input value="0" name="public" type="hidden"/><label class="form-check-inline"><input name="public" id="public" value="1" type="checkbox" class="form-check-input"/> Public</label></fieldset>)
+      element.to_s.must_equal %(<fieldset class="form-group"><input value="0" name="public" type="hidden"/><label class="form-check-inline"><input name="public" id="public" type="checkbox" value="1" class="form-check-input"/> Public</label></fieldset>)
     end
 
     it 'with hint' do
@@ -182,7 +182,7 @@ describe 'Bootstrap4::CheckableControl' do
         label: 'Public',
         hint: 'Some helpful words'
       )
-      element.to_s.must_equal %(<fieldset class="form-group"><input value="0" name="public" type="hidden"/><label class="form-check-inline"><input name="public" id="public" value="1" type="checkbox" aria-describedby="public_hint" class="form-check-input"/> Public</label><small id="public_hint" class="text-muted">Some helpful words</small></fieldset>)
+      element.to_s.must_equal %(<fieldset class="form-group"><input value="0" name="public" type="hidden"/><label class="form-check-inline"><input name="public" id="public" type="checkbox" value="1" aria-describedby="public_hint" class="form-check-input"/> Public</label><small id="public_hint" class="text-muted">Some helpful words</small></fieldset>)
     end
 
     it 'with error' do
@@ -191,7 +191,7 @@ describe 'Bootstrap4::CheckableControl' do
         label: 'Public',
         error: 'Something nasty happened'
       )
-      element.to_s.must_equal %(<fieldset class="form-group has-danger"><input value="0" name="public" type="hidden"/><label class="form-check-inline"><input name="public" id="public" value="1" type="checkbox" class="form-check-input"/> Public</label><span class="form-control-feedback">Something nasty happened</span></fieldset>)
+      element.to_s.must_equal %(<fieldset class="form-group has-danger"><input value="0" name="public" type="hidden"/><label class="form-check-inline"><input name="public" id="public" type="checkbox" value="1" class="form-check-input"/> Public</label><span class="form-control-feedback">Something nasty happened</span></fieldset>)
     end
 
     it 'all together!' do
@@ -201,13 +201,13 @@ describe 'Bootstrap4::CheckableControl' do
         error: 'Something nasty happened',
         hint: 'Some helpful words'
       )
-      element.to_s.must_equal %(<fieldset class="form-group has-danger"><input value="0" name="public" type="hidden"/><label class="form-check-inline"><input name="public" id="public" value="1" type="checkbox" aria-describedby="public_hint" class="form-check-input"/> Public</label><small id="public_hint" class="text-muted">Some helpful words</small><span class="form-control-feedback">Something nasty happened</span></fieldset>)
+      element.to_s.must_equal %(<fieldset class="form-group has-danger"><input value="0" name="public" type="hidden"/><label class="form-check-inline"><input name="public" id="public" type="checkbox" value="1" aria-describedby="public_hint" class="form-check-input"/> Public</label><small id="public_hint" class="text-muted">Some helpful words</small><span class="form-control-feedback">Something nasty happened</span></fieldset>)
     end
 
     describe 'with collection' do
       it 'no group label' do
         element = builder.inline_checkbox(:public, collection: collection_array)
-        element.to_s.must_equal %(<fieldset class="form-group"><label class="form-check-inline"><input value="1" type="checkbox" name="public[]" id="public_1" class="form-check-input"/> Option 1</label><label class="form-check-inline"><input value="2" type="checkbox" name="public[]" id="public_2" class="form-check-input"/> Option 2</label><input value="" name="public[]" type="hidden"/></fieldset>)
+        element.to_s.must_equal %(<fieldset class="form-group"><label class="form-check-inline"><input type="checkbox" value="1" name="public[]" id="public_1" class="form-check-input"/> Option 1</label><label class="form-check-inline"><input type="checkbox" value="2" name="public[]" id="public_2" class="form-check-input"/> Option 2</label><input value="" name="public[]" type="hidden"/></fieldset>)
       end
 
       it 'with group label' do
@@ -216,7 +216,7 @@ describe 'Bootstrap4::CheckableControl' do
           label: 'Public',
           collection: collection_array
         )
-        element.to_s.must_equal %(<fieldset class="form-group"><legend>Public</legend><div><label class="form-check-inline"><input value="1" type="checkbox" name="public[]" id="public_1" class="form-check-input"/> Option 1</label><label class="form-check-inline"><input value="2" type="checkbox" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/></fieldset>)
+        element.to_s.must_equal %(<fieldset class="form-group"><legend>Public</legend><div><label class="form-check-inline"><input type="checkbox" value="1" name="public[]" id="public_1" class="form-check-input"/> Option 1</label><label class="form-check-inline"><input type="checkbox" value="2" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/></fieldset>)
       end
 
       it 'with hint' do
@@ -225,7 +225,7 @@ describe 'Bootstrap4::CheckableControl' do
           collection: collection_array,
           hint: 'Some helpful words'
         )
-        element.to_s.must_equal %(<fieldset class="form-group"><label class="form-check-inline"><input value="1" type="checkbox" aria-describedby="public_hint" name="public[]" id="public_1" class="form-check-input"/> Option 1</label><label class="form-check-inline"><input value="2" type="checkbox" aria-describedby="public_hint" name="public[]" id="public_2" class="form-check-input"/> Option 2</label><input value="" name="public[]" type="hidden"/><small id="public_hint" class="text-muted">Some helpful words</small></fieldset>)
+        element.to_s.must_equal %(<fieldset class="form-group"><label class="form-check-inline"><input type="checkbox" value="1" aria-describedby="public_hint" name="public[]" id="public_1" class="form-check-input"/> Option 1</label><label class="form-check-inline"><input type="checkbox" value="2" aria-describedby="public_hint" name="public[]" id="public_2" class="form-check-input"/> Option 2</label><input value="" name="public[]" type="hidden"/><small id="public_hint" class="text-muted">Some helpful words</small></fieldset>)
       end
 
       it 'with error' do
@@ -234,7 +234,7 @@ describe 'Bootstrap4::CheckableControl' do
           collection: collection_array,
           error: 'Something nasty happened'
         )
-        element.to_s.must_equal %(<fieldset class="form-group has-danger"><label class="form-check-inline"><input value="1" type="checkbox" name="public[]" id="public_1" class="form-check-input"/> Option 1</label><label class="form-check-inline"><input value="2" type="checkbox" name="public[]" id="public_2" class="form-check-input"/> Option 2</label><input value="" name="public[]" type="hidden"/><span class="form-control-feedback">Something nasty happened</span></fieldset>)
+        element.to_s.must_equal %(<fieldset class="form-group has-danger"><label class="form-check-inline"><input type="checkbox" value="1" name="public[]" id="public_1" class="form-check-input"/> Option 1</label><label class="form-check-inline"><input type="checkbox" value="2" name="public[]" id="public_2" class="form-check-input"/> Option 2</label><input value="" name="public[]" type="hidden"/><span class="form-control-feedback">Something nasty happened</span></fieldset>)
       end
 
       it 'all together!' do
@@ -245,7 +245,7 @@ describe 'Bootstrap4::CheckableControl' do
           hint: 'Some helpful words',
           error: 'Something nasty happened'
         )
-        element.to_s.must_equal %(<fieldset class="form-group has-danger"><legend>Public</legend><div><label class="form-check-inline"><input value="1" type="checkbox" aria-describedby="public_hint" name="public[]" id="public_1" class="form-check-input"/> Option 1</label><label class="form-check-inline"><input value="2" type="checkbox" aria-describedby="public_hint" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/><small id="public_hint" class="text-muted">Some helpful words</small><span class="form-control-feedback">Something nasty happened</span></fieldset>)
+        element.to_s.must_equal %(<fieldset class="form-group has-danger"><legend>Public</legend><div><label class="form-check-inline"><input type="checkbox" value="1" aria-describedby="public_hint" name="public[]" id="public_1" class="form-check-input"/> Option 1</label><label class="form-check-inline"><input type="checkbox" value="2" aria-describedby="public_hint" name="public[]" id="public_2" class="form-check-input"/> Option 2</label></div><input value="" name="public[]" type="hidden"/><small id="public_hint" class="text-muted">Some helpful words</small><span class="form-control-feedback">Something nasty happened</span></fieldset>)
       end
     end
   end

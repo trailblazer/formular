@@ -74,8 +74,6 @@ module Formular
           end
 
           private
-
-          # we can't access other defaults
           def is_checked?
             !options[:checked].nil? || reader_value == options[:value]
           end

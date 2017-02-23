@@ -1,8 +1,8 @@
 require 'formular/elements'
-require 'formular/element/modules/wrapped_control'
+require 'formular/element/modules/wrapped'
 require 'formular/element/module'
 require 'formular/element/foundation6/checkable_control'
-require 'formular/element/foundation6/wrapped_control'
+require 'formular/element/foundation6/wrapped'
 module Formular
   class Element
     module Foundation6
@@ -36,7 +36,7 @@ module Formular
       end # class Hint
 
       class Input < Formular::Element::Input
-        include WrappedControl
+        include Wrapped
         include InputWithErrors
       end # class Input
 
@@ -56,12 +56,12 @@ module Formular
       end # class File
 
       class Select < Formular::Element::Select
-        include WrappedControl
+        include Wrapped
         include InputWithErrors
       end # class Select
 
       class Textarea < Formular::Element::Textarea
-        include WrappedControl
+        include Wrapped
         include InputWithErrors
       end # class Textarea
     end # module Foundation6

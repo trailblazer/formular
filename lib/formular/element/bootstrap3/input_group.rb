@@ -1,12 +1,12 @@
 require 'formular/elements'
 require 'formular/element/modules/container'
-require 'formular/element/modules/wrapped_control'
+require 'formular/element/modules/wrapped'
 
 module Formular
   class Element
     module Bootstrap3
       class InputGroup < Formular::Element::Input
-        include Formular::Element::Modules::WrappedControl
+        include Formular::Element::Modules::Wrapped
         include Formular::Element::Modules::Container
         include Formular::Element::Bootstrap3::ColumnControl
 

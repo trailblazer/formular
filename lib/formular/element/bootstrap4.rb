@@ -1,6 +1,6 @@
 require 'formular/element'
 require 'formular/elements'
-require 'formular/element/modules/wrapped_control'
+require 'formular/element/modules/wrapped'
 require 'formular/element/module'
 require 'formular/element/bootstrap4/checkable_control'
 require 'formular/element/bootstrap4/custom_control'
@@ -27,7 +27,7 @@ module Formular
       end # class Hint
 
       class Input < Formular::Element::Input
-        include Formular::Element::Modules::WrappedControl
+        include Formular::Element::Modules::Wrapped
         include Formular::Element::Bootstrap3::ColumnControl
 
         set_default :class, :input_class

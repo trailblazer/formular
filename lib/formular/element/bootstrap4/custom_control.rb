@@ -1,5 +1,5 @@
 require 'formular/elements'
-require 'formular/element/modules/wrapped_control'
+require 'formular/element/modules/wrapped'
 require 'formular/element/bootstrap4'
 require 'formular/element/bootstrap3'
 require 'formular/element/module'
@@ -10,7 +10,7 @@ module Formular
       module CustomControl
         module CustomCheckable
           include Formular::Element::Module
-          include Formular::Element::Modules::WrappedControl
+          include Formular::Element::Modules::Wrapped
           set_default :class, ['custom-control-input']
 
           html(:checkable_label) do |input|
@@ -57,7 +57,6 @@ module Formular
             html { closed_start_tag }
 
             set_default :control_label_options, { class: ['custom-control custom-checkbox'] }
-            set_default :value, '1' # instead of reader value
           end # class Checkbox
 
           class CustomRadio < Formular::Element::Radio
@@ -74,7 +73,7 @@ module Formular
           end # class CustomSelect
 
           class CustomFile < Formular::Element::Input
-            include Formular::Element::Modules::WrappedControl
+            include Formular::Element::Modules::Wrapped
             include Formular::Element::Bootstrap3::ColumnControl
 
             set_default :class, ['custom-file-input']

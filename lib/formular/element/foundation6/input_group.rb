@@ -1,13 +1,13 @@
 require 'formular/elements'
 require 'formular/element/modules/container'
-require 'formular/element/modules/wrapped_control'
+require 'formular/element/modules/wrapped'
 module Formular
   class Element
     module Foundation6
       class InputGroup < Formular::Element::Input
         module WrappedGroup
           include Formular::Element::Module
-          include Formular::Element::Modules::WrappedControl
+          include Formular::Element::Modules::Wrapped
 
           def wrapper(&block)
             builder.fieldset(Attributes[options[:wrapper_options]], &block)

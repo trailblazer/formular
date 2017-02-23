@@ -7,7 +7,7 @@ module Formular
   class Element
     module Bootstrap3
       module Horizontal
-        module WrappedControl
+        module Wrapped
           include Formular::Element::Module
 
           html(:label_column) do |input|
@@ -35,11 +35,11 @@ module Formular
               has_label? ? [] : builder.class.column_classes[:left_offset]
             end
           end
-        end # module WrappedControl
+        end # module Wrapped
 
         module WrappedCheckableControl
           include Formular::Element::Module
-          include WrappedControl
+          include Wrapped
 
           html(:label_column) do |input|
             input.group_label
@@ -80,19 +80,19 @@ module Formular
         end # class Form
 
         class Select < Formular::Element::Bootstrap3::Select
-          include WrappedControl
+          include Wrapped
         end # class Select
 
         class Textarea < Formular::Element::Bootstrap3::Textarea
-          include WrappedControl
+          include Wrapped
         end # class Textarea
 
         class Input < Formular::Element::Bootstrap3::Input
-          include WrappedControl
+          include Wrapped
         end # class Input
 
         class InputGroup < Formular::Element::Bootstrap3::InputGroup
-          include WrappedControl
+          include Wrapped
 
           html(:start) do |input|
             wrapper = input.wrapper

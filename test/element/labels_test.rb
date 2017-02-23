@@ -1,12 +1,12 @@
 require 'test_helper'
-require 'formular/element/modules/wrapped_control'
+require 'formular/element/modules/wrapped'
 require 'formular/elements'
 require 'formular/builders/basic'
 
 describe 'labels module' do
   class WrappedInput < Formular::Element::Input
     tag :input
-    include Formular::Element::Modules::WrappedControl
+    include Formular::Element::Modules::Wrapped
   end
 
   let(:builder) do

@@ -1,13 +1,13 @@
 require 'formular/elements'
 require 'formular/element/module'
-require 'formular/element/foundation6/wrapped_control'
+require 'formular/element/foundation6/wrapped'
 module Formular
   class Element
     module Foundation6
       module CheckableControl
         module Checkable
           include Formular::Element::Module
-          include Formular::Element::Foundation6::WrappedControl
+          include Formular::Element::Foundation6::Wrapped
 
           set_default :label_options, { class: ['is-invalid-label'] }, if: :has_errors?
           set_default :control_label_options, { class: ['is-invalid-label'] }, if: :has_errors?
@@ -43,8 +43,6 @@ module Formular
 
         class Checkbox < Formular::Element::Checkbox
           include Checkable
-
-          set_default :value, '1' # instead of reader value
           set_default :label_options, { class: ['is-invalid-label'] }, if: :has_errors?
           set_default :control_label_options, { class: ['is-invalid-label'] }, if: :has_errors?
 
