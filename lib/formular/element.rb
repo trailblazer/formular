@@ -63,7 +63,8 @@ module Formular
 
     def initialize(**options, &block)
       @builder = options.delete(:builder)
-      normalize_options(options)
+      @options = options
+      normalize_options
       @block = block
       @tag = self.class.tag_name
       @html_blocks = define_html_blocks
@@ -89,17 +90,10 @@ module Formular
       end
     end
 
-    # we get the default_hash from the class
-    # and merge with the user options and attributes
-    def normalize_options(**options)
-      @options = options
-      merge_default_hash
-    end
-
-    # Options passed into our element instance take precident over those set by default
+    # Options passed into our element instance (@options) take precident over class level defaults
     # Take each default value and merge it with options.
     # This way ordering is important and we can access values as they are evaluated
-    def merge_default_hash
+    def normalize_options
       self.class.default_hash.each do |k, v|
         should_merge = k.to_s.include?('class') && !options[k].nil?
 
@@ -115,12 +109,7 @@ module Formular
         next if val.nil?
 
         # otherwise perform the actual merge, classes get joined, otherwise we overwrite
-
-        if should_merge
-          @options[k] += val
-        else
-          @options[k] = val
-        end
+        should_merge ? @options[k] += val : @options[k] = val
       end
     end
 

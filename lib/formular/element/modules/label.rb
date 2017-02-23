@@ -6,7 +6,6 @@ module Formular
       module Label
         include Formular::Element::Module
         add_option_keys :label, :label_options
-        set_default :label_options, {}
 
         # options functionality:
         # options[:label] == String return the string
@@ -22,7 +21,7 @@ module Formular
           end
 
           def label_options
-            @label_options ||= Attributes[options[:label_options]]
+            @label_options ||= options[:label_options] || {}
           end
         end # module InstanceMethods
       end # module Label

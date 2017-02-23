@@ -6,7 +6,6 @@ module Formular
       module Hint
         include Formular::Element::Module
         add_option_keys :hint, :hint_options
-        set_default :hint_options, {}
 
         # options functionality (same as SimpleForm):
         # options[:hint] == String return the string
@@ -28,7 +27,7 @@ module Formular
           end
 
           def hint_options
-            @hint_options ||= Attributes[options[:hint_options]]
+            @hint_options ||= options[:hint_options] || {}
           end
         end # module InstanceMethods
       end # module Hint
