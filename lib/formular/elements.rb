@@ -5,6 +5,7 @@ require 'formular/element/modules/wrapped_control'
 require 'formular/element/modules/control'
 require 'formular/element/modules/checkable'
 require 'formular/element/modules/error'
+require 'formular/element/modules/escape_value'
 require 'formular/html_escape'
 
 module Formular
@@ -15,7 +16,6 @@ module Formular
     WrappedControl = Class.new(Formular::Element) { include Formular::Element::Modules::WrappedControl }
 
     # define some base classes to build from or easily use elsewhere
-    Option = Class.new(Container) { tag :option }
     OptGroup = Class.new(Container) { tag :optgroup }
     Fieldset = Class.new(Container) { tag :fieldset }
     Legend = Class.new(Container) { tag :legend }
@@ -24,11 +24,15 @@ module Formular
     Span = Class.new(Container) { tag :span }
     Small = Class.new(Container) { tag :small }
 
+    class Option < Container
+      tag :option
+      include Formular::Element::Modules::EscapeValue
+    end
+
+
     class Hidden < Control
-      include HtmlEscape
       tag :input
       set_default :type, 'hidden'
-      process_option :value, :html_escape
 
       html { closed_start_tag }
     end
@@ -150,11 +154,10 @@ module Formular
     end # class Label
 
     class Submit < Formular::Element
-      include HtmlEscape
+      include Formular::Element::Modules::EscapeValue
       tag :input
 
       set_default :type, 'submit'
-      process_option :value, :html_escape
 
       html { closed_start_tag }
     end # class Submit
