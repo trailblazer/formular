@@ -1,10 +1,12 @@
 require 'formular/element/module'
+require 'formular/html_escape'
 module Formular
   class Element
     module Modules
       # this module provides error methods and options to a control when included
       module Error
         include Formular::Element::Module
+        include HtmlEscape
         add_option_keys :error
 
         # options functionality (same as SimpleForm):
@@ -12,7 +14,10 @@ module Formular
         # options[:error] == String return the string, regardless of model errors
         module InstanceMethods
           def error_text
-            has_custom_error? ? options[:error] : errors_on_attribute.send(error_method) if has_errors?
+            return unless has_errors?
+
+            text = has_custom_error? ? options[:error] : errors_on_attribute.send(error_method)
+            html_escape(text)
           end
 
           def has_errors?

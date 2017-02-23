@@ -5,6 +5,7 @@ require 'formular/element/modules/wrapped_control'
 require 'formular/element/modules/control'
 require 'formular/element/modules/checkable'
 require 'formular/element/modules/error'
+require 'formular/html_escape'
 
 module Formular
   class Element
@@ -24,8 +25,10 @@ module Formular
     Small = Class.new(Container) { tag :small }
 
     class Hidden < Control
+      include HtmlEscape
       tag :input
       set_default :type, 'hidden'
+      process_option :value, :html_escape
 
       html { closed_start_tag }
     end
@@ -126,6 +129,7 @@ module Formular
       include Formular::Element::Modules::Container
       tag :textarea
       add_option_keys :value
+      add_option_keys
 
       def content
         options[:value] || super
@@ -146,9 +150,11 @@ module Formular
     end # class Label
 
     class Submit < Formular::Element
+      include HtmlEscape
       tag :input
 
       set_default :type, 'submit'
+      process_option :value, :html_escape
 
       html { closed_start_tag }
     end # class Submit
@@ -163,16 +169,23 @@ module Formular
     end # class Button
 
     class Input < Control
+      include HtmlEscape
+
       tag :input
       set_default :type, 'text'
+      process_option :value, :html_escape
+
       html { closed_start_tag }
     end # class Input
 
     class Select < Control
       include Formular::Element::Modules::Collection
+      include HtmlEscape
+
       tag :select
 
       add_option_keys :value, :prompt, :include_blank
+      process_option :collection, :inject_placeholder
 
       html do |input|
         concat start_tag
@@ -199,20 +212,28 @@ module Formular
       #   <option value="0">false</option>
       # </optgroup>
       def option_tags
-        collection = options[:collection]
-
-        first = placeholder
-        collection.unshift(first) if first
-
-        collection_to_options(collection)
+        collection_to_options(options[:collection])
       end
 
       private
+      # same handling as simple form
+      # prompt: a nil value option appears if we have no selected option
+      # include blank: includes our nil value option regardless (useful for optional fields)
+      def inject_placeholder(collection)
+        placeholder = if options[:include_blank]
+                        placeholder_option(options[:include_blank])
+                      elsif options[:prompt] && options[:value].nil?
+                        placeholder_option(options[:prompt])
+                      end
 
-      def placeholder
-        return unless options[:prompt].is_a?(String) || options[:include_blank] == true
+        collection.unshift(placeholder) if placeholder
 
-        [options[:prompt] || "", ""]
+        collection
+      end
+
+      def placeholder_option(value)
+        text = value.is_a?(String) ? html_escape(value) : ""
+        [text, ""]
       end
 
       def collection_to_options(collection)

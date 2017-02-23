@@ -33,7 +33,7 @@ describe 'hints module' do
       end
     end
 
-    describe '#hint_message' do
+    describe '#hint_text' do
       it 'option is false then should be nil' do
         element = builder.wrapped_input(:body, hint: false)
         element.hint_text.must_be_nil
@@ -42,6 +42,11 @@ describe 'hints module' do
       it 'return custom message' do
         element = builder.wrapped_input(:body, hint: 'Some string')
         element.hint_text.must_equal 'Some string'
+      end
+
+      it 'should be html escaped' do
+        element = builder.wrapped_input(:body, hint: "I'm a little teapot whose spout is > 10cm")
+        element.hint_text.must_equal "I&#39;m a little teapot whose spout is &gt; 10cm"
       end
     end
   end

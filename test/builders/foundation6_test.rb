@@ -19,7 +19,7 @@ describe Formular::Builders::Foundation6 do
 
     it '#error should return the error element for :body' do
       element = builder.error(:body)
-      element.to_s.must_equal %(<span class="form-error is-visible">This really isn't good enough!</span>)
+      element.to_s.must_equal %(<span class="form-error is-visible">This really isn&#39;t good enough!</span>)
     end
   end
 

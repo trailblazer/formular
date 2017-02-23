@@ -56,7 +56,7 @@ describe 'errors module' do
     describe '#error_text' do
       it 'should be builder message' do
         element = builder.wrapped_input(:body)
-        element.error_text.must_equal 'This really isn\'t good enough!'
+        element.error_text.must_equal 'This really isn&#39;t good enough!'
       end
 
       it 'option is false then should be nil' do
@@ -67,6 +67,11 @@ describe 'errors module' do
       it 'return custom message' do
         element = builder.wrapped_input(:body, error: 'Some string')
         element.error_text.must_equal 'Some string'
+      end
+
+      it 'should be html escaped' do
+        element = builder.wrapped_input(:body, error: "I'm a little teapot whose spout is > 10cm")
+        element.error_text.must_equal "I&#39;m a little teapot whose spout is &gt; 10cm"
       end
     end
   end
@@ -86,12 +91,12 @@ describe 'errors module' do
   describe 'returns correct html' do
     it '#error should return the error element for :body' do
       element = builder.error(:body)
-      element.to_s.must_equal %(<p>This really isn't good enough!</p>)
+      element.to_s.must_equal %(<p>This really isn&#39;t good enough!</p>)
     end
 
     it '#wrapped input should include the error message' do
       element = builder.wrapped_input(:body)
-      element.to_s.must_equal %(<div class="error"><input name="body" id="body" type="text"/><p>This really isn't good enough!</p></div>)
+      element.to_s.must_equal %(<div class="error"><input name="body" id="body" type="text"/><p>This really isn&#39;t good enough!</p></div>)
     end
   end
 end

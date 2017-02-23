@@ -1,10 +1,12 @@
 require 'formular/element/module'
+require 'formular/html_escape'
 module Formular
   class Element
     module Modules
       # this module provides label options and methods to a control when included.
       module Label
         include Formular::Element::Module
+        include HtmlEscape
         add_option_keys :label, :label_options
 
         # options functionality:
@@ -13,7 +15,8 @@ module Formular
         # label as an option, you wont get one rendered
         module InstanceMethods
           def label_text
-            options[:label]
+            return if options[:label].nil? || options[:label] == false
+            html_escape(options[:label])
           end
 
           def has_label?

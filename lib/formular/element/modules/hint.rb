@@ -1,17 +1,19 @@
 require 'formular/element/module'
+require 'formular/html_escape'
 module Formular
   class Element
     module Modules
       # this module provides hints to a control when included.
       module Hint
         include Formular::Element::Module
+        include HtmlEscape
         add_option_keys :hint, :hint_options
 
         # options functionality (same as SimpleForm):
         # options[:hint] == String return the string
         module InstanceMethods
           def hint_text
-            options[:hint] if has_hint?
+            html_escape(options[:hint]) if has_hint?
           end
 
           def has_hint?
