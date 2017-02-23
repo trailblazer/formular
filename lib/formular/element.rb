@@ -13,10 +13,12 @@ module Formular
     inheritable_attr :html_context
     inheritable_attr :html_blocks
     inheritable_attr :default_hash
+    inheritable_attr :processing_hash
     inheritable_attr :option_keys
     inheritable_attr :tag_name
 
     self.default_hash = {}
+    self.processing_hash = {}
     self.html_blocks = {}
     self.html_context = :default
     self.option_keys = []
@@ -26,6 +28,14 @@ module Formular
     # e.g. if: :some_method or unless: :some_method
     def self.set_default(key, value, condition = {})
       self.default_hash[key] = { value: value, condition: condition }
+    end
+
+    # process an option value (i.e. escape html)
+    # This occurs after the value has been set (either by default or by user input)
+    # you can make this conditional by providing a condition
+    # e.g. if: :some_method or unless: :some_method
+    def self.process_option(key, processor, condition = {})
+      self.processing_hash[key] = { processor: processor, condition: condition }
     end
 
     # define what your html should look like
@@ -65,6 +75,7 @@ module Formular
       @builder = options.delete(:builder)
       @options = options
       normalize_options
+      process_options
       @block = block
       @tag = self.class.tag_name
       @html_blocks = define_html_blocks
@@ -94,22 +105,40 @@ module Formular
     # Take each default value and merge it with options.
     # This way ordering is important and we can access values as they are evaluated
     def normalize_options
-      self.class.default_hash.each do |k, v|
-        should_merge = k.to_s.include?('class') && !options[k].nil?
+      self.class.default_hash.each do |key, hash|
+        should_merge = key.to_s.include?('class') && !options[key].nil?
 
         # if we've already got a value, and it's not a class then skip
-        next unless options[k].nil? || should_merge
+        next unless options[key].nil? || should_merge
 
         # if our default is conditional and the condition evaluates to false then skip
-        next unless evaluate_option_condition?(v[:condition])
+        next unless evaluate_option_condition?(hash[:condition])
 
-        val = Uber::Options::Value.new(v[:value]).evaluate(self)
+        val = Uber::Options::Value.new(hash[:value]).evaluate(self)
 
         # if our default value is nil then skip
         next if val.nil?
 
         # otherwise perform the actual merge, classes get joined, otherwise we overwrite
-        should_merge ? @options[k] += val : @options[k] = val
+        should_merge ? @options[key] += val : @options[key] = val
+      end
+    end
+
+    # Options passed into our element instance (@options) take precident over class level defaults
+    # Take each default value and merge it with options.
+    # This way ordering is important and we can access values as they are evaluated
+    def process_options
+      self.class.processing_hash.each do |key, hash|
+        # we can't process if our option is nil
+        next if options[key].nil?
+        # don't process if our condition is false
+        next unless evaluate_option_condition?(hash[:condition])
+
+        # get our value
+        val = self.send(hash[:processor], options[key]) # TODO enable procs and blocks
+
+        # set our value
+        @options[key] = val
       end
     end
 
