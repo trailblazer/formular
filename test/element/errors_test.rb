@@ -61,7 +61,7 @@ describe 'errors module' do
 
       it 'option is false then should be nil' do
         element = builder.wrapped_input(:body, error: false)
-        element.error_text.must_equal nil
+        element.error_text.must_be_nil
       end
 
       it 'return custom message' do
