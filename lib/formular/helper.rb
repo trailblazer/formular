@@ -24,7 +24,7 @@ module Formular
       attr_writer :builder
 
       def builder(name = nil)
-        name ||= :basic
+        name ||= @builder || :basic
         require "formular/builders/#{name}"
         self.builder = Formular::Builders.const_get(BUILDERS.fetch(name)) # Formular::Builders::Bootstrap3
       end
