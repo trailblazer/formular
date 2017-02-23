@@ -76,7 +76,7 @@ Formular's API docs and information on how to extend it will be found on the [Tr
 
 ## Limitations
 
-* Currently, nested hashes aren't suffixed with `_attributes`, as it's usually done in ActiveRecord.
+* Nested hashes aren't suffixed with active records `_attributes`.
 * Capturing only works with Slim and Hamlit. A 'blockless' API is provided to enable use in ERB but watch this space as improvements are coming for ERB
 
 ## Installation
