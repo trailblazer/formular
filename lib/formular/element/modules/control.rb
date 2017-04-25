@@ -43,6 +43,10 @@ module Formular
           def reader_value
             builder.reader_value(attribute_name) if builder_attribute?
           end
+
+          def translation_key
+            builder.translation_key(attribute_name) if builder_attribute?
+          end
         end # model InstanceMethods
       end # module Control
     end # module Modules

@@ -15,8 +15,15 @@ module Formular
         # label as an option, you wont get one rendered
         module InstanceMethods
           def label_text
-            return if options[:label].nil? || options[:label] == false
+            return if options[:label] == false
+            return translate_label_text if options[:label].nil?
             html_escape(options[:label])
+          end
+
+          def translate_label_text
+            html_escape(I18n.t(translation_key, raise: true))
+          rescue
+            nil
           end
 
           def has_label?
