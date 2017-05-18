@@ -25,6 +25,13 @@ describe 'core elements' do
   end # Formular::Element::Button
 
   describe Formular::Element::Button do
+    describe 'through builder' do
+      it 'with a custom value' do
+        element = builder.button(value: 'custom-value') { 'Some content' }
+        element.to_s.must_equal %(<button value="custom-value" type="button">Some content</button>)
+      end
+    end
+
     it '#to_s' do
       element = Formular::Element::Button.(name: 'my-name', value: 1, content: 'Jimmy')
       element.to_s.must_equal %(<button name="my-name" value="1" type="button">Jimmy</button>)

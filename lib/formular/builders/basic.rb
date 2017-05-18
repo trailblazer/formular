@@ -15,6 +15,7 @@ module Formular
         span: Formular::Element::Span,
         p: Formular::Element::P,
         input: Formular::Element::Input,
+        button: Formular::Element::Button,
         hidden: Formular::Element::Hidden,
         label: Formular::Element::Label,
         error: Formular::Element::Error,
