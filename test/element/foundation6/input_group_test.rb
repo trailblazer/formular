@@ -30,7 +30,7 @@ describe 'Foundation6::InputGroup' do
     element = builder.input_group(:title, value: 'John Smith') do |input|
       concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
       concat input.group_input
-      concat input.group_button(builder.submit(value: 'Go!'))
+      concat input.group_button(builder.submit(content: 'Go!'))
     end
     element.to_s.must_equal %(<fieldset><div class="input-group"><span class="input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" class="input-group-field"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div></fieldset>)
   end
@@ -62,7 +62,7 @@ describe 'Foundation6::InputGroup' do
       element = builder.input_group(:title, value: 'John Smith', label: 'Title') do |input|
         concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
         concat input.group_input
-        concat input.group_button(builder.submit(value: 'Go!'))
+        concat input.group_button(builder.submit(content: 'Go!'))
       end
       element.to_s.must_equal %(<fieldset><label for="title">Title</label><div class="input-group"><span class="input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" class="input-group-field"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div></fieldset>)
     end
@@ -95,7 +95,7 @@ describe 'Foundation6::InputGroup' do
       element = builder.input_group(:title, value: 'John Smith') do |input|
         concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
         concat input.group_input
-        concat input.group_button(builder.submit(value: 'Go!'))
+        concat input.group_button(builder.submit(content: 'Go!'))
       end
       element.to_s.must_equal %(<fieldset><div class="input-group"><span class="is-invalid-label input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" class="input-group-field is-invalid-input"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div><span class="form-error is-visible">is missing</span></fieldset>)
     end
@@ -128,7 +128,7 @@ describe 'Foundation6::InputGroup' do
       element = builder.input_group(:title, value: 'John Smith', hint: 'Some handy hint') do |input|
         concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
         concat input.group_input
-        concat input.group_button(builder.submit(value: 'Go!'))
+        concat input.group_button(builder.submit(content: 'Go!'))
       end
       element.to_s.must_equal %(<fieldset><div class="input-group"><span class="input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" aria-describedby=\"title_hint\" class="input-group-field"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div><p id="title_hint" class="help-text">Some handy hint</p></fieldset>)
     end
@@ -165,7 +165,7 @@ describe 'Foundation6::InputGroup' do
       element = builder.input_group(:title, label: 'Title', value: 'John Smith', hint: 'Some handy hint') do |input|
         concat input.group_label('<input name="default[]" id="default" type="checkbox" value="1">')
         concat input.group_input
-        concat input.group_button(builder.submit(value: 'Go!'))
+        concat input.group_button(builder.submit(content: 'Go!'))
       end
       element.to_s.must_equal %(<fieldset><label class="is-invalid-label" for="title">Title</label><div class="input-group"><span class="is-invalid-label input-group-label"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" aria-describedby=\"title_hint\" class="input-group-field is-invalid-input"/><div class="input-group-button"><button class="success button" type="submit">Go!</button></div></div><p id="title_hint" class="help-text">Some handy hint</p><span class="form-error is-visible">is missing</span></fieldset>)
     end

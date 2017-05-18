@@ -162,13 +162,10 @@ module Formular
       html { closed_start_tag }
     end # class Submit
 
-    class Button < Formular::Element::Container
-      tag :button
-      add_option_keys :value
+    class Button < Container
+      include Formular::Element::Modules::Control
 
-      def content
-        options[:value] || super
-      end
+      tag :button
     end # class Button
 
     class Input < Control

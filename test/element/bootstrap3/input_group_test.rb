@@ -33,7 +33,7 @@ describe 'Bootstrap3::InputGroup' do
     element = builder.input_group(:title, label: 'Title', value: 'John Smith') do |input|
       concat input.group_addon('<input name="default[]" id="default" type="checkbox" value="1">')
       concat input.control
-      concat input.group_btn(builder.submit(value: 'Go!'))
+      concat input.group_btn(builder.submit(content: 'Go!'))
     end
     element.to_s.must_equal %(<div class="form-group"><label for="title" class="control-label">Title</label><div class="input-group"><span class="input-group-addon"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" class="form-control"/><span class="input-group-btn"><button class="btn btn-default" type="submit">Go!</button></span></div></div>)
   end
@@ -44,9 +44,9 @@ describe 'Bootstrap3::InputGroup' do
     html = ig.start
     html << ig.group_addon('<input name="default[]" id="default" type="checkbox" value="1">').to_s
     html << ig.control.to_s
-    html << ig.group_btn(builder.submit(value: 'Go!')).to_s
+    html << ig.group_btn(builder.submit(value: 'stop', content: 'Please, No!')).to_s
     html << ig.end
-    html.must_equal %(<div class="form-group"><label for="title" class="control-label">Title</label><div class="input-group"><span class="input-group-addon"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" class="form-control"/><span class="input-group-btn"><button class="btn btn-default" type="submit">Go!</button></span></div></div>)
+    html.must_equal %(<div class="form-group"><label for="title" class="control-label">Title</label><div class="input-group"><span class="input-group-addon"><input name="default[]" id="default" type="checkbox" value="1"></span><input value="John Smith" name="title" id="title" type="text" class="form-control"/><span class="input-group-btn"><button value="stop" class="btn btn-default" type="submit">Please, No!</button></span></div></div>)
   end
 
   describe "with errors" do
