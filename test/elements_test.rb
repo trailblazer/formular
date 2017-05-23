@@ -25,9 +25,14 @@ describe 'core elements' do
   end # Formular::Element::Button
 
   describe Formular::Element::Button do
-    it 'returns correct html' do
-      element = Formular::Element::Button.(href: '/some_path', value: 'Button')
-      element.to_s.must_equal %(<button href="/some_path">Button</button>)
+    it '#to_s' do
+      element = Formular::Element::Button.(name: 'my-name', value: 1, content: 'Jimmy')
+      element.to_s.must_equal %(<button name="my-name" value="1">Jimmy</button>)
+    end
+
+    it 'escapes value attribute' do
+      element = Formular::Element::Button.(value: "I'm a little teapot whose spout is > 10cm")
+      element.to_s.must_equal %(<button value="I&#39;m a little teapot whose spout is &gt; 10cm"></button>)
     end
   end # Formular::Element::Button
 
