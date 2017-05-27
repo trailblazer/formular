@@ -156,6 +156,11 @@ describe 'core elements' do
       element.to_s.must_equal %(<textarea>Some lovely words here...</textarea>)
     end
 
+    it '#to_s contents as html escaped string' do
+      element = Formular::Element::Textarea.(content: '</textarea><p>Something evil</p><textarea>')
+      element.to_s.must_equal %(<textarea>&lt;/textarea&gt;&lt;p&gt;Something evil&lt;/p&gt;&lt;textarea&gt;</textarea>)
+    end
+
     it '#to_s contents as block' do
       element = Formular::Element::Textarea.() do
         concat 'Part 1 text; '

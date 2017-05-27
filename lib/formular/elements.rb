@@ -136,7 +136,8 @@ module Formular
       add_option_keys
 
       def content
-        options[:value] || super
+        val = options[:value] || super
+        val.is_a?(String) ? CGI.escape_html(val) : val
       end
     end # class Textarea
 

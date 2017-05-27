@@ -22,5 +22,10 @@ class AttributesTest < Minitest::Spec
       attrs = Formular::Attributes[{}]
       attrs.to_html.must_equal ""
     end
+
+    it "should escape attribute values by default" do
+      attrs = Formular::Attributes[value: '" foo="<b>bar</b>"']
+      attrs.to_html.must_equal %(value="&quot; foo=&quot;&lt;b&gt;bar&lt;/b&gt;&quot;")
+    end
   end
 end
