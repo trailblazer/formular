@@ -18,12 +18,12 @@ module Formular
       end # class Submit
 
       class Error < Formular::Element::Error
-        tag :span
+        tag :div
         set_default :class, ['form-control-feedback']
       end # class Error
 
       class Hint < Formular::Element::Small
-        set_default :class, ['text-muted']
+        set_default :class, ['form-text', 'text-muted']
       end # class Hint
 
       class Input < Formular::Element::Input
