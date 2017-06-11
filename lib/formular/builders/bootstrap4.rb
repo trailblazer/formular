@@ -1,7 +1,7 @@
 require 'formular/builders/basic'
 require 'formular/element/bootstrap4'
 require 'formular/element/bootstrap3'
-require 'formular/element/bootstrap3/input_group'
+require 'formular/element/bootstrap4/input_group'
 
 module Formular
   module Builders
@@ -11,10 +11,10 @@ module Formular
         error: Formular::Element::Bootstrap4::Error,
         hint: Formular::Element::Bootstrap4::Hint,
         input: Formular::Element::Bootstrap4::Input,
-        input_group: Formular::Element::Bootstrap3::InputGroup,
+        input_group: Formular::Element::Bootstrap4::InputGroup,
         checkbox: Formular::Element::Bootstrap4::StackedCheckbox,
         radio: Formular::Element::Bootstrap4::StackedRadio,
-        select: Formular::Element::Bootstrap3::Select,
+        select: Formular::Element::Bootstrap4::Select,
         custom_select: Formular::Element::Bootstrap4::CustomSelect,
         custom_file: Formular::Element::Bootstrap4::CustomFile,
         custom_radio: Formular::Element::Bootstrap4::Inline::CustomRadio,
@@ -25,7 +25,7 @@ module Formular
         inline_checkbox: Formular::Element::Bootstrap4::InlineCheckbox,
         label: Formular::Element::Label,
         checkable_group_label: Formular::Element::Legend,
-        textarea: Formular::Element::Bootstrap3::Textarea,
+        textarea: Formular::Element::Bootstrap4::Textarea,
         wrapper: Formular::Element::Bootstrap4::Wrapper,
         error_wrapper: Formular::Element::Bootstrap4::ErrorWrapper,
         submit: Formular::Element::Bootstrap4::Submit,

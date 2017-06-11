@@ -25,6 +25,7 @@ module Formular
         module InlineCheckable
           include Formular::Element::Module
 
+          set_default :label_options, { class: ['form-control-label'] }
           set_default :control_label_options, { class: ['form-check-inline'] }
 
           html(:wrapped) do |input|
@@ -71,6 +72,7 @@ module Formular
             }.join('')
           end
 
+          set_default :label_options, { class: ['form-control-label'] }
           set_default :control_label_options, { class: ['form-check-label'] }
 
           module InstanceMethods

@@ -12,6 +12,7 @@ module Formular
           include Formular::Element::Module
           include Formular::Element::Modules::Wrapped
           set_default :class, ['custom-control-input']
+          set_default :label_options, { class: ['form-control-label'] }
 
           html(:checkable_label) do |input|
             Formular::Element::Label.(input.label_options) do
@@ -70,6 +71,7 @@ module Formular
 
           class CustomSelect < Formular::Element::Bootstrap3::Select
             set_default :class, ['custom-select']
+            set_default :label_options, { class: ['form-control-label'] }
           end # class CustomSelect
 
           class CustomFile < Formular::Element::Input
@@ -77,6 +79,7 @@ module Formular
             include Formular::Element::Bootstrap3::ColumnControl
 
             set_default :class, ['custom-file-input']
+            set_default :label_options, { class: ['form-control-label'] }
             set_default :type, 'file'
 
             rename_html_context(:default, :control)
@@ -92,6 +95,7 @@ module Formular
 
         class CustomSelect < Inline::CustomSelect
           rename_html_context(:default, :input)
+          set_default :label_options, { class: ['form-control-label'] }
 
           html do |input|
             Formular::Element::Div.(content: input.to_html(context: :input))
@@ -100,6 +104,7 @@ module Formular
 
         class CustomFile < Inline::CustomFile
           rename_html_context(:default, :input)
+          set_default :label_options, { class: ['form-control-label'] }
 
           html do |input|
             Formular::Element::Div.(content: input.to_html(context: :input))

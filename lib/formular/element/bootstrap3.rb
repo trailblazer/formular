@@ -69,10 +69,10 @@ module Formular
         include Formular::Element::Modules::Wrapped
         include Formular::Element::Bootstrap3::ColumnControl
 
-        set_default :class, ['form-control'], unless: :file_input?
+        set_default :class, :input_class
 
-        def file_input?
-          options[:type].to_s == 'file'
+        def input_class
+          'form-control' unless options[:type].to_s == 'file'
         end
       end # class Input
 
