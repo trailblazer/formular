@@ -22,18 +22,19 @@ module Formular
 
     class << self
       def _builder
-        @builder || load_builder(:basic)
+        @builder || :basic
       end
       attr_writer :builder
 
       def builder(name)
-        self.builder = load_builder(name)
+        self.builder = name
       end
 
       def load_builder(name)
         require "formular/builders/#{name}"
         Formular::Builders.const_get(BUILDERS.fetch(name))
       end
+
     end
 
     private
@@ -41,7 +42,9 @@ module Formular
     def builder(model, **options)
       builder_name = options.delete(:builder)
 
-      builder = builder_name ? Formular::Helper.load_builder(builder_name) : Formular::Helper._builder
+      builder_name ||= Formular::Helper._builder
+
+      builder = Formular::Helper.load_builder(builder_name)
       options[:model] ||= model
 
       builder.new(options)
