@@ -2,7 +2,10 @@ div New
 = form model, "/posts", path_prefix: :comment do |f|
   = f.input :id
   = f.textarea :body
-  = f.checkbox :public, value: true
+  = f.checkbox :public
+  = f.checkbox :agreed
+  = f.checkbox :not_sure
+  = f.checkbox :really_not_sure
   = f.collection :replies do |reply|
     = reply.input :content
   = f.nested :owner do |owner|
