@@ -263,14 +263,29 @@ describe 'core elements' do
   end # Formular::Element::Label
 
   describe Formular::Element::Checkbox do
-    it '#to_s unchecked' do
-      element = Formular::Element::Checkbox.(name: 'public', value: 1)
-      element.to_s.must_equal %(<input value="0" name="public" type="hidden"/><input name="public" value="1" type="checkbox"/>)
+    it '#to_s unchecked with default value' do
+      element = Formular::Element::Checkbox.(name: 'public')
+      element.to_s.must_equal %(<input value="0" name="public" type="hidden"/><input name="public" type="checkbox" value="1"/>)
+    end
+
+    it '#to_s unchecked with custom value' do
+      element = Formular::Element::Checkbox.(name: 'public', value: 2)
+      element.to_s.must_equal %(<input value="0" name="public" type="hidden"/><input name="public" value="2" type="checkbox"/>)
+    end
+
+    it '#to_s unchecked with custom checked_value' do
+      element = Formular::Element::Checkbox.(name: 'public', checked_value: 2)
+      element.to_s.must_equal %(<input value="0" name="public" type="hidden"/><input name="public" type="checkbox" value="2"/>)
+    end
+
+    it '#to_s unchecked with custom unchecked_value' do
+      element = Formular::Element::Checkbox.(name: 'public', unchecked_value: "")
+      element.to_s.must_equal %(<input value="" name="public" type="hidden"/><input name="public" type="checkbox" value="1"/>)
     end
 
     it '#to_s checked' do
-      element = Formular::Element::Checkbox.(name: 'public', value: 1, checked: 'checked')
-      element.to_s.must_equal %(<input value="0" name="public" type="hidden"/><input name="public" value="1" checked="checked" type="checkbox"/>)
+      element = Formular::Element::Checkbox.(name: 'public', checked: 'checked')
+      element.to_s.must_equal %(<input value="0" name="public" type="hidden"/><input name="public" checked="checked" type="checkbox" value="1"/>)
     end
 
     describe "with collection" do

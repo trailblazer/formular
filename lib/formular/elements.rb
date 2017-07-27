@@ -266,11 +266,11 @@ module Formular
     class Checkbox < Control
       tag :input
 
-      add_option_keys :unchecked_value, :include_hidden, :multiple
+      add_option_keys :unchecked_value, :checked_value, :include_hidden, :multiple
 
       set_default :type, 'checkbox'
       set_default :unchecked_value, :default_unchecked_value
-      set_default :value, '1' # instead of reader value
+      set_default :value, :default_checked_value # instead of reader value
       set_default :include_hidden, true
 
       include Formular::Element::Modules::Checkable
@@ -296,6 +296,10 @@ module Formular
       end
 
       private
+
+      def default_checked_value
+        options[:checked_value] || '1'
+      end
 
       def default_unchecked_value
         collection? ? '' : '0'
