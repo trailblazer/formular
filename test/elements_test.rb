@@ -448,5 +448,18 @@ describe 'core elements' do
         element.option_tags.must_equal %(<option value=""></option><optgroup label="Genders"><option data-some-attr="yes" value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option required="true" value="1">True</option><option value="0">False</option></optgroup>)
       end
     end
+    describe 'multiple' do
+      let(:element) do
+        Formular::Element::Select.(
+          name: 'public',
+          multiple: true,
+          collection: [['False', 0], ['True', 1]]
+        )
+      end
+
+      it 'generates correct name' do
+        element.to_s.must_equal %(<select name="public[]" multiple="true"><option value="0">False</option><option value="1">True</option></select>)
+      end
+    end
   end # Formular::Element::Select
 end

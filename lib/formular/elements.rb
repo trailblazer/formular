@@ -133,7 +133,6 @@ module Formular
       include Formular::Element::Modules::Container
       tag :textarea
       add_option_keys :value
-      add_option_keys
 
       def content
         options[:value] || super
@@ -186,6 +185,7 @@ module Formular
 
       add_option_keys :value, :prompt, :include_blank
       process_option :collection, :inject_placeholder
+      process_option :name, :name_array_if_multiple
 
       html do |input|
         concat start_tag
@@ -216,6 +216,13 @@ module Formular
       end
 
       private
+      # only append the [] to name if the multiple option is set
+      def name_array_if_multiple(name)
+        return unless name
+
+        options[:multiple] ? "#{name}[]" : name
+      end
+
       # same handling as simple form
       # prompt: a nil value option appears if we have no selected option
       # include blank: includes our nil value option regardless (useful for optional fields)
