@@ -111,8 +111,7 @@ module Formular
       self.class.default_hash.each do |key, hash|
         should_merge = key.to_s.include?('class') && !options[key].nil?
 
-        # if we've already got a value, and it's not a class then skip
-        next unless options[key].nil? || should_merge
+        next if options.has_key?(key) && !should_merge
 
         # if our default is conditional and the condition evaluates to false then skip
         next unless evaluate_option_condition?(hash[:condition])
