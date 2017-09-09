@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'formular/helper'
+require 'formular/builder'
 
 class HelperTest < Minitest::Spec
   include Formular::Helper
@@ -19,5 +20,12 @@ class HelperTest < Minitest::Spec
   it "should allow me to override the default builder" do
     Formular::Helper._builder.must_equal :basic
     form(model, "", builder: :foundation6).builder.class.must_equal Formular::Builders::Foundation6
+  end
+
+  SomeClass = Class.new(Formular::Builder)
+
+  it "should allow me to use my own builder" do
+    Formular::Helper._builder.must_equal :basic
+    form(model, "", builder: SomeClass).builder.class.must_equal SomeClass
   end
 end

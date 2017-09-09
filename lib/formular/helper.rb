@@ -31,20 +31,22 @@ module Formular
       end
 
       def load_builder(name)
-        require "formular/builders/#{name}"
-        Formular::Builders.const_get(BUILDERS.fetch(name))
-      end
+        builder_const = BUILDERS.fetch(name, nil)
+        return name unless builder_const
 
+        require "formular/builders/#{name}"
+        Formular::Builders.const_get(builder_const)
+      end
     end
 
     private
 
     def builder(model, **options)
       builder_name = options.delete(:builder)
-
       builder_name ||= Formular::Helper._builder
 
       builder = Formular::Helper.load_builder(builder_name)
+
       options[:model] ||= model
 
       builder.new(options)
