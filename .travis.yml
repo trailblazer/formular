@@ -11,14 +11,15 @@ rvm:
   - 2.3.1
   - 2.4.0
   - rbx-2
-  - jruby-9.1.1.0
+  - jruby-9.1.13.0
+  - jruby-head
   - ruby-head
 env:
   global:
     - JRUBY_OPTS='--dev -J-Xmx1024M'
 matrix:
   allow_failures:
-    - rvm: jruby-9.1.1.0
+    - rvm: jruby-9.1.13.0
     - rvm: rbx-2
     - rvm: ruby-head
     - rvm: jruby-head
