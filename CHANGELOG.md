@@ -1,10 +1,13 @@
 # Master
 
+# v0.2.2 2017-09-13
+
 ### Added
 
 * Select elements prompt and include_blank options now operate the same way as simple form
 * added procces_option to the Element API
 * Checkboxes now support `checked_value` option as an alias of `value`. Same as SimpleForm.
+* you can now set your own builders as the default in the helper
 
 ### Fixed
 
