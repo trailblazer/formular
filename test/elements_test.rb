@@ -331,16 +331,24 @@ describe 'core elements' do
         element.option_tags.must_equal %(<option value="0" selected="selected">False</option><option value="1">True</option>)
       end
 
+      it 'should html escape values' do
+        element = Formular::Element::Select.(
+          name: 'public',
+          collection: [['False', "0"], ['True', "g&t > wiskey&soda"]]
+        )
+        element.option_tags.must_equal %(<option value="0">False</option><option value="g&amp;amp;t &amp;gt; wiskey&amp;amp;soda">True</option>)
+      end
+
       it 'nested array' do
         element = Formular::Element::Select.(
           name: 'public',
           collection: [
             ['Genders', [%w(Male m), %w(Female f)]],
-            ['Booleans', [['True', 1], ['False', 0]]]
+            ["Bool's", [['True', 1], ['False', 0]]]
           ],
           value: 'm'
         )
-        element.option_tags.must_equal %(<optgroup label="Genders"><option value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option value="1">True</option><option value="0">False</option></optgroup>)
+        element.option_tags.must_equal %(<optgroup label="Genders"><option value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Bool&#39;s"><option value="1">True</option><option value="0">False</option></optgroup>)
       end
 
       it 'option tag attributes' do
@@ -449,16 +457,36 @@ describe 'core elements' do
       end
     end
     describe 'multiple' do
-      let(:element) do
-        Formular::Element::Select.(
+      let(:element_opts) do
+        {
           name: 'public',
           multiple: true,
           collection: [['False', 0], ['True', 1]]
-        )
+        }
       end
 
       it 'generates correct name' do
+        element = Formular::Element::Select.(element_opts)
         element.to_s.must_equal %(<select name="public[]" multiple="true"><option value="0">False</option><option value="1">True</option></select>)
+      end
+
+      it 'has correct selecteds options' do
+        element_opts[:value] = [0,1]
+        element = Formular::Element::Select.(element_opts)
+        element.to_s.must_equal %(<select name="public[]" multiple="true"><option value="0" selected="selected">False</option><option value="1" selected="selected">True</option></select>)
+      end
+
+      it 'prompt if no value given' do
+        element_opts[:prompt] = 'Select an option'
+        element = Formular::Element::Select.(element_opts)
+        element.to_s.must_equal %(<select name="public[]" multiple="true"><option value="" selected="selected">Select an option</option><option value="0">False</option><option value="1">True</option></select>)
+      end
+
+      it 'no prompt if value given' do
+        element_opts[:value] = [0,1]
+        element_opts[:prompt] = 'Select an option'
+        element = Formular::Element::Select.(element_opts)
+        element.to_s.must_equal %(<select name="public[]" multiple="true"><option value="0" selected="selected">False</option><option value="1" selected="selected">True</option></select>)
       end
     end
   end # Formular::Element::Select

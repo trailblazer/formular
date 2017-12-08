@@ -7,7 +7,6 @@ module Formular
       # name & value based on the attribute name
       module Control
         include Formular::Element::Module
-        include Formular::Element::Modules::EscapeValue
 
         add_option_keys :attribute_name
 

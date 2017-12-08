@@ -16,7 +16,6 @@ module Formular
     Wrapped = Class.new(Formular::Element) { include Formular::Element::Modules::Wrapped }
 
     # define some base classes to build from or easily use elsewhere
-    OptGroup = Class.new(Container) { tag :optgroup }
     Fieldset = Class.new(Container) { tag :fieldset }
     Legend = Class.new(Container) { tag :legend }
     Div = Class.new(Container) { tag :div }
@@ -24,13 +23,19 @@ module Formular
     Span = Class.new(Container) { tag :span }
     Small = Class.new(Container) { tag :small }
 
+    class OptGroup < Container
+      include HtmlEscape
+      tag :optgroup
+      process_option :label, :html_escape
+    end
+
     class Option < Container
       tag :option
       include Formular::Element::Modules::EscapeValue
     end
 
-
     class Hidden < Control
+      include Formular::Element::Modules::EscapeValue
       tag :input
       set_default :type, 'hidden'
 
@@ -162,17 +167,17 @@ module Formular
     end # class Submit
 
     class Button < Container
+      include Formular::Element::Modules::EscapeValue
       include Formular::Element::Modules::Control
 
       tag :button
     end # class Button
 
     class Input < Control
-      include HtmlEscape
+      include Formular::Element::Modules::EscapeValue
 
       tag :input
       set_default :type, 'text'
-      process_option :value, :html_escape
 
       html { closed_start_tag }
     end # class Input
@@ -262,11 +267,18 @@ module Formular
                  {}
                end
 
-        opts[:value] = item.send(options[:value_method])
+        opts[:value] = html_escape(item.send(options[:value_method]))
         opts[:content] = item.send(options[:label_method])
-        opts[:selected] = 'selected' if opts[:value].to_s == options[:value].to_s
+
+        opts[:selected] = 'selected' if item_is_selected(opts[:value], options[:value], options[:multiple])
 
         Formular::Element::Option.new(opts).to_s
+      end
+
+      def item_is_selected(option_val, current_val, multiple)
+        return option_val == current_val.to_s unless multiple && current_val.is_a?(Array)
+
+        current_val.map(&:to_s).include?(option_val) # TODO Perf improvement here - do we need the map?
       end
     end # class Select
 
