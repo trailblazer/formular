@@ -1,4 +1,9 @@
 # Master
+# v0.2.3 2017-12-08
+### Fixed
+
+* Improve Escape html - use for option values and optgroup labels
+* Multi Select elements now mark options as selected
 
 # v0.2.2 2017-09-13
 
