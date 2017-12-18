@@ -41,11 +41,8 @@ module Formular
 
     private
 
-    def builder(model, **options)
-      builder_name = options.delete(:builder)
-      builder_name ||= Formular::Helper._builder
-
-      builder = Formular::Helper.load_builder(builder_name)
+    def builder(model, builder: Formular::Helper._builder, **options)
+      builder = Formular::Helper.load_builder(builder)
 
       options[:model] ||= model
 
