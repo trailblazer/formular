@@ -7,7 +7,6 @@ module Formular
       module Hint
         include Formular::Element::Module
         include HtmlEscape
-        add_option_keys :hint, :hint_options
 
         # options functionality (same as SimpleForm):
         # options[:hint] == String return the string

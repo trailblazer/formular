@@ -16,8 +16,6 @@ module Formular
       module Container
         include Formular::Element::Module
 
-        add_option_keys :content
-
         html do |element|
           concat start_tag
           concat element.content

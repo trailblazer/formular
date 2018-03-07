@@ -24,7 +24,8 @@ describe Formular::Element do
   describe '#normalize_options' do
     class CorrectAttrsInput < Formular::Element
       tag :input
-      add_option_keys :option_1, :option_2, :option_3, :opt
+      add_attribute_keys :value
+
       set_default :class, ['some-class']
       set_default :opt, 'Override me'
       set_default :option_1, 'Some super cool value', if: :happy?
@@ -36,7 +37,7 @@ describe Formular::Element do
     end
     let(:element) { CorrectAttrsInput.(value: 'some value', option_2: 'an option') }
 
-    it 'attributes should exclude option_keys' do
+    it 'attributes should only include whitelisted keys' do
       element.attributes.must_equal(value: 'some value', class: ['some-class'])
     end
 

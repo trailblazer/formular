@@ -29,7 +29,6 @@ module Formular
           include Formular::Element::Modules::Wrapped
           include InlineCheckable
 
-          add_option_keys :control_label_options
           set_default :control_label_options, { class: ['radio-inline'] }
 
           def hidden_tag

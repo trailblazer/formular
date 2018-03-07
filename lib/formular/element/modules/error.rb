@@ -7,7 +7,6 @@ module Formular
       module Error
         include Formular::Element::Module
         include HtmlEscape
-        add_option_keys :error
 
         # options functionality (same as SimpleForm):
         # options[:error] == false NO ERROR regardless of model errors

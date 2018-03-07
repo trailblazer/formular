@@ -32,8 +32,6 @@ module Formular
 
         set_default :class, :input_class # we need to do classes better...
 
-        add_option_keys :left_label, :right_label, :left_button, :right_button
-
         html(:raw_input) { closed_start_tag }
 
         html do |input|

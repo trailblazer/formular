@@ -14,14 +14,14 @@ module Formular
     inheritable_attr :html_blocks
     inheritable_attr :default_hash
     inheritable_attr :processing_hash
-    inheritable_attr :option_keys
+    inheritable_attr :attribute_keys
     inheritable_attr :tag_name
 
     self.default_hash = {}
     self.processing_hash = {}
     self.html_blocks = {}
     self.html_context = :default
-    self.option_keys = []
+    self.attribute_keys = [:id, :class, :data, :style, :tabindex,  :aria_describedby, :aria_hidden, :role]
 
     # set the default value of an option or attribute
     # you can make this conditional by providing a condition
@@ -55,8 +55,8 @@ module Formular
     end
 
     # blacklist the keys that should NOT end up as html attributes
-    def self.add_option_keys(*keys)
-      self.option_keys += keys
+    def self.add_attribute_keys(*keys)
+      self.attribute_keys += keys
     end
 
     # define the name of the html tag for the element
@@ -86,7 +86,7 @@ module Formular
     attr_reader :tag, :html_blocks, :builder, :options
 
     def attributes
-      attrs = @options.select { |k, v| @options[k] || true unless option_key?(k) }
+      attrs = @options.select { |k, v| @options[k] || true if attribute_key?(k) }
       Attributes[attrs]
     end
 
@@ -144,8 +144,8 @@ module Formular
       end
     end
 
-    def option_key?(k)
-      self.class.option_keys.include?(k)
+    def attribute_key?(k)
+      self.class.attribute_keys.include?(k)
     end
 
     # this evaluates any conditons placed on our defaults returning true or false

@@ -7,8 +7,7 @@ module Formular
       # name & value based on the attribute name
       module Control
         include Formular::Element::Module
-
-        add_option_keys :attribute_name
+        add_attribute_keys :disabled, :form, :name, :required, :autofocus
 
         set_default :name, :form_encoded_name
         set_default :id, :form_encoded_id

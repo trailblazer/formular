@@ -7,7 +7,6 @@ module Formular
       module Label
         include Formular::Element::Module
         include HtmlEscape
-        add_option_keys :label, :label_options
 
         # options functionality:
         # options[:label] == String return the string

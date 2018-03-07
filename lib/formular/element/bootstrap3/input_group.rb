@@ -24,8 +24,6 @@ module Formular
 
         set_default :class, ['form-control']
 
-        add_option_keys :left_addon, :right_addon, :left_btn, :right_btn
-
         html(:raw_input) { closed_start_tag }
 
         html(:no_cols) do |input|

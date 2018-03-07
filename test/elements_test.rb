@@ -27,12 +27,12 @@ describe 'core elements' do
   describe Formular::Element::Button do
     it '#to_s' do
       element = Formular::Element::Button.(name: 'my-name', value: 1, content: 'Jimmy')
-      element.to_s.must_equal %(<button name="my-name" value="1">Jimmy</button>)
+      element.to_s.must_equal %(<button name="my-name" value="1" type="button">Jimmy</button>)
     end
 
     it 'escapes value attribute' do
       element = Formular::Element::Button.(value: "I'm a little teapot whose spout is > 10cm")
-      element.to_s.must_equal %(<button value="I&#39;m a little teapot whose spout is &gt; 10cm"></button>)
+      element.to_s.must_equal %(<button value="I&#39;m a little teapot whose spout is &gt; 10cm" type="button"></button>)
     end
   end # Formular::Element::Button
 
@@ -356,11 +356,11 @@ describe 'core elements' do
           name: 'public',
           collection: [
             ['Genders', [['Male', 'm', { data: { some_attr: 'yes' } }], %w(Female f)]],
-            ['Booleans', [['True', 1, { required: 'true' }], ['False', 0]]]
+            ['Booleans', [['True', 1], ['False', 0]]]
           ],
           value: 'm'
         )
-        element.option_tags.must_equal %(<optgroup label="Genders"><option data-some-attr="yes" value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option required="true" value="1">True</option><option value="0">False</option></optgroup>)
+        element.option_tags.must_equal %(<optgroup label="Genders"><option data-some-attr="yes" value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option value="1">True</option><option value="0">False</option></optgroup>)
       end
     end
 
@@ -394,11 +394,11 @@ describe 'core elements' do
           name: 'public',
           collection: [
             ['Genders', [['Male', 'm', { data: { some_attr: 'yes' } }], %w(Female f)]],
-            ['Booleans', [['True', 1, { required: 'true' }], ['False', 0]]]
+            ['Booleans', [['True', 1], ['False', 0]]]
           ],
           prompt: 'Select an option'
         )
-        element.option_tags.must_equal %(<option value="" selected="selected">Select an option</option><optgroup label="Genders"><option data-some-attr="yes" value="m">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option required="true" value="1">True</option><option value="0">False</option></optgroup>)
+        element.option_tags.must_equal %(<option value="" selected="selected">Select an option</option><optgroup label="Genders"><option data-some-attr="yes" value="m">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option value="1">True</option><option value="0">False</option></optgroup>)
       end
 
 
@@ -407,12 +407,12 @@ describe 'core elements' do
           name: 'public',
           collection: [
             ['Genders', [['Male', 'm', { data: { some_attr: 'yes' } }], %w(Female f)]],
-            ['Booleans', [['True', 1, { required: 'true' }], ['False', 0]]]
+            ['Booleans', [['True', 1], ['False', 0]]]
           ],
           value: 'm',
           prompt: 'Select an option'
         )
-        element.option_tags.must_equal %(<optgroup label="Genders"><option data-some-attr="yes" value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option required="true" value="1">True</option><option value="0">False</option></optgroup>)
+        element.option_tags.must_equal %(<optgroup label="Genders"><option data-some-attr="yes" value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option value="1">True</option><option value="0">False</option></optgroup>)
       end
     end
 
@@ -448,12 +448,12 @@ describe 'core elements' do
           name: 'public',
           collection: [
             ['Genders', [['Male', 'm', { data: { some_attr: 'yes' } }], %w(Female f)]],
-            ['Booleans', [['True', 1, { required: 'true' }], ['False', 0]]]
+            ['Booleans', [['True', 1], ['False', 0]]]
           ],
           value: 'm',
           include_blank: true
         )
-        element.option_tags.must_equal %(<option value=""></option><optgroup label="Genders"><option data-some-attr="yes" value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option required="true" value="1">True</option><option value="0">False</option></optgroup>)
+        element.option_tags.must_equal %(<option value=""></option><optgroup label="Genders"><option data-some-attr="yes" value="m" selected="selected">Male</option><option value="f">Female</option></optgroup><optgroup label="Booleans"><option value="1">True</option><option value="0">False</option></optgroup>)
       end
     end
     describe 'multiple' do

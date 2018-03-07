@@ -13,8 +13,8 @@ module Formular
         include Formular::Element::Module
         include Collection
         include Label
+        add_attribute_keys :type, :value, :readonly, :autocomplete, :checked
 
-        add_option_keys :control_label_options
         set_default :checked, 'checked', if: :is_checked?
 
         html(:checkable_label) do |input|

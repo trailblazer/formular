@@ -14,8 +14,6 @@ module Formular
         include Hint
         include Error
         include Label
-
-        add_option_keys :error_options, :wrapper_options
         set_default :aria_describedby, :hint_id, if: :has_hint?
 
         self.html_context = :wrapped

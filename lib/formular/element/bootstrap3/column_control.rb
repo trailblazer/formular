@@ -9,7 +9,6 @@ module Formular
       module ColumnControl
         include Formular::Element::Module
 
-        add_option_keys :inline_col_class, :stacked_col_class
         set_default :wrapper_options, :inline_wrapper_class, if: :inline_column?
 
         def inline_wrapper_class

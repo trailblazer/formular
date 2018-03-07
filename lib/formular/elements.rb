@@ -26,26 +26,20 @@ module Formular
     class OptGroup < Container
       include HtmlEscape
       tag :optgroup
+      add_attribute_keys :disabled, :label
       process_option :label, :html_escape
     end
 
     class Option < Container
       tag :option
+      add_attribute_keys :disabled, :value, :selected
       include Formular::Element::Modules::EscapeValue
-    end
-
-    class Hidden < Control
-      include Formular::Element::Modules::EscapeValue
-      tag :input
-      set_default :type, 'hidden'
-
-      html { closed_start_tag }
     end
 
     class Form < Container
       tag :form
-
-      add_option_keys :enforce_utf8, :csrf_token, :csrf_token_name
+      add_attribute_keys :enctype, :method, :name, :novalidate, :target,
+                         :accept, :action, :accept_charset, :autocomplete
 
       set_default :method, 'post'
       set_default :accept_charset, 'utf-8'
@@ -106,7 +100,6 @@ module Formular
 
     class ErrorNotification < Formular::Element
       tag :div
-      add_option_keys :message
 
       html do |element|
         if element.builder_errors?
@@ -130,14 +123,13 @@ module Formular
 
     class Error < P
       include Formular::Element::Modules::Error
-      add_option_keys :attribute_name
       set_default :content, :error_text
     end # class Error
 
     class Textarea < Control
       include Formular::Element::Modules::Container
       tag :textarea
-      add_option_keys :value
+      add_attribute_keys :cols, :rows, :max_length, :min_length, :placeholder, :readonly, :wrap
 
       def content
         options[:value] || super
@@ -146,7 +138,7 @@ module Formular
 
     class Label < Container
       tag :label
-      add_option_keys :labeled_control, :attribute_name
+      add_attribute_keys :for
       set_default :for, :labeled_control_id
 
       # as per MDN A label element can have both a 'for' attribute and a contained control element,
@@ -159,6 +151,7 @@ module Formular
 
     class Submit < Formular::Element
       include Formular::Element::Modules::EscapeValue
+      add_attribute_keys :type, :value
       tag :input
 
       set_default :type, 'submit'
@@ -168,13 +161,15 @@ module Formular
 
     class Button < Container
       include Formular::Element::Modules::EscapeValue
-      add_option_keys :attribute_name
-
+      add_attribute_keys :type, :autofocus, :disabled, :form, :name, :value
       tag :button
+      set_default :type, 'button'
     end # class Button
 
     class Input < Control
       include Formular::Element::Modules::EscapeValue
+      add_attribute_keys :type, :value, :placeholder, :readonly, :accept, :autocomplete,
+                         :max, :min, :maxlength, :minlength, :mulitple
 
       tag :input
       set_default :type, 'text'
@@ -182,13 +177,18 @@ module Formular
       html { closed_start_tag }
     end # class Input
 
+    class Hidden < Input
+      set_default :type, 'hidden'
+    end
+
     class Select < Control
       include Formular::Element::Modules::Collection
       include HtmlEscape
 
+      add_attribute_keys :multiple
+
       tag :select
 
-      add_option_keys :value, :prompt, :include_blank
       process_option :collection, :inject_placeholder
       process_option :name, :name_array_if_multiple
 
@@ -284,8 +284,6 @@ module Formular
 
     class Checkbox < Control
       tag :input
-
-      add_option_keys :unchecked_value, :checked_value, :include_hidden, :multiple
 
       set_default :type, 'checkbox'
       set_default :unchecked_value, :default_unchecked_value
