@@ -20,6 +20,7 @@ module Formular
         textarea: Formular::Element::Bootstrap3::Textarea,
         wrapper: Formular::Element::Bootstrap3::Wrapper,
         error_wrapper: Formular::Element::Bootstrap3::ErrorWrapper,
+        button: Formular::Element::Bootstrap3::Button,
         submit: Formular::Element::Bootstrap3::Submit,
         row: Formular::Element::Bootstrap3::Row,
         icon: Formular::Element::Bootstrap3::Icon

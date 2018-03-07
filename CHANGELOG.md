@@ -1,4 +1,8 @@
 # Master
+### Added
+* Updated bootstrap 3 and 4 buttons to accept the following options :size, :block, :color. These will ensure the correct classes are applied to the element (without causing conflicts with defaults).
+
+
 # v0.2.3 2017-12-08
 ### Fixed
 

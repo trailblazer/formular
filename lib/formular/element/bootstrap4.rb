@@ -12,9 +12,12 @@ module Formular
     module Bootstrap4
       include CheckableControl
       include CustomControl
+      class Button < Formular::Element::Bootstrap3::Button
+        set_default :color, 'secondary'
+      end # class Button
 
-      class Submit < Formular::Element::Button
-        set_default :class, ['btn', 'btn-secondary']
+      class Submit < Formular::Element::Bootstrap4::Button
+        set_default :color, 'primary'
         set_default :type, 'submit'
       end # class Submit
 

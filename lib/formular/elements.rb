@@ -168,7 +168,7 @@ module Formular
 
     class Button < Container
       include Formular::Element::Modules::EscapeValue
-      include Formular::Element::Modules::Control
+      add_option_keys :attribute_name
 
       tag :button
     end # class Button

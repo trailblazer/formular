@@ -28,6 +28,7 @@ module Formular
         textarea: Formular::Element::Bootstrap4::Textarea,
         wrapper: Formular::Element::Bootstrap4::Wrapper,
         error_wrapper: Formular::Element::Bootstrap4::ErrorWrapper,
+        button: Formular::Element::Bootstrap4::Button,
         submit: Formular::Element::Bootstrap4::Submit,
         row: Formular::Element::Bootstrap3::Row
       )
