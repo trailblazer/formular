@@ -315,6 +315,7 @@ module Formular
       private
 
       def default_checked_value
+        return if collection?
         options[:checked_value] || '1'
       end
 
