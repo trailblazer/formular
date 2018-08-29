@@ -22,9 +22,16 @@ describe 'core elements' do
       element = builder.error_notification(data: { some_key: 'true' }, class: ['hey', 'there'])
       element.to_s.must_equal %(<div data-some-key="true" class="hey there">Please review the problems below:</div>)
     end
-  end # Formular::Element::Button
+  end # Formular::Element::ErrorNotification
 
   describe Formular::Element::Button do
+    describe 'through builder' do
+      it 'with name option' do
+        element = builder.button(name: 'custom-name') { 'Some content' }
+        element.to_s.must_equal %(<button name="custom-name" type="button">Some content</button>)
+      end
+    end
+
     it '#to_s' do
       element = Formular::Element::Button.(name: 'my-name', value: 1, content: 'Jimmy')
       element.to_s.must_equal %(<button name="my-name" value="1" type="button">Jimmy</button>)
@@ -220,7 +227,6 @@ describe 'core elements' do
       element.to_s.must_equal %(<input value="I&#39;m a little teapot whose spout is &gt; 10cm" type="hidden"/>)
     end
   end # Formular::Element::Hidden
-
 
   describe Formular::Element::Label do
     describe 'through builder' do
