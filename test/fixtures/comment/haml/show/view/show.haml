@@ -1,0 +1,13 @@
+%div New
+= form model, "/posts", path_prefix: :comment do |f|
+  = f.input :id
+  = f.textarea :body
+  = f.checkbox :public, value: true
+  = f.collection :replies do |reply|
+    = reply.input :content
+  = f.nested :owner do |owner|
+    = owner.input :name
+    = owner.input :email
+  = f.input :uuid
+  = f.submit value: "Submit"
+
