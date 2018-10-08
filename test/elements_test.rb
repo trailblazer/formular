@@ -296,13 +296,39 @@ describe 'core elements' do
 
     describe "with collection" do
       it '#to_s default methods' do
-        element = Formular::Element::Checkbox.(name: 'public[]',  collection: [['False', 0], ['True', 1]])
-        element.to_s.must_equal %(<label><input type="checkbox" value="0" name="public[]" id="public_0"/> False</label><label><input type="checkbox" value="1" name="public[]" id="public_1"/> True</label><input value="" name="public[]" type="hidden"/>)
+        element = Formular::Element::Checkbox.(name: 'public[]', collection: [['False', 0], ['True', 1]])
+        element.to_s.must_equal %(<label><input type="checkbox" name="public[]" value="0" id="public_0"/> False</label><label><input type="checkbox" name="public[]" value="1" id="public_1"/> True</label><input value="" name="public[]" type="hidden"/>)
       end
 
       it '#to_s custom methods' do
         element = Formular::Element::Checkbox.(name: 'public[]', collection: [2..4, 3..5], label_method: :min, value_method: :max)
-        element.to_s.must_equal %(<label><input type="checkbox" value="4" name="public[]" id="public_4"/> 2</label><label><input type="checkbox" value="5" name="public[]" id="public_5"/> 3</label><input value="" name="public[]" type="hidden"/>)
+        element.to_s.must_equal %(<label><input type="checkbox" name="public[]" value="4" id="public_4"/> 2</label><label><input type="checkbox" name="public[]" value="5" id="public_5"/> 3</label><input value="" name="public[]" type="hidden"/>)
+      end
+
+      it '#to_s checks matching single value' do
+        element = Formular::Element::Checkbox.(name: 'public[]', value: 1, collection: [['Zero', 0], ['One', 1]])
+        element.to_s.must_equal %(<label><input value="0" type="checkbox" name="public[]" id="public_0"/> Zero</label><label><input value="1" type="checkbox" name="public[]" id="public_1" checked="checked"/> One</label><input value="" name="public[]" type="hidden"/>)
+      end
+
+      it '#to_s checks matching multiple values' do
+        element = Formular::Element::Checkbox.(name: 'public[]', value: [0, 1], collection: [['Zero', 0], ['One', 1]])
+        element.to_s.must_equal %(<label><input value="0" type="checkbox" name="public[]" id="public_0" checked="checked"/> Zero</label><label><input value="1" type="checkbox" name="public[]" id="public_1" checked="checked"/> One</label><input value="" name="public[]" type="hidden"/>)
+      end
+    end
+
+    describe 'through builder' do
+      it "matches an attribute's scalar value with a given collection" do
+        model = OpenStruct.new number: 1
+        builder = Formular::Builders::Basic.new model: model
+        element = builder.checkbox(:number, collection: [['Zero', 0], ['One', 1]])
+        element.to_s.must_equal %(<label><input type="checkbox" name="number[]" value="0" id="number_0"/> Zero</label><label><input type="checkbox" name="number[]" value="1" id="number_1" checked="checked"/> One</label><input value="" name="number[]" type="hidden"/>)
+      end
+
+      it "matches attribute's array of values with a given collection" do
+        model = OpenStruct.new number: [0, 1]
+        builder = Formular::Builders::Basic.new model: model
+        element = builder.checkbox(:number, collection: [['Zero', 0], ['One', 1]])
+        element.to_s.must_equal %(<label><input type="checkbox" name="number[]" value="0" id="number_0" checked="checked"/> Zero</label><label><input type="checkbox" name="number[]" value="1" id="number_1" checked="checked"/> One</label><input value="" name="number[]" type="hidden"/>)
       end
     end
   end # Formular::Element::Checkbox
@@ -476,7 +502,7 @@ describe 'core elements' do
         element.to_s.must_equal %(<select name="public[]" multiple="true"><option value="0">False</option><option value="1">True</option></select>)
       end
 
-      it 'has correct selecteds options' do
+      it 'has correct selected options' do
         element_opts[:value] = [0,1]
         element = Formular::Element::Select.(element_opts)
         element.to_s.must_equal %(<select name="public[]" multiple="true"><option value="0" selected="selected">False</option><option value="1" selected="selected">True</option></select>)

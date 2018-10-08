@@ -74,17 +74,21 @@ module Formular
           end
 
           private
+
           def is_checked?
-            !options[:checked].nil? || reader_value == options[:value]
+            return !options[:checked].nil? if options.has_key?(:checked)
+            option_val = options[:value].to_s
+            Array(options[:collection_values_to_match] || reader_value).map(&:to_s).include?(option_val)
           end
 
           def collection_base_options
             opts = attributes.select { |k, v| ![:name, :id, :checked, :class].include?(k) }
             # FIXME due to class merging, we'll end up with duplicate classes...
-            opts[:attribute_name] = attribute_name if attribute_name
-            opts[:builder]        = builder if builder
-            opts[:label_options]  = options[:control_label_options] if options[:control_label_options]
-            opts[:name]           = options[:name] if options[:name] # do we need this??
+            opts[:attribute_name]             = attribute_name if attribute_name
+            opts[:builder]                    = builder if builder
+            opts[:label_options]              = options[:control_label_options] if options[:control_label_options]
+            opts[:collection_values_to_match] = options[:value]
+            opts[:name]                       = options[:name] if options[:name] # do we need this??
 
             opts
           end
