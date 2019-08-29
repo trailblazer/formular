@@ -1,5 +1,6 @@
 require 'formular/builder'
 require 'formular/elements'
+require 'i18n'
 module Formular
   module Builders
     # I'm not quite sure why I made this a seperate class
@@ -60,6 +61,14 @@ module Formular
 
       def reader_value(name)
         model ? model.send(name) : values[name.to_sym]
+      end
+
+      def translation_key(name)
+        "#{i18n_scope}.#{model.model.model_name.param_key}.#{name}"
+      end
+
+      def i18n_scope
+        "contract"
       end
     end # class Basic
   end # module Builders
