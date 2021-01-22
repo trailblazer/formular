@@ -1,5 +1,5 @@
 module Formular
-  # TODO: indirectly tested in erb_test and slim_test. Should probably test directly
+  # TODO: indirectly tested in erb_test, haml_test and slim_test. Should probably test directly
   module Helper
     def form(model, url, **options, &block)
       form_options = options
